@@ -1,0 +1,24 @@
+From the makefile:
+
+## Makefile.am for mesh generation utilities.
+##
+## Just link with libquasi.a even though only need a few sources?!
+##
+## Old targets:
+## cube         - code for generation of a cube of fcc crystal
+## indentor     - code for generation of a block of fcc crystal
+##                fine region is located at the top surface
+## void_fcc     - generate void in a center of a block of fcc crystal
+## crack        - code for generation of a crack in fcc crystal
+## flat_surface - code for generation of a flat surface in fcc crystal
+##
+## The makefile and sources did not correspond well. I made a program
+## for any source file with a main(). 
+##
+## It seems that not all required *.ini data files exist:
+## crack_110_fcc.ini , fcc_110.ini , indent_110_fcc.ini , 
+## indent_110_half_plane_fcc.ini
+##
+## What are the following files:  read_material.c
+##
+## These sources seem to be out of date: void_fcc.c , generate_fcc.c

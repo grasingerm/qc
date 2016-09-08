@@ -1,0 +1,45 @@
+//
+// $Id: cstring,v 1.1 2002/03/08 00:02:46 knap Exp $
+//
+// $Log: cstring,v $
+// Revision 1.1  2002/03/08 00:02:46  knap
+// Updated build procedure to use automake/autoconf.
+//
+// Revision 1.2  2001/10/02 22:43:56  knap
+// Imported sources.
+//
+// Revision 1.1  2001/05/04 23:37:39  knap
+// Original sources added.
+//
+//
+
+#include <string.h>
+
+namespace std {
+  /* Standard C library string functions */
+  using ::size_t;
+  using ::memcpy;
+  using ::memmove;
+  using ::strcpy;
+  using ::strncpy;
+  using ::strcat;
+  using ::strncat;
+  using ::memccpy;
+  using ::memcmp;
+  using ::strcmp;
+  using ::strcoll;
+  using ::strncmp;
+  using ::strxfrm;
+  using ::memchr;
+  using ::strchr;
+  using ::strcspn;
+  using ::strpbrk;
+  using ::strrchr;
+  using ::strspn;
+  using ::strstr;
+  using ::strtok;
+  using ::memset;
+  using ::strerror;
+  using ::strlen;
+}
+

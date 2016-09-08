@@ -1,0 +1,18 @@
+
+$Id: README,v 1.2 2000/05/18 18:18:51 knap Exp $
+
+This directory contains triangulation server code. The server runs in
+its own address space and relies on GEOMPACK to perform triangulation and
+mesh improvement. 
+
+===============================================================================
+
+Directory tree:
+
+bin/      - null
+geompack/ - contains FORTRAN source of GEOMPACK
+include/  - include files
+lib       - null
+libs      - null
+obj       - null
+src       - source code of the server and client stub

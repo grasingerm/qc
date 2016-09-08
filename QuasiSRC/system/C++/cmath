@@ -1,0 +1,100 @@
+//
+// $Id: cmath,v 1.1 2002/03/08 00:02:45 knap Exp $
+//
+// $Log: cmath,v $
+// Revision 1.1  2002/03/08 00:02:45  knap
+// Updated build procedure to use automake/autoconf.
+//
+
+
+#ifndef _ARES_CMATH
+#define _ARES_CMATH
+
+//
+// Deficiency file: route cmath to math.h
+// and import symbols into namespace std
+//
+
+#include <math.h>
+
+namespace std {
+  /* Standard C math functions for double and float */
+  using ::acos;
+  using ::asin;
+  using ::atan;
+  using ::atan2;
+  using ::ceil;
+  using ::cos;
+  using ::cosh;
+  using ::exp;
+  using ::fabs;
+  using ::floor;
+  using ::fmod;
+  using ::frexp;
+  using ::ldexp;
+  using ::log;
+  using ::log10;
+  using ::modf;
+  using ::pow;
+  using ::sin;
+  using ::sinh;
+  using ::sqrt;
+  using ::tan;
+  using ::tanh;
+
+  using ::acosf;
+  using ::asinf;
+  using ::atanf;
+  using ::atan2f;
+  using ::ceilf;
+  using ::cosf;
+  using ::coshf;
+  using ::expf;
+  using ::fabsf;
+  using ::floorf;
+  using ::fmodf;
+#if 0
+  /* not implemented yet */
+  using ::frexpf;
+  using ::ldexpf;
+#endif
+  using ::logf;
+  using ::log10f;
+  using ::modff;
+  using ::powf;
+  using ::sinf;
+  using ::sinhf;
+  using ::sqrtf;
+  using ::tanf;
+  using ::tanhf;
+
+#if ((_MIPS_SIM==_MIPS_SIM_NABI32 || _MIPS_SIM==_MIPS_SIM_ABI64)) && _SGIAPI
+  /* long double precision routines */
+  using ::acosl;
+  using ::asinl;
+  using ::atanl;
+  using ::atan2l;
+  using ::ceill;
+  using ::cosl;
+  using ::coshl;
+  using ::expl;
+  using ::fabsl;
+  using ::floorl;
+  using ::fmodl;
+  using ::frexpl;
+  using ::ldexpl;
+  using ::logl;
+  using ::log10l;
+  using ::modfl;
+  using ::powl;
+  using ::sinl;
+  using ::sinhl;
+  using ::sqrtl;
+  using ::tanl;
+  using ::tanhl;
+#endif
+}
+
+#endif // _ARES_CMATH
+
+// End of file

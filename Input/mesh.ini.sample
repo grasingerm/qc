@@ -1,0 +1,88 @@
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	File Info
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+data_file 										GaN
+system_name 									GaNCoreShell
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	debug data flag
+#	0 - don't output debug data (default)
+#	1 - output data like node list, lattice parameters to a file
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+debug_data_flag 							1
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	Mesh Flag
+#	mesh_flag : 1 - full atomistic
+#							0 - use the atomistic and full data in this 
+#									file to generate mesh (default)
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+mesh_flag 										0
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	Position Flag
+#	position_flag : 0 - default : position of atoms in surface is marked fixed
+#									1 - fix_mask for all nodes
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+position_flag 								1
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	Lattice Info
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+numLattice										4
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	Lattice Info
+#	a1, a2, a3 : three vectors for crystal lattice
+#	lattice_type : simple cubic
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+a1														3.229234     0.000000     0.000000
+a2 														1.614617     2.796599     0.000000
+a3 														0.000000     0.000000     5.162889
+lattice_type 									1
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	Mesh Info
+#
+#	atomistic : size of atomistic region
+#	full : total size of system
+#
+#	mesh_levels : how many steps needed to bridge atomistic to biggest element
+#	n_level : size of each level
+#
+#	problem_size : 1 - mirror the z-plane
+#								 0 - non-mirrored z-plane
+#
+#	Note : 2 * [atomistic + sum{i} n_level ] should be equal to full
+#				 and shoulb be divisible by last n_level.
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+atomistic 										8		8 	8
+full 													8		8 	8
+mesh_levels 									0
+n_level          							0 0
+#n_level          						1 2
+#n_level 				 							2 8
+problem_size 									0
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	Shift Info
+# Data here is used to output the crystal structure of whole system
+#	It doesn't affect the input data calculation for QC method
+#
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+shift            							0 0.0 0.0 0.0
+shift            							1 1.614617 0.9321995596 2.5814445
+shift            							2 0.0 0.0 1.990655112
+shift            							3 1.614617 0.9321995596 4.572099612
+shift            							4 0.0 0.0 1.987572867
+shift            							5 1.614617 0.9321995596 4.569017367
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#	material name 
+#	1st material, 2nd material, ..., nth material
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+material 											0		Ga
+material 											1 	Ga
+material 											2 	N
+material 											3 	N

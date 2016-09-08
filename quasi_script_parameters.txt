@@ -1,0 +1,74 @@
+##################################
+#    declare parameters here     #
+##################################
+#
+#	runFlag : 0 - run quasi
+#						 1 - run test
+#						 other - do nothing
+#
+#	makeClean : 0 - no (default)
+#							1 - yes
+#
+#	config : 0 - don't configure (default)
+#					 1 - configure
+#
+#	libraryFlag : 0 - assuming that global library is installed in
+#										 /usr/local
+#								 1 - assuming that global library is installed in
+#										 /home/prashant/Softwares/local
+#
+# libraryDir
+#   location where libraries are built.
+#   It is used only if libraryFlag is set to 1.
+#
+#	testName : testName of directory where the QC code will be build.
+#            <model>-<comment>
+#						e.g.: NiAl-Electrostatics - NiAl is the model
+#                 NiMn-NoElectrostatics - NiMn is the model
+#
+#						<model> - See Input folder for list of supported models
+#           <comment> - it can be anything 
+#
+# *** testName also controls from where the input files will be copied.
+#
+# debugMode :  0 - no (default)
+#							 1 - yes
+#	*** debug_mode outputs the various folder names, exported paths,
+#     value of flags used in this bash script, and proceeds only
+#     if user types "yes" or "no".
+#
+# quasiBuildFlag : 0 (default)
+#                    create quasiBuild at default location which is
+#                    $(pwd)/quasiBuild
+#                  1
+#                    create quasiBuild at location specifed by
+#                    quasiBuildHere
+#
+#	quasiRunOutFlag : 0 (default)
+#											Outputs the make run data and quasi run data
+#											to the shell
+#										1
+#											Outputs the make run data and quasi run data
+#											to the corresponding .out files.
+#
+################## write flag values here #####################
+# runFlag :  0 (default)
+0
+# makeClean : 0 (default)
+0
+# config : 0 (default)
+0
+# libraryFlag : 0 (default for desktop), 1 (default for greenfield)
+1
+# libraryDire : used only when libraryFlag is 1
+/home/prashant/Softwares/local
+# testName : no default. Must put here
+NiMn-NoElectrostatics
+# debugMode : 0 (default)
+0
+# quasiBuildFlag : 0 (default)
+0
+# quasiBuildHere : specify folder. It is used only when above flag is 1
+/home/prashant/Work
+# quasiRunOutFlag : 0 (default)
+0

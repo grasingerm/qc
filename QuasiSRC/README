@@ -1,0 +1,93 @@
+Directory tree:
+==============
+
+Backup/               - obsolete
+Check_output/         - various routines for debugging/checking output files
+Data_extractor/       - code to extract various data from restart files
+ElectricFence-2.0.5/  - obsolete
+Examples/             - examples
+Makefile              - main makefile
+Stiffness/            - contains code to calculate global stiffness matrix
+check_force/          - scan output files and find nodes with large nodal 
+                        forces (debug only)
+check_input/          - various checks applied to input files (debug only)
+check_output/         - various checks applied to output files (debug only)
+crystallography/      - obsolete
+get_defects/          - process restart files to obtain defect structure
+include/              - includes
+itpack/               - sparse linear solver (currently not used)
+lib/                  - libraries
+materials.dat         - materials database (currently only Lennard-Jones and
+		        Johnson EAM)
+mesh_generation/      - set of programs to generate input files (look inside
+                        indent_fcc.c for the format; also, after the removal of
+		        atoms it may be the only source generating proper 
+		        input files)
+plane_cut/            - take nodal output file (node_*.plt) in TECPLOT format
+		        and remove part of it that is behind a certain plane;
+		        plane is given by normal and point
+plots/		      - obsolete
+plt2input/            - currently obsolete		
+plttopdb/             - convert atom output file from TECPLOT to PDB format
+potential_test/       - contains code to plot potential functions
+src/                  - source 
+system.mk             - OS-dependent definitions used by make
+test_energy/          - obsolete
+triangulation/        - obsolete
+triangulation_server/ - source for triangulation server and client stub
+
+Supported platforms
+===================
+
+- Solaris 2.*
+- OSF (Digital UNIX) 
+- IRIX 6.5 (6.?)
+- HP-UX 11.*
+
+Compiling
+=========
+
+Doing 'make' in the top directory usually works. All required libraries 
+and auxiliary executables are build as well. All libraries are placed 
+in lib/ and executables in bin/. All libs and execs names contain 
+prefix and system dependent part (eg. quasi.IRIX64.6.5.IP30). The QC
+executable is run by calling bin/quasi which is a driver script that
+will exec the executable appropriate for the machine. 
+
+Running
+=======
+
+Prior to starting the QC executable one needs:
+1) input file     - generated in mesh_generation directory
+2) materials.dat  - materials database
+3) quasi.ini      - init file; it can contain the following fields
+                    number_threads - number of threads to use
+                    periodic       - currently obsolete
+                    data_file      - name of input file
+                    materials_file - name of materials database file
+                    the remaining fields are (now) problem specific; for
+		    indentation 
+		    radius         - indenter radius
+		    constant       - force constant to use in indenter 
+                                     potential
+		    displacement   - displacement incr of the indenter
+		    position       - initial position of the indenter
+
+
+There are some command line options that may be used:
+
+'-i' - use init file different from quasi.ini
+'-d' - use data file different from the one given in the init file
+'-m' - use materials database different from the one in the init file
+'-n' - number of threads to use
+'-l' - number of LWPs (kernel threads) to use; only in the case of 
+       debugging should this be different from number of threads
+'-r' - restart calculation from a given restart file
+
+The QC executable writes output into pid.out where pid is the PID of the 
+process. Two file types are created by default:
+- nodal output files node_*.plt; these are in ASCII TECPLOT files
+- restart files restart_*.gz; these files are platform independent and can 
+  be freely transfered to and used on different architectures.
+
+

@@ -1,0 +1,255 @@
+# #
+# # QuasiSRC
+# #
+# QuasiSRC/aclocal.m4
+# QuasiSRC/AUTHORS
+# QuasiSRC/ChangeLog
+# QuasiSRC/config.h.in
+# QuasiSRC/configure
+# QuasiSRC/configure.ac
+# QuasiSRC/COPYING
+# QuasiSRC/INSTALL
+# QuasiSRC/Makefile.am
+# QuasiSRC/Makefile.in
+# QuasiSRC/NEWS
+# QuasiSRC/README
+# QuasiSRC/TEST-QuasiSRC
+# QuasiSRC/*~
+
+# # folders
+# QuasiSRC/autom4te.cache/*
+
+# #
+# # QuasiSRC --> applications
+# #
+# QuasiSRC/applications/aclocal.m4
+# QuasiSRC/applications/AUTHORS
+# QuasiSRC/applications/ChangeLog
+# QuasiSRC/applications/configure
+# QuasiSRC/applications/configure.ac
+# QuasiSRC/applications/COPYING
+# QuasiSRC/applications/INSTALL
+# QuasiSRC/applications/Makefile.am
+# QuasiSRC/applications/Makefile.in
+# QuasiSRC/applications/NEWS
+# QuasiSRC/applications/README
+# QuasiSRC/applications/TEST-applications
+# QuasiSRC/applications/*~
+
+# # folders
+# QuasiSRC/applications/autom4te.cache/*
+
+# #
+# # QuasiSRC --> applications --> nano-indentation
+# #
+# QuasiSRC/applications/nano-indentation/aclocal.m4
+# QuasiSRC/applications/nano-indentation/AUTHORS
+# QuasiSRC/applications/nano-indentation/ChangeLog
+# QuasiSRC/applications/nano-indentation/config.h.in
+# QuasiSRC/applications/nano-indentation/configure
+# QuasiSRC/applications/nano-indentation/configure.ac
+# QuasiSRC/applications/nano-indentation/COPYING
+# QuasiSRC/applications/nano-indentation/INSTALL
+# QuasiSRC/applications/nano-indentation/Makefile.am
+# QuasiSRC/applications/nano-indentation/Makefile.in
+# QuasiSRC/applications/nano-indentation/NEWS
+# QuasiSRC/applications/nano-indentation/README
+# QuasiSRC/applications/nano-indentation/TEST-nano-indentation
+# QuasiSRC/applications/nano-indentation/*~
+
+# # folders
+# QuasiSRC/applications/nano-indentation/autom4te.cache/*
+
+# #
+# # Note : Not ignoring bin at this time
+# # QuasiSRC --> bin
+# #
+# QuasiSRC/bin/*
+# #QuasiSRC/bin/*~
+# #QuasiSRC/bin/TEST-bin
+
+# #
+# # QuasiSRC --> mesh
+# #
+# QuasiSRC/mesh/aclocal.m4
+# QuasiSRC/mesh/AUTHORS
+# QuasiSRC/mesh/ChangeLog
+# QuasiSRC/mesh/config.h.in
+# QuasiSRC/mesh/configure
+# QuasiSRC/mesh/configure.ac
+# QuasiSRC/mesh/COPYING
+# QuasiSRC/mesh/INSTALL
+# QuasiSRC/mesh/Makefile.am
+# QuasiSRC/mesh/Makefile.in
+# QuasiSRC/mesh/NEWS
+# QuasiSRC/mesh/README
+# QuasiSRC/mesh/TEST-mesh
+# QuasiSRC/mesh/*~
+
+# # folders
+# QuasiSRC/mesh/autom4te.cache/*
+
+# #
+# # QuasiSRC --> src
+# #
+# QuasiSRC/src/aclocal.m4
+# QuasiSRC/src/AUTHORS
+# QuasiSRC/src/ChangeLog
+# QuasiSRC/src/config.h.in
+# QuasiSRC/src/configure
+# QuasiSRC/src/configure.ac
+# QuasiSRC/src/COPYING
+# QuasiSRC/src/INSTALL
+# QuasiSRC/src/Makefile.am
+# QuasiSRC/src/Makefile.in
+# QuasiSRC/src/NEWS
+# QuasiSRC/src/README
+# QuasiSRC/src/TEST-src
+# QuasiSRC/src/*~
+
+# # folders
+# QuasiSRC/src/autom4te.cache/*
+
+# #
+# # Note : Not ignoring system at this time
+# # QuasiSRC --> system
+# #
+# #QuasiSRC/system/*
+
+# #
+# # QuasiSRC --> triangulation_server
+# #
+# QuasiSRC/triangulation_server/aclocal.m4
+# QuasiSRC/triangulation_server/AUTHORS
+# QuasiSRC/triangulation_server/ChangeLog
+# QuasiSRC/triangulation_server/config.h.in
+# QuasiSRC/triangulation_server/configure
+# QuasiSRC/triangulation_server/configure.ac
+# QuasiSRC/triangulation_server/COPYING
+# QuasiSRC/triangulation_server/INSTALL
+# QuasiSRC/triangulation_server/Makefile.am
+# QuasiSRC/triangulation_server/Makefile.in
+# QuasiSRC/triangulation_server/NEWS
+# QuasiSRC/triangulation_server/README
+# QuasiSRC/triangulation_server/TEST-triangulation_server
+# QuasiSRC/triangulation_server/*~
+
+# # folders
+# QuasiSRC/triangulation_server/autom4te.cache/*
+
+# #
+# # QuasiSRC --> triangulation_server --> geompack
+# #
+# QuasiSRC/triangulation_server/geompack/aclocal.m4
+# QuasiSRC/triangulation_server/geompack/AUTHORS
+# QuasiSRC/triangulation_server/geompack/ChangeLog
+# QuasiSRC/triangulation_server/geompack/config.h.in
+# QuasiSRC/triangulation_server/geompack/configure
+# QuasiSRC/triangulation_server/geompack/configure.ac
+# QuasiSRC/triangulation_server/geompack/COPYING
+# QuasiSRC/triangulation_server/geompack/INSTALL
+# QuasiSRC/triangulation_server/geompack/Makefile.am
+# QuasiSRC/triangulation_server/geompack/Makefile.in
+# QuasiSRC/triangulation_server/geompack/NEWS
+# QuasiSRC/triangulation_server/geompack/README
+# QuasiSRC/triangulation_server/geompack/TEST-geompack
+# QuasiSRC/triangulation_server/geompack/*~
+
+# # folders
+# QuasiSRC/triangulation_server/geompack/autom4te.cache/*
+
+# #
+# # QuasiSRC --> triangulation_server --> geompack --> basic3d
+# #
+# QuasiSRC/triangulation_server/geompack/basic3d/aclocal.m4
+# QuasiSRC/triangulation_server/geompack/basic3d/AUTHORS
+# QuasiSRC/triangulation_server/geompack/basic3d/ChangeLog
+# QuasiSRC/triangulation_server/geompack/basic3d/config.h.in
+# QuasiSRC/triangulation_server/geompack/basic3d/configure
+# QuasiSRC/triangulation_server/geompack/basic3d/configure.ac
+# QuasiSRC/triangulation_server/geompack/basic3d/COPYING
+# QuasiSRC/triangulation_server/geompack/basic3d/INSTALL
+# QuasiSRC/triangulation_server/geompack/basic3d/Makefile.am
+# QuasiSRC/triangulation_server/geompack/basic3d/Makefile.in
+# QuasiSRC/triangulation_server/geompack/basic3d/NEWS
+# QuasiSRC/triangulation_server/geompack/basic3d/README
+# QuasiSRC/triangulation_server/geompack/basic3d/TEST-basic3d
+# QuasiSRC/triangulation_server/geompack/basic3d/*~
+
+# # folders
+# QuasiSRC/triangulation_server/geompack/basic3d/autom4te.cache/*
+
+# #
+# # QuasiSRC --> triangulation_server --> geompack --> deltr3d
+# #
+# QuasiSRC/triangulation_server/geompack/deltr3d/aclocal.m4
+# QuasiSRC/triangulation_server/geompack/deltr3d/AUTHORS
+# QuasiSRC/triangulation_server/geompack/deltr3d/ChangeLog
+# QuasiSRC/triangulation_server/geompack/deltr3d/config.h.in
+# QuasiSRC/triangulation_server/geompack/deltr3d/configure
+# QuasiSRC/triangulation_server/geompack/deltr3d/configure.ac
+# QuasiSRC/triangulation_server/geompack/deltr3d/COPYING
+# QuasiSRC/triangulation_server/geompack/deltr3d/INSTALL
+# QuasiSRC/triangulation_server/geompack/deltr3d/Makefile.am
+# QuasiSRC/triangulation_server/geompack/deltr3d/Makefile.in
+# QuasiSRC/triangulation_server/geompack/deltr3d/NEWS
+# QuasiSRC/triangulation_server/geompack/deltr3d/README
+# QuasiSRC/triangulation_server/geompack/deltr3d/TEST-deltr3d
+# QuasiSRC/triangulation_server/geompack/deltr3d/*~
+
+# # folders
+# QuasiSRC/triangulation_server/geompack/deltr3d/autom4te.cache/*
+
+# #
+# # QuasiSRC --> triangulation_server --> geompack --> general
+# #
+# QuasiSRC/triangulation_server/geompack/general/aclocal.m4
+# QuasiSRC/triangulation_server/geompack/general/AUTHORS
+# QuasiSRC/triangulation_server/geompack/general/ChangeLog
+# QuasiSRC/triangulation_server/geompack/general/config.h.in
+# QuasiSRC/triangulation_server/geompack/general/configure
+# QuasiSRC/triangulation_server/geompack/general/configure.ac
+# QuasiSRC/triangulation_server/geompack/general/COPYING
+# QuasiSRC/triangulation_server/geompack/general/INSTALL
+# QuasiSRC/triangulation_server/geompack/general/Makefile.am
+# QuasiSRC/triangulation_server/geompack/general/Makefile.in
+# QuasiSRC/triangulation_server/geompack/general/NEWS
+# QuasiSRC/triangulation_server/geompack/general/README
+# QuasiSRC/triangulation_server/geompack/general/*~
+# QuasiSRC/triangulation_server/geompack/general/TEST-general
+
+# # folders
+# QuasiSRC/triangulation_server/geompack/general/autom4te.cache/*
+
+# #
+# # QuasiSRC --> triangulation_server --> src
+# #
+# QuasiSRC/triangulation_server/src/aclocal.m4
+# QuasiSRC/triangulation_server/src/AUTHORS
+# QuasiSRC/triangulation_server/src/ChangeLog
+# QuasiSRC/triangulation_server/src/config.h.in
+# QuasiSRC/triangulation_server/src/configure
+# QuasiSRC/triangulation_server/src/configure.ac
+# QuasiSRC/triangulation_server/src/COPYING
+# QuasiSRC/triangulation_server/src/INSTALL
+# QuasiSRC/triangulation_server/src/Makefile.am
+# QuasiSRC/triangulation_server/src/Makefile.in
+# QuasiSRC/triangulation_server/src/NEWS
+# QuasiSRC/triangulation_server/src/README
+# QuasiSRC/triangulation_server/src/*~
+# QuasiSRC/triangulation_server/src/TEST-src
+
+# # folders
+# QuasiSRC/triangulation_server/src/autom4te.cache/*
+
+# # folders
+# Info/CheckLibrary/error_cgal.txt
+# Info/CheckLibrary/error_boost.txt
+# Info/CheckLibrary/cgal_success.txt
+# Info/CheckLibrary/boost_success.txt
+# Info/CheckLibrary/invalid_flag.txt
+# Info/CheckLibrary/a.out
+# Info/CheckLibrary/*~
+
+# QuasiBuild folder
+QuasiBuild/*

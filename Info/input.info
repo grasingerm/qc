@@ -1,0 +1,14 @@
+1		Initial value of frequency
+	
+		w = sigma/ tau, where sigma = sqrt(kB T)
+
+		tau = deviation of position from it's mean position.
+
+		1	Choice of tau be around 0.1, 0.2, 0.05
+
+		2	sigma = sqrt(kB T)
+			choice of kB is 1.0
+			choice of T = 300.0 K
+
+		For kB = 1.0, T = 300.0 K, tau = 0.1 --> w = 173.205080757
+

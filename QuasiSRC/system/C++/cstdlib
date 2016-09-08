@@ -1,0 +1,57 @@
+//
+// $Id: cstdlib,v 1.1 2002/03/08 00:02:46 knap Exp $
+//
+// $Log: cstdlib,v $
+// Revision 1.1  2002/03/08 00:02:46  knap
+// Updated build procedure to use automake/autoconf.
+//
+// Revision 1.2  2001/10/02 22:43:56  knap
+// Imported sources.
+//
+// Revision 1.2  2001/05/08 23:15:11  knap
+// Updated automake/autoconf files.
+//
+// Revision 1.1  2001/05/04 23:37:39  knap
+// Original sources added.
+//
+//
+
+#include <stdlib.h>
+
+namespace std {
+  /* Standard C library functions and structures */
+  using ::div_t;
+  using ::ldiv_t;
+  using ::size_t;
+  using ::ssize_t;
+  // using ::wchar_t;
+  using ::atof;
+  using ::atoi;
+  using ::atol;
+  using ::strtod;
+  using ::strtol;
+  using ::strtoul;
+  using ::rand;
+  using ::srand;
+  using ::calloc;
+  using ::free;
+  using ::malloc;
+  using ::realloc;
+  using ::abort;
+  using ::atexit;
+  using ::exit;
+  using ::getenv;
+  using ::system;
+  using ::bsearch;
+  using ::qsort;
+  using ::abs;
+  using ::div;
+  using ::labs;
+  using ::ldiv;
+  using ::mbtowc;
+  using ::mblen;
+  using ::wctomb;
+  using ::mbstowcs;
+  using ::wcstombs;
+}
+

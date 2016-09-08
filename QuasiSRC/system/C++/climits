@@ -1,0 +1,19 @@
+//
+// $Id: climits,v 1.1 2002/03/08 00:02:45 knap Exp $
+//
+// $Log: climits,v $
+// Revision 1.1  2002/03/08 00:02:45  knap
+// Updated build procedure to use automake/autoconf.
+//
+//
+
+//
+// ISO C++ 14882: 18.2.2  Implementation properties: C library
+//
+
+#ifndef _CPP_CLIMITS
+#define _CPP_CLIMITS	1
+
+#include <limits.h>
+
+#endif

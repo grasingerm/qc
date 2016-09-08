@@ -1,0 +1,108 @@
+[LJnn]
+eps		1.0
+sigma		1.0
+r_cutoff	1.35
+r_table		1.35
+delta_t		0.001
+dumping		0.95 
+[LJnnn]
+eps		1.0
+sigma		1.002546582999163
+r_cutoff	1.93
+r_table		2.50
+delta_t		0.01
+dumping		0.99
+[Cu]
+a       	3.615
+ec      	3.54
+fe      	0.30
+phie    	0.59
+alpha   	5.09
+beta    	5.85
+gamma   	8.00
+rcut    	3.45
+rgamma  	2.80
+rbeta   	2.80
+delta_t		0.01
+dumping		0.99
+[Ag]
+a       	4.09 
+ec      	2.85
+fe      	0.17
+phie     	0.48
+alpha   	5.92
+beta    	5.96
+gamma   	8.26
+rcut    	3.90
+rgamma  	3.17
+rbeta   	3.17
+delta_t		0.14
+dumping		0.99
+[Au]
+a       	4.08 
+ec      	3.93
+fe      	0.23
+phie    	0.65
+alpha   	6.37
+beta    	6.67
+gamma   	8.20
+rcut    	3.90
+rgamma  	3.17
+rbeta   	3.17
+delta_t		0.01
+dumping		0.99
+[Ni]
+a       	3.52 
+ec      	4.45
+fe      	0.41
+phie    	0.74
+alpha   	4.98
+beta    	6.41
+gamma   	8.86
+rcut    	3.36
+rgamma  	2.73
+rbeta   	2.73
+delta_t		0.14
+dumping		0.99
+[Pd]
+a       	3.89 
+ec      	3.91
+fe      	0.27
+phie    	0.65
+alpha   	6.42
+beta    	5.91
+gamma   	8.23
+rcut    	3.71
+rgamma  	3.01
+rbeta   	3.01
+delta_t		0.14
+dumping 	0.99
+[Pt]
+a       	3.92 
+ec      	5.77
+fe      	0.38
+phie    	0.95
+alpha   	6.44
+beta    	6.69
+gamma   	8.57
+rcut    	3.74
+rgamma  	3.04
+rbeta   	3.04
+delta_t         0.14
+dumping		0.99
+[Al_eam]
+potfile		eamdata.Al.glue
+ntyp		1
+rmass		26.982
+rlatt		4.0320
+dr		0.1113838560765150E-02
+drho 		0.2404809619238477E-03
+rmax		5.55805442
+[Cu_eam]
+potfile         eamdata.Cu.Mishin
+ntyp            1
+rmass           63.550
+rlatt           3.6150
+dr              1.1015783156631325E-03
+drho            2.4004800960192038E-03
+rmax            5.50679

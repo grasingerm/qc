@@ -1,0 +1,42 @@
+//
+//
+//
+
+#ifndef _CPP_CCTYPE
+#define _CPP_CCTYPE 1
+
+#include <ctype.h>
+
+// Get rid of those macros defined in <ctype.h> in lieu of real functions.
+#undef isalnum
+#undef isalpha
+#undef iscntrl
+#undef isdigit
+#undef isgraph
+#undef islower
+#undef isprint
+#undef ispunct
+#undef isspace
+#undef isupper
+#undef isxdigit
+#undef tolower
+#undef toupper
+
+namespace std
+{
+  using ::isalnum;
+  using ::isalpha;
+  using ::iscntrl;
+  using ::isdigit;
+  using ::isgraph;
+  using ::islower;
+  using ::isprint;
+  using ::ispunct;
+  using ::isspace;
+  using ::isupper;
+  using ::isxdigit;
+  using ::tolower;
+  using ::toupper;
+}
+
+#endif 
