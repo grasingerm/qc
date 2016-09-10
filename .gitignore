@@ -253,3 +253,6 @@
 
 # QuasiBuild folder
 QuasiBuild/*
+
+# Info/LibraryFiles
+Info/LibraryFiles
