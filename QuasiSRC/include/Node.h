@@ -15,23 +15,22 @@
 //
 //
 
-namespace quasicontinuum{
+namespace quasicontinuum {
 
-  /**
-   * @brief Singleton container for Quasicontinua instance
-   */
-  class Node {
+/**
+ * @brief Singleton container for Quasicontinua instance
+ */
+class Node {
 
   //
   // public methods
   //
 
-  public:
- 
+public:
   /**
    * @brief getInstance.
    */
-  static Node * getInstance();
+  static Node *getInstance();
 
   /**
    * @brief destroyInstance.
@@ -39,14 +38,14 @@ namespace quasicontinuum{
   static void destroyInstance();
 
   // ***************************************//
-  // I = boundingbox.c    
+  // I = boundingbox.c
 
   //
   //  getBoundingBox()
   //
-  void getBoundingBox(struct boundingbox_t     *P_boundingbox,
-          struct node_list_t *P_node_list,
-          enum mt_version_t         mt_version);
+  void getBoundingBox(struct boundingbox_t *P_boundingbox,
+                      struct node_list_t *P_node_list,
+                      enum mt_version_t mt_version);
 
   // ***************************************//
   // I = clean_nodes.c
@@ -54,22 +53,20 @@ namespace quasicontinuum{
   //
   //  cleanNodes()
   //
-  void cleanNodes(struct all_node_list_t  *P_node_list);  
+  void cleanNodes(struct all_node_list_t *P_node_list);
 
   // ***************************************//
-  // I = node.c  
+  // I = node.c
 
   //
   //	makeActiveNode()
   //
-  void makeActiveNode(struct node_list_t *P_node_list,
-			     const int           i_node);
+  void makeActiveNode(struct node_list_t *P_node_list, const int i_node);
 
   //
   //	makeInactiveNode()
   //
-  void makeInactiveNode(struct node_list_t *P_node_list,
-			       const int           i_node);
+  void makeInactiveNode(struct node_list_t *P_node_list, const int i_node);
 
   // ***************************************//
   // I = node_clusters.c
@@ -77,35 +74,33 @@ namespace quasicontinuum{
   //
   //	isNodeAtSurface()
   //
-  int isNodeAtSurface(const struct node_t  *P_node);  
+  int isNodeAtSurface(const struct node_t *P_node);
 
   //
   //	createNodalClusters()
   //
-  void createNodalClusters(int  iQuasi,
-          struct node_list_t     *P_node_list,
-          struct lattice_t *P_lattice,
-          int              *cluster_size,
-          enum mt_version_t       mt_version);
+  void createNodalClusters(int iQuasi, struct node_list_t *P_node_list,
+                           struct lattice_t *P_lattice, int *cluster_size,
+                           enum mt_version_t mt_version);
 
   // ***************************************//
   // I = node_clusters_weight.c
 
   //
   //	nodalClusterWeightTest()
-  //  
+  //
   int nodalClusterWeightTest(const int iQuasi,
-          const struct node_list_t    *P_node_list,
-		    	struct lattice_t      *P_lattice);
+                             const struct node_list_t *P_node_list,
+                             struct lattice_t *P_lattice);
 
   //
   //	computeNodalClusterSitesAndWeights()
   //
   void computeNodalClusterSitesAndWeights(int iQuasi,
-      struct lattice_t      *P_lattice,
-      struct node_list_t    *P_node_list,
-      double                 r_cluster,
-      enum mt_version_t      mt_version);
+                                          struct lattice_t *P_lattice,
+                                          struct node_list_t *P_node_list,
+                                          double r_cluster,
+                                          enum mt_version_t mt_version);
 
   // ***************************************//
   // I = function constructed from triangulation_client.c
@@ -121,24 +116,20 @@ namespace quasicontinuum{
   //
   //  addNewNode()
   //
-  void addNewNode(const int               l[3],
-       struct all_node_list_t *P_node_list,
-       struct lattice_t *P_lattice,
-       const int               iQuasi);  
+  void addNewNode(const int l[3], struct all_node_list_t *P_node_list,
+                  struct lattice_t *P_lattice, const int iQuasi);
 
   //
   //  isNodeAtomistic()
   //
   bool isNodeAtomistic(const struct node_t *P_node,
-        const double        atomistic_element_size);
-
+                       const double atomistic_element_size);
 
   //
   // private methods
   //
 
-  private:
-
+private:
   /**
    * @brief Constructor.
    */
@@ -147,12 +138,12 @@ namespace quasicontinuum{
   /**
    * @brief Copy constructor.
    */
-  Node(Node const&);
+  Node(Node const &);
 
   /**
    * @brief Assignment operator.
    */
-  const Node & operator=(const Node &);
+  const Node &operator=(const Node &);
 
   /**
    * @brief Destructor.
@@ -162,55 +153,47 @@ namespace quasicontinuum{
   //
   //	BuildNodalClusters()
   //
-  void BuildNodalClusters(int               iQuasi,
-          struct node_list_t     *P_node_list,
-		      struct lattice_t *P_element_list,
-		      int              *cluster_size,
-		      enum mt_version_t       mt_version);
+  void BuildNodalClusters(int iQuasi, struct node_list_t *P_node_list,
+                          struct lattice_t *P_element_list, int *cluster_size,
+                          enum mt_version_t mt_version);
 
   //
   //	ResolveOverlaps()
   //
-  void ResolveOverlaps(int               iQuasi,
-     struct node_list_t     *P_node_list,
-		 struct lattice_t *P_lattice,
-		 int              *cluster_size,
-		 enum mt_version_t       mt_version);
+  void ResolveOverlaps(int iQuasi, struct node_list_t *P_node_list,
+                       struct lattice_t *P_lattice, int *cluster_size,
+                       enum mt_version_t mt_version);
 
   //
   //	CheckClusters()
   //
   void CheckClusters(const struct node_list_t *P_node_list,
-	       const struct lattice_t   *P_lattice);
+                     const struct lattice_t *P_lattice);
 
-	//
-	//	ComputeLatticeExactSum()
-	//
-	double ComputeLatticeExactSum(const int iQuasi,
-    struct lattice_t *P_lattice);
+  //
+  //	ComputeLatticeExactSum()
+  //
+  double ComputeLatticeExactSum(const int iQuasi, struct lattice_t *P_lattice);
 
-	//
-	//	ComputeLatticeApproxSum()
-	//
-	double ComputeLatticeApproxSum(const int iQuasi,
-        struct lattice_t   *P_lattice, 
-			  const struct node_list_t *P_node_list);	
+  //
+  //	ComputeLatticeApproxSum()
+  //
+  double ComputeLatticeApproxSum(const int iQuasi, struct lattice_t *P_lattice,
+                                 const struct node_list_t *P_node_list);
 
-	//
-	//	ComputeClusterNodalWeightsLamped()
-	//
+  //
+  //	ComputeClusterNodalWeightsLamped()
+  //
   void ComputeClusterNodalWeightsLamped(int iQuasi,
-      struct node_list_t *P_node_list,
-      struct lattice_t   *P_lattice);
+                                        struct node_list_t *P_node_list,
+                                        struct lattice_t *P_lattice);
 
   //
   // private data types
   //
-  private:
-
-  static Node*                        _instance;
+private:
+  static Node *_instance;
 };
-
 }
 
 #endif // NODE_H

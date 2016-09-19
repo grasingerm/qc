@@ -24,279 +24,297 @@
 //
 //
 
-namespace quasicontinuum{
+namespace quasicontinuum {
+
+/**
+ * @brief Singleton container for Quasicontinua instance
+ */
+class ForceEnergyCalculation {
+
+  //
+  // public methods
+  //
+
+public:
+  /**
+   * @brief getInstance.
+   */
+  static ForceEnergyCalculation *getInstance();
 
   /**
-   * @brief Singleton container for Quasicontinua instance
+   * @brief destroyInstance.
    */
-  class ForceEnergyCalculation {
+  static void destroyInstance();
 
-    //
-    // public methods
-    //
+  //
+  //  setAtomisticDeadLoads()
+  //
+  void setAtomisticDeadLoads(std::vector<std::vector<double>> forces,
+                             const double element_size);
 
-  public:
- 
-    /**
-     * @brief getInstance.
-     */
-    static ForceEnergyCalculation * getInstance();
+  //
+  //  no AtomisticLoads()
+  //
+  void noAtomisticLoads(void);
 
-    /**
-     * @brief destroyInstance.
-     */
-    static void destroyInstance();
+  //
+  //  setRemoveResidualFlags()
+  //
+  void setRemoveResidualFlags(const std::vector<int> flags);
 
-    //
-    //  setAtomisticDeadLoads()
-    //
-    void setAtomisticDeadLoads(std::vector<std::vector<double>> forces,
-             const double element_size);
+  //
+  //  removeResidualForces()
+  //  This computes the force in reference condition for current mesh
+  //  and depending on remove flags, it puts the forces in external force
+  //  variable of node.
+  //
+  void removeResidualForces(void);
 
-    //
-    //  no AtomisticLoads()
-    //
-    void noAtomisticLoads(void);
+  //
+  //  computeForceEnergy()
+  //
+  void computeForceEnergy(int rebuild_neighbor_flag, bool compute_in_reference);
 
-    //
-    //  setRemoveResidualFlags()
-    //
-    void setRemoveResidualFlags(const std::vector<int> flags);
+  //
+  //  iQuasiForceEnergy()
+  //
+  //  Depending on potential and Electrostatics enabled in system,
+  //  this function calls function corresponding to EAM, Pairwise interaction
+  //  and Electrostatics.
+  //
+  void iQuasiForceEnergy(int iQuasi, bool compute_in_reference);
 
-    //
-    //  removeResidualForces()
-    //  This computes the force in reference condition for current mesh
-    //  and depending on remove flags, it puts the forces in external force
-    //  variable of node.
-    //
-    void removeResidualForces(void );
+  //
+  //  iQuasiForceEnergy()
+  //
+  void iQuasiForceEnergyHarmonic(int iQuasi, bool compute_in_reference);
 
-    //
-    //  computeForceEnergy()
-    //
-    void computeForceEnergy(int           rebuild_neighbor_flag,
-        bool compute_in_reference);
+  //
+  //  iQuasiAddForceAndEnergyToNodes()
+  //
+  void iQuasiAddForceAndEnergyToNodes(int iQuasi);
 
-    //
-    //  iQuasiForceEnergy()
-    //
-    //  Depending on potential and Electrostatics enabled in system,
-    //  this function calls function corresponding to EAM, Pairwise interaction
-    //  and Electrostatics.
-    //
-    void iQuasiForceEnergy(int iQuasi,
-      bool compute_in_reference);
+  //
+  //  iQuasiEAMForceEnergy()
+  //
+  //  Computes force and energy due to EAM potential and adds the
+  //  contribution to relevant nodes.
+  //
+  void iQuasiEAMForceEnergy(int iQuasi);
 
-    //
-    //  iQuasiForceEnergy()
-    //
-    void iQuasiForceEnergyHarmonic(int iQuasi,
-        bool compute_in_reference);  
+  //
+  //  iQuasiPairwiseForceEnergy()
+  //
+  //  Computes force and energy due to pairwise interaction and adds the
+  //  contribution to relevant nodes.
+  //
+  void iQuasiPairwiseForceEnergy(int iQuasi);
 
-    //
-    //  iQuasiAddForceAndEnergyToNodes()
-    //
-    void iQuasiAddForceAndEnergyToNodes(int iQuasi);
+  //
+  //  iQuasiPairwiseForceEnergy()
+  //
+  void iQuasiPairwiseForceEnergyHarmonic(int iQuasi);
 
-    //
-    //  iQuasiEAMForceEnergy()
-    //
-    //  Computes force and energy due to EAM potential and adds the 
-    //  contribution to relevant nodes.
-    //
-    void iQuasiEAMForceEnergy(int iQuasi);
+  //
+  //  iQuasiEntropyForceEnergy()
+  //
+  void iQuasiEntropyForceEnergy(int iQuasi);
 
-    //
-    //  iQuasiPairwiseForceEnergy()
-    //
-    //  Computes force and energy due to pairwise interaction and adds the
-    //  contribution to relevant nodes.
-    //
-    void iQuasiPairwiseForceEnergy(int iQuasi);
+  //
+  //  iQuasiEntropyForceEnergy()
+  //
+  void iQuasiEntropyForceEnergyHarmonic(int iQuasi);
 
-    //
-    //  iQuasiPairwiseForceEnergy()
-    //
-    void iQuasiPairwiseForceEnergyHarmonic(int iQuasi);    
+  //
+  //  iQuasiElectrostaticsForceEnergy()
+  //
+  //  Computes force due to electrostatics and add the
+  //  contribution to relevant nodes.
+  //
+  void iQuasiElectrostaticsForceEnergy(int iQuasi, bool compute_in_reference);
 
-    //
-    //  iQuasiEntropyForceEnergy()
-    //
-    void iQuasiEntropyForceEnergy(int iQuasi);
+  //
+  //  iQuasiAddExternalForces()
+  //
+  void iQuasiAddExternalForces(int iQuasi);
 
-    //
-    //  iQuasiEntropyForceEnergy()
-    //
-    void iQuasiEntropyForceEnergyHarmonic(int iQuasi);    
+  //
+  //  iQuasiComputeTotalEnergy()
+  //
+  //  adds the energy of all the nodes to all_node_list data of iQuasi
+  //
+  void iQuasiComputeTotalEnergy(int iQuasi);
 
-    //
-    //  iQuasiElectrostaticsForceEnergy()
-    //
-    //  Computes force due to electrostatics and add the 
-    //  contribution to relevant nodes.
-    //
-    void iQuasiElectrostaticsForceEnergy(int iQuasi,
-      bool compute_in_reference);            
+  //
+  //  iQuasiComputeExternalEnergy()
+  //
+  //  Computes energy due to external forces and adds it to all_node_list data
+  //  of iQuasi
+  //
+  void iQuasiComputeExternalEnergy(int iQuasi);
 
-    //
-    //  iQuasiAddExternalForces()
-    //
-    void iQuasiAddExternalForces(int iQuasi);
+  //
+  //  iQuasiAddEnergy()
+  //
+  void iQuasiAddEnergy(int iQuasi);
 
-    //
-    //  iQuasiComputeTotalEnergy()
-    //
-    //  adds the energy of all the nodes to all_node_list data of iQuasi
-    //
-    void iQuasiComputeTotalEnergy(int iQuasi);
+  //
+  //  copyEnergyToInitialEnergy()
+  //
+  void copyEnergyToInitialEnergy(void);
 
-    //
-    //  iQuasiComputeExternalEnergy()
-    //
-    //  Computes energy due to external forces and adds it to all_node_list data of iQuasi
-    //
-    void iQuasiComputeExternalEnergy(int iQuasi);
+  //
+  // testInitialization()
+  //
+  void testForceEnergyCalculation(
+      int rebuild_neighbor_flag, int rebuild_cluster_flag,
+      std::vector<std::vector<
+          std::vector<std::pair<std::vector<double>, std::vector<double>>>>>
+          &test_cluster_force_energy,
+      std::vector<
+          std::vector<std::pair<std::vector<double>, std::vector<double>>>>
+          &test_node_force_energy,
+      std::vector<
+          std::vector<std::vector<std::pair<std::vector<double>, double>>>>
+          &test_total_cluster_force_energy,
+      std::vector<std::vector<std::pair<std::vector<double>, double>>>
+          &test_total_node_force_energy);
 
-    //
-    //  iQuasiAddEnergy()
-    //
-    void iQuasiAddEnergy(int iQuasi);
+  //
+  //  testAddClusterForceEnergy()
+  //
+  //  flag : 0 - for eam
+  //         1 - for pairwise
+  //         2 - for entropy
+  //         3 - electrostatics
+  //
+  void testAddForceEnergy(
+      std::vector<std::vector<
+          std::vector<std::pair<std::vector<double>, std::vector<double>>>>>
+          &test_cluster_force_energy,
+      std::vector<
+          std::vector<std::pair<std::vector<double>, std::vector<double>>>>
+          &test_node_force_energy,
+      std::vector<
+          std::vector<std::vector<std::pair<std::vector<double>, double>>>>
+          &test_total_cluster_force_energy,
+      std::vector<std::vector<std::pair<std::vector<double>, double>>>
+          &test_total_node_force_energy,
+      int flag);
 
-    //
-    //  copyEnergyToInitialEnergy()
-    //
-    void copyEnergyToInitialEnergy(void);
+  //
+  //  getQuasiClusterSiteForceData()
+  //
+  std::vector<std::vector<std::pair<std::vector<double>, double>>> &
+  getQuasiClusterSiteForceData(int iQuasi);
 
-    //
-    // testInitialization()
-    //
-    void testForceEnergyCalculation(int rebuild_neighbor_flag,
-        int rebuild_cluster_flag,
-        std::vector< std::vector< std::vector< std::pair< std::vector< double >, std::vector<double> > > > >  &test_cluster_force_energy,
-        std::vector< std::vector< std::pair< std::vector<double>, std::vector<double> > > > &test_node_force_energy,
-        std::vector< std::vector< std::vector< std::pair< std::vector< double >, double > > > > &test_total_cluster_force_energy,
-        std::vector< std::vector< std::pair< std::vector<double>, double > > > &test_total_node_force_energy);
+  //
+  //  getQuasiClusterTraceOfK()
+  //
+  std::vector<std::vector<double>> &getQuasiClusterTraceOfK(int iQuasi);
 
-    //
-    //  testAddClusterForceEnergy()
-    //
-    //  flag : 0 - for eam
-    //         1 - for pairwise
-    //         2 - for entropy
-    //         3 - electrostatics
-    // 
-    void testAddForceEnergy(std::vector< std::vector< std::vector< std::pair< std::vector< double >, std::vector<double> > > > >  &test_cluster_force_energy,
-        std::vector< std::vector< std::pair< std::vector<double>, std::vector<double> > > > &test_node_force_energy,
-        std::vector< std::vector< std::vector< std::pair< std::vector< double >, double > > > > &test_total_cluster_force_energy,
-        std::vector< std::vector< std::pair< std::vector<double>, double > > > &test_total_node_force_energy,        
-        int                flag);
+  //
+  //  iQuasiTestPairwiseForceEnegry()
+  //
+  std::vector<std::vector<std::pair<std::vector<double>, double>>>
+  iQuasiTestPairwiseForceEnegry(int iQuasi);
 
-    //
-    //  getQuasiClusterSiteForceData()
-    //
-    std::vector< std::vector< std::pair< std::vector< double >, double > > > & getQuasiClusterSiteForceData(int iQuasi);
+  //
+  //  iQuasiTestPairwiseForceEnegry()
+  //
+  std::vector<std::vector<std::pair<std::vector<double>, double>>>
+  iQuasiTestEntropyForceEnegry(int iQuasi);
 
-    //
-    //  getQuasiClusterTraceOfK()
-    //
-    std::vector<std::vector<double>> & getQuasiClusterTraceOfK(int iQuasi);
+  //
+  //  iQuasiTestPairwiseForceEnegry()
+  //
+  std::vector<std::vector<std::pair<std::vector<double>, double>>>
+  iQuasiTestElectrostaticsForceEnegry(int iQuasi);
 
-    //
-    //  iQuasiTestPairwiseForceEnegry()
-    //
-    std::vector< std::vector< std::pair< std::vector< double >, double > > > iQuasiTestPairwiseForceEnegry(int iQuasi);
+  //
+  // private methods
+  //
 
-    //
-    //  iQuasiTestPairwiseForceEnegry()
-    //
-    std::vector< std::vector< std::pair< std::vector< double >, double > > > iQuasiTestEntropyForceEnegry(int iQuasi);
+private:
+  /**
+   * @brief Constructor.
+   */
+  ForceEnergyCalculation();
 
-    //
-    //  iQuasiTestPairwiseForceEnegry()
-    //
-    std::vector< std::vector< std::pair< std::vector< double >, double > > > iQuasiTestElectrostaticsForceEnegry(int iQuasi);
+  /**
+   * @brief Copy constructor.
+   */
+  ForceEnergyCalculation(ForceEnergyCalculation const &);
 
+  /**
+   * @brief Assignment operator.
+   */
+  const ForceEnergyCalculation &operator=(const ForceEnergyCalculation &);
 
+  /**
+   * @brief Destructor.
+   */
+  ~ForceEnergyCalculation();
 
+  //
+  //  SetResidualFlagsForAdjacentNodes()
+  //
+  void SetResidualFlagsForAdjacentNodes(const struct node_t *P_node,
+                                        std::vector<bool> &node_residual_flags);
 
-    //
-    // private methods
-    //
+  //
+  //  InitializeClusterForceEnergyData()
+  //
+  void InitializeClusterForceEnergyData();
 
-  private:
+  //
+  //  InitializeNewBucketLock()
+  //
+  void InitializeNewBucketLock();
 
-    /**
-     * @brief Constructor.
-     */
-    ForceEnergyCalculation();
+  //
+  //  InitializeTraceOfKData()
+  //
+  void InitializeTraceOfKData();
+  //
+  //  InitializeTestForceEnergyData()
+  //
+  void InitializeTestForceEnergyData(
+      std::vector<std::vector<
+          std::vector<std::pair<std::vector<double>, std::vector<double>>>>>
+          &test_cluster_force_energy,
+      std::vector<
+          std::vector<std::pair<std::vector<double>, std::vector<double>>>>
+          &test_node_force_energy,
+      std::vector<
+          std::vector<std::vector<std::pair<std::vector<double>, double>>>>
+          &test_total_cluster_force_energy,
+      std::vector<std::vector<std::pair<std::vector<double>, double>>>
+          &test_total_node_force_energy);
 
-    /**
-     * @brief Copy constructor.
-     */
-    ForceEnergyCalculation(ForceEnergyCalculation const&);
+  //
+  //  AddClusterSiteForcesToNodes()
+  //
+  void AddClusterSiteForcesToNodes(int iQuasi);
 
-    /**
-     * @brief Assignment operator.
-     */
-    const ForceEnergyCalculation & operator=(const ForceEnergyCalculation &);
+  //
+  //
+  //
+  void ComputeTraceOfKAtNodes(int iQuasi);
 
-    /**
-     * @brief Destructor.
-     */
-    ~ForceEnergyCalculation();
-
-    //
-    //  SetResidualFlagsForAdjacentNodes()
-    //
-    void SetResidualFlagsForAdjacentNodes(const struct node_t *P_node,
-                std::vector<bool>    & node_residual_flags);
-
-    //
-    //  InitializeClusterForceEnergyData()
-    //
-    void InitializeClusterForceEnergyData();
-
-    //
-    //  InitializeNewBucketLock()
-    //
-    void InitializeNewBucketLock();
-
-    //
-    //  InitializeTraceOfKData()
-    //  
-    void InitializeTraceOfKData();
-    //
-    //  InitializeTestForceEnergyData()
-    //
-    void InitializeTestForceEnergyData(std::vector< std::vector< std::vector< std::pair< std::vector< double >, std::vector<double> > > > >  &test_cluster_force_energy,
-        std::vector< std::vector< std::pair< std::vector<double>, std::vector<double> > > > &test_node_force_energy,
-        std::vector< std::vector< std::vector< std::pair< std::vector< double >, double > > > > &test_total_cluster_force_energy,
-        std::vector< std::vector< std::pair< std::vector<double>, double > > > &test_total_node_force_energy);    
-
-    //
-    //  AddClusterSiteForcesToNodes()
-    //
-    void AddClusterSiteForcesToNodes(int iQuasi);
-
-    //
-    //  
-    //
-    void ComputeTraceOfKAtNodes(int     iQuasi);    
-
-    //
-    // private data types
-    //
-  private:
-
-    static ForceEnergyCalculation*                  _instance;
-    int                                             d_atomisticFlag;
-    std::vector<std::vector<double>>                d_atomisticDeadLoads;
-    double                                          d_atomisticElementSize;
-    std::vector<bool>                               d_residualForcesFlags;
-    std::vector< std::vector< std::vector< std::pair< std::vector< double >, double > > > > d_clusterForceEnergy;
-    std::vector< std::vector< std::vector< double > > > d_traceOfK;
-  };
-
+  //
+  // private data types
+  //
+private:
+  static ForceEnergyCalculation *_instance;
+  int d_atomisticFlag;
+  std::vector<std::vector<double>> d_atomisticDeadLoads;
+  double d_atomisticElementSize;
+  std::vector<bool> d_residualForcesFlags;
+  std::vector<std::vector<std::vector<std::pair<std::vector<double>, double>>>>
+      d_clusterForceEnergy;
+  std::vector<std::vector<std::vector<double>>> d_traceOfK;
+};
 }
 
 #endif // FORCEENERGYCALCULATION_H

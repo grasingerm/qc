@@ -26,115 +26,108 @@
 //
 //
 
-namespace quasicontinuum{
+namespace quasicontinuum {
+
+/**
+ * @brief Singleton container for Quasicontinua instance
+ */
+class Quasicontinua {
+
+  //
+  // public data types
+  //
+public:
+  typedef unsigned int id_type;
+  typedef unsigned int size_type;
+
+  //
+  // public methods
+  //
+
+public:
+  /**
+   * @brief getInstance.
+   */
+  static Quasicontinua *getInstance();
 
   /**
-   * @brief Singleton container for Quasicontinua instance
+   * @brief destroyInstance.
    */
-  class Quasicontinua {
+  static void destroyInstance();
 
-    //
-    // public data types
-    //
-  public:
+  /**
+   * @brief Insert a Quasicontinuum.
+   *
+   * @param num_quasi_insert Number of Quasicontinuum instances to insert.
+   * @param temperature : temperature of Quasicontinuum.
+   * @param ac Command line options.
+   * @param av Command line options.
+   *
+   * @return Size of quasicontinua.
+   */
+  void insert(int num_quasi, int ac, char *av[]);
 
-    typedef unsigned int id_type;
-    typedef unsigned int size_type;
+  /**
+   * @brief Get an instance of Quasicontinuum.
+   *
+   * @param A Quasicontinuum id.
+   *
+   * @return A Quasicontinuum instance corresponding to the id.
+   */
+  const Quasicontinuum &get(id_type id) const;
+  Quasicontinuum &get(id_type id);
 
-    //
-    // public methods
-    //
+  /**
+   * @brief Get an instance of Quasicontinuum/
+   *        Current Id safe version of get()
+   *
+   * @param A Quasicontinuum id.
+   *
+   * @return A Quasicontinuum instance corresponding to the id.
+   */
+  const Quasicontinuum &getQuasi(id_type id) const;
+  Quasicontinuum &getQuasi(id_type id);
 
-  public:
- 
-    /**
-     * @brief getInstance.
-     */
-    static Quasicontinua * getInstance();
+  //    /**
+  //     * @brief Get the temperature of system.
+  //     *
+  //     * @return The temperature of Quasicontinua.
+  //     */
+  //    double getTemperature() const;
 
-    /**
-     * @brief destroyInstance.
-     */
-    static void destroyInstance();
+  /**
+   * @brief Get the number of Quasicontinuum instances.
+   *
+   * @return The number of Quasicontinuum instances.
+   */
+  size_type size() const;
 
-    /**
-     * @brief Insert a Quasicontinuum.
-     *
-     * @param num_quasi_insert Number of Quasicontinuum instances to insert.
-     * @param temperature : temperature of Quasicontinuum.
-     * @param ac Command line options.
-     * @param av Command line options.
-     *
-     * @return Size of quasicontinua.
-     */
-    void insert(int    num_quasi,
-                int    ac,
-		char * av[]);
+  /**
+   * @brief Get the current Quasicontinuum id.
+   *
+   * @return Id of the current Quasicontinuum.
+   */
+  id_type getCurrentId() const;
 
+  /**
+   * @brief Insert a shift vector.
+   *
+   * @param quasicontinuumId Id of Quasicontinuum
+   * @param globalVector Shift of Quasicontinuum w.r.t. global coordinates.
+   */
+  void insertShift(int quasicontinuumId, std::vector<double> shiftVector,
+                   int coreShell);
 
-    /**
-     * @brief Get an instance of Quasicontinuum.
-     *
-     * @param A Quasicontinuum id.
-     *
-     * @return A Quasicontinuum instance corresponding to the id.
-     */
-    const Quasicontinuum & get(id_type id) const;
-    Quasicontinuum & get(id_type id);
-
-    /**
-     * @brief Get an instance of Quasicontinuum/
-     *        Current Id safe version of get()
-     *
-     * @param A Quasicontinuum id.
-     *
-     * @return A Quasicontinuum instance corresponding to the id.
-     */
-    const Quasicontinuum & getQuasi(id_type id) const;
-    Quasicontinuum & getQuasi(id_type id);    
-
-//    /**
-//     * @brief Get the temperature of system.
-//     *
-//     * @return The temperature of Quasicontinua.
-//     */
-//    double getTemperature() const;
-
-    /**
-     * @brief Get the number of Quasicontinuum instances.
-     *
-     * @return The number of Quasicontinuum instances.
-     */
-    size_type size() const;
-
-    /**
-     * @brief Get the current Quasicontinuum id.
-     *
-     * @return Id of the current Quasicontinuum.
-     */
-    id_type getCurrentId() const;
-
-    /**
-     * @brief Insert a shift vector.
-     *
-     * @param quasicontinuumId Id of Quasicontinuum
-     * @param globalVector Shift of Quasicontinuum w.r.t. global coordinates.
-     */
-    void insertShift(int                 quasicontinuumId,
-        std::vector<double> shiftVector,
-        int                 coreShell);    
-
-   /**
-     * @brief Get relative shift between 2 Quasicontinuum.
-     *
-     * @param iQuasi 1st Quasicontinuum ID.
-     * @param jQuasi 2nd Quasicontinuum ID.
-     *
-     * @return Relative vector between Quasicontinuum.
-     */
-    std::vector<double> getRelativeShift(unsigned int iQuasi,
-                     unsigned int jQuasi);    
-
+  /**
+    * @brief Get relative shift between 2 Quasicontinuum.
+    *
+    * @param iQuasi 1st Quasicontinuum ID.
+    * @param jQuasi 2nd Quasicontinuum ID.
+    *
+    * @return Relative vector between Quasicontinuum.
+    */
+  std::vector<double> getRelativeShift(unsigned int iQuasi,
+                                       unsigned int jQuasi);
 
   /**
      * @brief Get global shift vector of Quasicontinuum.
@@ -143,7 +136,7 @@ namespace quasicontinuum{
      *
      * @return Global shift vector of Quasicontinuum.
      */
-    std::vector<double> getShift(unsigned int QuasicontinuumID);
+  std::vector<double> getShift(unsigned int QuasicontinuumID);
 
   /**
      * @brief Get core shell interaction between Quasicontinuum.
@@ -152,64 +145,59 @@ namespace quasicontinuum{
      *
      * @return Core shell info.
      */
-    int getCoreShell(unsigned int QuasicontinuumID);    
+  int getCoreShell(unsigned int QuasicontinuumID);
 
-    //
-    //  setTemperature()
-    //
-    void setTemperature(const double temperature);
+  //
+  //  setTemperature()
+  //
+  void setTemperature(const double temperature);
 
-    //
-    //  getTemperature()
-    //
-    double getTemperature();
+  //
+  //  getTemperature()
+  //
+  double getTemperature();
 
-    //
-    //  getSigmaVector()
-    //
-    std::vector<double> getSigmaVector(void);
+  //
+  //  getSigmaVector()
+  //
+  std::vector<double> getSigmaVector(void);
 
+  //
+  // private methods
+  //
 
-    //
-    // private methods
-    //
+private:
+  /**
+   * @brief Constructor.
+   */
+  Quasicontinua();
 
-  private:
+  /**
+   * @brief Copy constructor.
+   */
+  Quasicontinua(Quasicontinua const &);
 
-    /**
-     * @brief Constructor.
-     */
-    Quasicontinua();
+  /**
+   * @brief Assignment operator.
+   */
+  const Quasicontinua &operator=(const Quasicontinua &);
 
-    /**
-     * @brief Copy constructor.
-     */
-    Quasicontinua(Quasicontinua const&);
+  /**
+   * @brief Destructor.
+   */
+  ~Quasicontinua();
 
-    /**
-     * @brief Assignment operator.
-     */
-    const Quasicontinua & operator=(const Quasicontinua &);
-
-    /**
-     * @brief Destructor.
-     */
-    ~Quasicontinua();
-
-    //
-    // private data types
-    //
-  private:
-
-    static Quasicontinua*                                 _instance;
-    std::vector<quasicontinuum::Quasicontinuum>           d_quasicontinua;
-    mutable id_type                                       d_quasicontinuum_id;
-    std::vector<std::pair<int,std::vector <double> > >    d_shifts;
-    std::vector<int>                                      d_coreShell;
-    double                                                d_temperature;
-
-  };
-
+  //
+  // private data types
+  //
+private:
+  static Quasicontinua *_instance;
+  std::vector<quasicontinuum::Quasicontinuum> d_quasicontinua;
+  mutable id_type d_quasicontinuum_id;
+  std::vector< std::pair< int, std::vector<double> > > d_shifts;
+  std::vector<int> d_coreShell;
+  double d_temperature;
+};
 }
 
 #endif // QUASICONTINUA_H

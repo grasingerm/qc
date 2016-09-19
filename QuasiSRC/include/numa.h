@@ -27,7 +27,7 @@
 
 #if defined(__cplusplus)
 namespace quasicontinuum {
-  extern "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 /* IRIX specific functions */
@@ -42,15 +42,10 @@ namespace quasicontinuum {
 
 extern void create_locality_domain(int number_threads);
 
-extern void get_area_placement(caddr_t vaddr,
-			       size_t  n_elems,
-			       size_t  elem_size,
-			       dev_t  *dev_list,
-			       int     dev_list_len,
-			       int    *n_dev);
-extern void change_memory_placement(caddr_t vaddr,
-				    size_t  size,
-				    int     number_threads);
+extern void get_area_placement(caddr_t vaddr, size_t n_elems, size_t elem_size,
+                               dev_t *dev_list, int dev_list_len, int *n_dev);
+extern void change_memory_placement(caddr_t vaddr, size_t size,
+                                    int number_threads);
 extern void bind_thread(int cpu);
 #endif /* sgi */
 
@@ -71,7 +66,7 @@ extern void bind_thread(int thread_id);
 #error No pthread.h available.
 #endif /* HAVE_PTHREAD_H */
 
-    /* typedef int pthread_ldom_t; */
+/* typedef int pthread_ldom_t; */
 
 extern void bind_to_spu_init(void);
 extern pthread_spu_t bind_to_spu(pthread_t tid);
@@ -81,7 +76,7 @@ extern pthread_ldom_t bind_to_ldom(pthread_t tid);
 #endif /* hpux */
 
 #if defined(__cplusplus)
-  }
+}
 }
 #endif /* __cplusplus */
 

@@ -30,15 +30,15 @@
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>
 #if !defined(_REENTRANT)
-#  define _REENTRANT
+#define _REENTRANT
 #endif
 #else
 #error No pthread.h available.
 #endif /* HAVE_PTHREAD_H */
 
 #ifdef STDC_HEADERS
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #else
 #error No standard C library headers found
@@ -64,7 +64,7 @@
 
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#else 
+#else
 #error sys/stat.h not found.
 #endif /* HAVE_SYS_STAT_H */
 
@@ -80,17 +80,17 @@
 #error errno.h not found.
 #endif /* HAVE_ERRNO_H */
 
-#if HAVE_SYS_WAIT_H 
-# include <sys/wait.h> 
+#if HAVE_SYS_WAIT_H
+#include <sys/wait.h>
 #else
 #error sys/wait.h not found.
 #endif /* HAVE_SYS_WAIT_H */
 
-#ifndef WEXITSTATUS 
-# define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8) 
-#endif 
-#ifndef WIFEXITED 
-# define WIFEXITED(stat_val) (((stat_val) & 255) == 0) 
+#ifndef WEXITSTATUS
+#define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8)
+#endif
+#ifndef WIFEXITED
+#define WIFEXITED(stat_val) (((stat_val)&255) == 0)
 #endif
 
 #include "Error.h"
@@ -99,7 +99,8 @@
 #endif /* !lint */
 
 #if !defined(lint)
-static const char rcsid[]="$Id: read_pipe.c,v 1.3 2002/03/07 23:53:08 knap Exp $";
+static const char rcsid[] =
+    "$Id: read_pipe.c,v 1.3 2002/03/07 23:53:08 knap Exp $";
 #endif /* !lint */
 
 /**
@@ -108,57 +109,50 @@ static const char rcsid[]="$Id: read_pipe.c,v 1.3 2002/03/07 23:53:08 knap Exp $
  */
 
 static void * /*ARGSUSED0*/
-waitpid_thread(void * arg)
-{
+    waitpid_thread(void *arg) {
 
   /*LINTED*/
   pid_t pid = -1;
 
-  pid=waitpid(pid, NULL, 0);
-  if( (pid == (pid_t) -1) && (errno != EINTR) ){
+  pid = waitpid(pid, NULL, 0);
+  if ((pid == (pid_t)-1) && (errno != EINTR)) {
     ERROR("waitpid()");
     exit(EXIT_FAILURE);
   }
-  
-  return((void *) NULL);
 
+  return ((void *)NULL);
 }
-
 
 /**
  * start waitpid thread; we do not want to call waitpid outside this
- * function once data is read; we leave a detached thread that will 
- * block in waitpid(). Once child exits waitpid() will return and 
+ * function once data is read; we leave a detached thread that will
+ * block in waitpid(). Once child exits waitpid() will return and
  * thread will exit
  */
 
-static void
-start_waitpid_thread(void)
-{
-  
-  pthread_t      thread_id;
+static void start_waitpid_thread(void) {
+
+  pthread_t thread_id;
   pthread_attr_t thread_attr;
-  int            pthread_error;
+  int pthread_error;
   /**
    * create detached thread to handle SIGCLD
    */
 
-  pthread_attr_init( &thread_attr );
-  pthread_attr_setdetachstate( &thread_attr, PTHREAD_CREATE_DETACHED );
+  pthread_attr_init(&thread_attr);
+  pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
-  if( pthread_error=pthread_create( &thread_id, &thread_attr, waitpid_thread, 
-		                   (void *) NULL) ){
+  if (pthread_error = pthread_create(&thread_id, &thread_attr, waitpid_thread,
+                                     (void *)NULL)) {
     ERROR2("pthread_create()", pthread_error);
     printf("%d\n", pthread_error);
     exit(EXIT_FAILURE);
   }
 
-  pthread_attr_destroy( &thread_attr );
+  pthread_attr_destroy(&thread_attr);
 
   return;
-
 }
-
 
 /**
  * given name of gzipped file set up a pipe to gunzip
@@ -168,19 +162,17 @@ start_waitpid_thread(void)
  *      FILE *
  */
 
-FILE *
-open_read_pipe(const char *data_file_name)
-{
+FILE *open_read_pipe(const char *data_file_name) {
 
   pid_t pid;
 
   int pipe_fd[2];
-  
+
   /**
    * create pipe
    */
 
-  if( pipe(pipe_fd) == -1 ){
+  if (pipe(pipe_fd) == -1) {
     ERROR("pipe()");
     exit(EXIT_FAILURE);
   }
@@ -189,12 +181,12 @@ open_read_pipe(const char *data_file_name)
    * fork a child
    */
 
-  pid=fork();
+  pid = fork();
 
-  switch(pid){
-   
+  switch (pid) {
+
   case -1:
-    
+
     ERROR("fork()");
     exit(EXIT_FAILURE);
     break;
@@ -202,11 +194,11 @@ open_read_pipe(const char *data_file_name)
   case 0: /* child */
 
 #if defined(__QC_LINUX)
-    {
+  {
     pid_t pid1;
 
     pid1 = fork();
-    
+
     switch (pid1) {
 
     case -1:
@@ -224,47 +216,46 @@ open_read_pipe(const char *data_file_name)
 
 #endif /* __linux__ */
 
-    /**
-     * close reading side of the pipe; 
-     * some OSes use pipe_fd[0] for reading and pipe_fd[1] for writing;
-     * some use bidirectional pipes; we want to be safe here
-     */
+      /**
+       * close reading side of the pipe;
+       * some OSes use pipe_fd[0] for reading and pipe_fd[1] for writing;
+       * some use bidirectional pipes; we want to be safe here
+       */
 
-    close(pipe_fd[0]);
+      close(pipe_fd[0]);
 
-    /**
-     * attach writing side to stdout 
-     */
+      /**
+       * attach writing side to stdout
+       */
 
-    close(STDOUT_FILENO);
-    dup(pipe_fd[1]);
-    close(pipe_fd[1]);
+      close(STDOUT_FILENO);
+      dup(pipe_fd[1]);
+      close(pipe_fd[1]);
 
-    /**
-     * close stdin and stderr
-     */
+      /**
+       * close stdin and stderr
+       */
 
-    close(STDIN_FILENO);
-    /* close(STDERR_FILENO); */
+      close(STDIN_FILENO);
+      /* close(STDERR_FILENO); */
 
-    /**
-     * exec gunzip
-     */
+      /**
+       * exec gunzip
+       */
 
+      if (execlp("gunzip", "gunzip", "-c", data_file_name, (char *)NULL) ==
+          -1) {
+        ERROR("execl()");
+        /* send SIGKILL to parent */
+        kill(getppid(), SIGKILL);
+        exit(EXIT_FAILURE);
+      }
 
-    if( execlp("gunzip", "gunzip", "-c", data_file_name, 
-	       (char *) NULL) == -1 ){
-      ERROR("execl()");
-      /* send SIGKILL to parent */
-      kill(getppid(), SIGKILL);
-      exit(EXIT_FAILURE);
-    }
-
-    break;
+      break;
 #if defined(__QC_LINUX)
     }
     break;
-    }
+  }
 #endif /* __linux__ */
 
   default: /* parent */
@@ -277,18 +268,13 @@ open_read_pipe(const char *data_file_name)
 #else
     start_waitpid_thread();
 #endif /* __linux__ */
-    return(fdopen(pipe_fd[0], "r"));
+    return (fdopen(pipe_fd[0], "r"));
     /* NOTREACHED */
     break;
-
-
   }
 
-
-
   /* NOTREACHED */
-  return((FILE *) NULL);
-
+  return ((FILE *)NULL);
 }
 
 /**
@@ -299,20 +285,18 @@ open_read_pipe(const char *data_file_name)
  *      FILE *
  */
 
-FILE *
-open_write_pipe(const char *data_file_name)
-{
+FILE *open_write_pipe(const char *data_file_name) {
 
   pid_t pid;
 
   int pipe_fd[2];
   int wfd;
-  
+
   /**
    * create pipe
    */
 
-  if( pipe(pipe_fd) == -1 ){
+  if (pipe(pipe_fd) == -1) {
     ERROR("pipe()");
     exit(EXIT_FAILURE);
   }
@@ -321,12 +305,12 @@ open_write_pipe(const char *data_file_name)
    * fork a child
    */
 
-  pid=fork();
+  pid = fork();
 
-  switch(pid){
-   
+  switch (pid) {
+
   case -1:
-    
+
     ERROR("fork()");
     exit(EXIT_FAILURE);
     break;
@@ -334,11 +318,11 @@ open_write_pipe(const char *data_file_name)
   case 0: /* child */
 
 #if defined(__QC_LINUX)
-    {
+  {
     pid_t pid1;
 
     pid1 = fork();
-    
+
     switch (pid1) {
 
     case -1:
@@ -355,55 +339,54 @@ open_write_pipe(const char *data_file_name)
     case 0:
 
 #endif /* __linux__ */
-    
-    /**
-     * close writing side of the pipe; 
-     * some OSes use pipe_fd[0] for reading and pipe_fd[1] for writing;
-     * some use bidirectional pipes; we want to be safe here
-     */
 
-    close(pipe_fd[1]);
+      /**
+       * close writing side of the pipe;
+       * some OSes use pipe_fd[0] for reading and pipe_fd[1] for writing;
+       * some use bidirectional pipes; we want to be safe here
+       */
 
-    /**
-     * attach writing side to stdin 
-     */
+      close(pipe_fd[1]);
 
-    close(STDIN_FILENO);
-    dup(pipe_fd[0]);
-    close(pipe_fd[0]);
+      /**
+       * attach writing side to stdin
+       */
 
-    /**
-     * attach STDOUT to a file
-     */
+      close(STDIN_FILENO);
+      dup(pipe_fd[0]);
+      close(pipe_fd[0]);
 
-    if((wfd=open(data_file_name, O_WRONLY | O_CREAT | O_TRUNC, 
-		 S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH))
-       ==-1){
-      ERROR(data_file_name);
-      exit(EXIT_FAILURE);
-    }
-    
-    close(STDOUT_FILENO);
-    dup(wfd);
-    close(wfd);
+      /**
+       * attach STDOUT to a file
+       */
 
-    /**
-     * exec gunzip
-     */
+      if ((wfd = open(data_file_name, O_WRONLY | O_CREAT | O_TRUNC,
+                      S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH |
+                          S_IWOTH)) == -1) {
+        ERROR(data_file_name);
+        exit(EXIT_FAILURE);
+      }
 
+      close(STDOUT_FILENO);
+      dup(wfd);
+      close(wfd);
 
-    if( execlp("gzip", "gzip", "-c", (char *) NULL) == -1 ){
-      ERROR("execl()");
-      /* send SIGKILL to parent */
-      kill(getppid(), SIGKILL);
-      exit(EXIT_FAILURE);
-    }
+      /**
+       * exec gunzip
+       */
 
-    break;
+      if (execlp("gzip", "gzip", "-c", (char *)NULL) == -1) {
+        ERROR("execl()");
+        /* send SIGKILL to parent */
+        kill(getppid(), SIGKILL);
+        exit(EXIT_FAILURE);
+      }
+
+      break;
 #if defined(__QC_LINUX)
     }
     break;
-    }
+  }
 #endif /* __linux__ */
 
   default: /* parent */
@@ -417,20 +400,14 @@ open_write_pipe(const char *data_file_name)
 #else
     start_waitpid_thread();
 #endif /* __linux__ */
-    return(fdopen(pipe_fd[1], "w"));
+    return (fdopen(pipe_fd[1], "w"));
     /* NOTREACHED */
     break;
-
-
   }
 
-
-
   /* NOTREACHED */
-  return((FILE *) NULL);
-
+  return ((FILE *)NULL);
 }
-
 
 /**
  * get input stream; two things are done here:
@@ -444,16 +421,13 @@ open_write_pipe(const char *data_file_name)
  *       FILE *
  */
 
-FILE *
-open_data_file(const char *data_file_name, 
-         const char *type)
-{
+FILE *open_data_file(const char *data_file_name, const char *type) {
 
-  FILE *data_file=NULL;
+  FILE *data_file = NULL;
 
   int len;
-  
-  enum {REGULAR, GZIPPED} data_file_type;
+
+  enum { REGULAR, GZIPPED } data_file_type;
 
   char *str;
 
@@ -461,33 +435,39 @@ open_data_file(const char *data_file_name,
    * check if data_file_name ends with ".gz"
    */
 
-  len=strlen(data_file_name);
-  str=(char *) data_file_name+len-3;
+  len = strlen(data_file_name);
+  str = (char *)data_file_name + len - 3;
 
-  if( strcmp(str, ".gz") == 0 ) data_file_type=GZIPPED;
-  else data_file_type=REGULAR; 
-  
-  switch( data_file_type ){
+  if (strcmp(str, ".gz") == 0)
+    data_file_type = GZIPPED;
+  else
+    data_file_type = REGULAR;
+
+  switch (data_file_type) {
 
   case REGULAR:
 
     /**
      * check type
      */
-    
-    if(strcmp(type, "w")==0) data_file=fopen(data_file_name, "w");
-    if(strcmp(type, "r")==0) data_file=fopen(data_file_name, "r");
+
+    if (strcmp(type, "w") == 0)
+      data_file = fopen(data_file_name, "w");
+    if (strcmp(type, "r") == 0)
+      data_file = fopen(data_file_name, "r");
     break;
 
   case GZIPPED:
 
-    /** 
+    /**
      * check type
      */
-    if(strcmp(type, "w")==0) data_file=open_write_pipe(data_file_name);
-    if(strcmp(type, "r")==0) data_file=open_read_pipe(data_file_name);
+    if (strcmp(type, "w") == 0)
+      data_file = open_write_pipe(data_file_name);
+    if (strcmp(type, "r") == 0)
+      data_file = open_read_pipe(data_file_name);
     break;
   }
 
-  return(data_file);
+  return (data_file);
 }

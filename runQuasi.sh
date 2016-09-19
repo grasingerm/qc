@@ -301,8 +301,8 @@ if [[ $libraryFlag == "0" ]]; then
 	localD="/usr/local"
 	includeD="$localD""/include"
 	libD="$localD""/lib"
-	cgalIncludeD="$includeD""/CGAL"
-	cgalLibD="$libD""/CGAL"
+	cgalIncludeD="/usr/include/CGAL"
+	cgalLibD="/usr/lib/CGAL"
 	directory_for_dependencies="-I""$includeD"
 	directory_for_libraries="-L""$libD"
 

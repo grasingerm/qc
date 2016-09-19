@@ -59,7 +59,7 @@
 # config : 0 (default)
 0
 # libraryFlag : 0 (default for desktop), 1 (default for greenfield)
-1
+0
 # libraryDire : used only when libraryFlag is 1
 /home/prashant/Softwares/local
 # testName : no default. Must put here

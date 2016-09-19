@@ -15,92 +15,83 @@
 //
 //
 
-namespace quasicontinuum{
+namespace quasicontinuum {
+
+/**
+ * @brief Singleton container for Quasicontinua instance
+ */
+class Shape {
+
+  //
+  // public methods
+  //
+
+public:
+  /**
+   * @brief getInstance.
+   */
+  static Shape *getInstance();
 
   /**
-   * @brief Singleton container for Quasicontinua instance
+   * @brief destroyInstance.
    */
-  class Shape {
+  static void destroyInstance();
 
-    //
-    // public methods
-    //
+  //
+  //  computeShapeFunction()
+  //
+  double computeShapeFunction(const double p1[3], const double p2[3],
+                              const double p3[3], const double p4[3],
+                              const double p[3]);
 
-  public:
- 
-    /**
-     * @brief getInstance.
-     */
-    static Shape * getInstance();
+  //
+  //  computeSiteShapeFunction()
+  //
+  double computeSiteShapeFunction(const struct node_t *P_node_0,
+                                  const struct node_t *P_node_1,
+                                  const struct node_t *P_node_2,
+                                  const struct node_t *P_node_3, const int l[3],
+                                  struct lattice_t *P_lattice,
+                                  const int iQuasi);
 
-    /**
-     * @brief destroyInstance.
-     */
-    static void destroyInstance();
+  //
+  //  computeShapeFunctionGradient()
+  //
+  void computeShapeFunctionGradient(const double p1[3], const double p2[3],
+                                    const double p3[3], const double p4[3],
+                                    double gradient[3]);
 
-    //
-    //  computeShapeFunction()
-    //
-    double computeShapeFunction(const double p1[3],
-            const double p2[3],
-            const double p3[3],
-            const double p4[3],
-            const double p[3]);
+  //
+  // private methods
+  //
 
-    //
-    //  computeSiteShapeFunction()
-    //
-    double computeSiteShapeFunction(const struct node_t    *P_node_0,
-                     const struct node_t    *P_node_1,
-                     const struct node_t    *P_node_2,
-                     const struct node_t    *P_node_3,
-                     const int               l[3],
-                     struct lattice_t *P_lattice,
-                     const int               iQuasi);
+private:
+  /**
+   * @brief Constructor.
+   */
+  Shape();
 
-    //
-    //  computeShapeFunctionGradient()
-    //
-    void computeShapeFunctionGradient(const double p1[3],
-                   const double p2[3],
-                   const double p3[3],
-                   const double p4[3],
-                   double       gradient[3]);
+  /**
+   * @brief Copy constructor.
+   */
+  Shape(Shape const &);
 
-    //
-    // private methods
-    //
+  /**
+   * @brief Assignment operator.
+   */
+  const Shape &operator=(const Shape &);
 
-  private:
+  /**
+   * @brief Destructor.
+   */
+  ~Shape();
 
-    /**
-     * @brief Constructor.
-     */
-    Shape();
-
-    /**
-     * @brief Copy constructor.
-     */
-    Shape(Shape const&);
-
-    /**
-     * @brief Assignment operator.
-     */
-    const Shape & operator=(const Shape &);
-
-    /**
-     * @brief Destructor.
-     */
-    ~Shape();
-
-    //
-    // private data types
-    //
-  private:
-
-    static Shape*                        _instance;
-  };
-
+  //
+  // private data types
+  //
+private:
+  static Shape *_instance;
+};
 }
 
 #endif // SHAPE_H

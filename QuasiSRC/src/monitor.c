@@ -68,15 +68,15 @@
 #ifdef HAVE_PTHREAD_H
 #include <pthread.h>
 #if !defined(_REENTRANT)
-#  define _REENTRANT
+#define _REENTRANT
 #endif
 #else
 #error No pthread.h available.
 #endif /* HAVE_PTHREAD_H */
 
 #ifdef STDC_HEADERS
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #else
 #error No standard C library headers found
@@ -87,24 +87,23 @@
 #endif /* HAVE_SCHED_H */
 
 #if defined(__QC_SGI) || defined(_HAVE_NUMA_H)
-#include <numa.h>
 #include "numa.h"
+#include <numa.h>
 #endif /* sgi || linux */
 
-#include "threads.h"
+#include "C_Interface.h" // for free_e()
+#include "DataTypes.h"
 #include "Error.h"
 #include "monitor.h"
-#include "DataTypes.h"
-#include "C_Interface.h"   // for free_e()
+#include "threads.h"
 
 #if !defined(lint)
-static char rcsid[]="$Id: monitor.c,v 1.9 2002/03/07 23:53:06 knap Exp $";
+static char rcsid[] = "$Id: monitor.c,v 1.9 2002/03/07 23:53:06 knap Exp $";
 #endif /* !lint */
-
 
 /**
  * simple monitor for spreading loops over multiple threads;
- * takes a function and calls it by multiple threads; 
+ * takes a function and calls it by multiple threads;
  */
 
 struct thread_id_t {
@@ -112,36 +111,33 @@ struct thread_id_t {
   pthread_key_t id;
 };
 
-struct monitor_t{
-  void             *(*function)(void *);
-  void               *arg;
-  pthread_key_t       id_key;
-  enum {TID, ID}      id_type;
-  pthread_mutex_t     start_lock;
-  pthread_mutex_t     end_lock;
-  pthread_cond_t      start_cond;
-  pthread_cond_t      end_cond;
-  int                 work;
-  int                 queue;
-  int                 runners;
-  int                 init;
-  int                *data_taken;
+struct monitor_t {
+  void *(*function)(void *);
+  void *arg;
+  pthread_key_t id_key;
+  enum { TID, ID } id_type;
+  pthread_mutex_t start_lock;
+  pthread_mutex_t end_lock;
+  pthread_cond_t start_cond;
+  pthread_cond_t end_cond;
+  int work;
+  int queue;
+  int runners;
+  int init;
+  int *data_taken;
 };
 
-static struct monitor_t  monitor;
+static struct monitor_t monitor;
 
 /**
  * get my_id
  */
 
-int 
-get_my_tid(void)
-{
+int get_my_tid(void) {
   struct thread_id_t *thread_id;
 
   thread_id = pthread_getspecific(monitor.id_key);
-  return(thread_id->id);
-
+  return (thread_id->id);
 }
 
 /**
@@ -149,12 +145,9 @@ get_my_tid(void)
  * with thread ids; not MT-safe.
  */
 
-static int
-compute_thread_id(int tid,
-		  int number_threads)
-{
+static int compute_thread_id(int tid, int number_threads) {
 
-  int id   = tid;
+  int id = tid;
   int flag = 1;
   int i_left;
   int i_right;
@@ -162,10 +155,11 @@ compute_thread_id(int tid,
   /**
    * data_taken extends from 0 and ends at number_threads-1
    */
-  
-  if (id >= number_threads) id = number_threads - 1;
 
-  i_left  = id;
+  if (id >= number_threads)
+    id = number_threads - 1;
+
+  i_left = id;
   i_right = id;
 
   /**
@@ -174,14 +168,14 @@ compute_thread_id(int tid,
 
   if (!monitor.data_taken[id]) {
     monitor.data_taken[id] = 1;
-    return(id);
+    return (id);
   }
 
   /**
    * id data is gone try locate the closest one
    */
 
-  while(flag) {
+  while (flag) {
 
     i_left--;
     i_right++;
@@ -192,7 +186,7 @@ compute_thread_id(int tid,
 
     if (i_left >= 0 && !monitor.data_taken[i_left]) {
       monitor.data_taken[i_left] = 1;
-      return(i_left);
+      return (i_left);
     }
 
     /*
@@ -201,29 +195,25 @@ compute_thread_id(int tid,
 
     if (i_right < number_threads && !monitor.data_taken[i_right]) {
       monitor.data_taken[i_right] = 1;
-      return(i_right);
+      return (i_right);
     }
-  
   }
-  
-  /* NOTREACHED */
-  return(-1);
-  
-}
 
+  /* NOTREACHED */
+  return (-1);
+}
 
 /**
  * monitor thread
  */
 
 static void * /*ARGSUSED 0*/
-monitor_thread(void *arg)
-{
+    monitor_thread(void *arg) {
 
   static pthread_mutex_t tid_lock = PTHREAD_MUTEX_INITIALIZER;
   static int tid = 0;
 
-  struct thread_id_t thread_id; 
+  struct thread_id_t thread_id;
 
   /**
    * set tid
@@ -232,16 +222,16 @@ monitor_thread(void *arg)
   pthread_mutex_lock(&tid_lock);
 
   thread_id.tid = tid++;
-  pthread_setspecific(monitor.id_key, (void *) &thread_id);
-  
+  pthread_setspecific(monitor.id_key, (void *)&thread_id);
+
   pthread_mutex_unlock(&tid_lock);
 
 #if defined(__QC_SGI)
-  /**
-   * attatch thread to cpu;
-   */
+/**
+ * attatch thread to cpu;
+ */
 
-  /* bind_thread(thread_id.tid); */
+/* bind_thread(thread_id.tid); */
 
 #endif /* sgi */
 
@@ -249,30 +239,30 @@ monitor_thread(void *arg)
   /**
    * attatch thread to cpu;
    */
-  bind_thread(thread_id.tid); 
+  bind_thread(thread_id.tid);
 
 #endif /* numa */
 
   /**
    * loop while waiting for work
    */
-  
-  for(;;){
+
+  for (;;) {
     /**
      * wait here for work
      */
 
     pthread_mutex_lock(&(monitor.start_lock));
-    
+
     while (monitor.work == 0)
       pthread_cond_wait(&(monitor.start_cond), &(monitor.start_lock));
 
-    monitor.work--;   
+    monitor.work--;
     thread_id.id = compute_thread_id(thread_id.tid, get_number_threads());
     /* thread_id.id = monitor.queue++; */
 
-    pthread_mutex_unlock(&(monitor.start_lock));    
-    
+    pthread_mutex_unlock(&(monitor.start_lock));
+
     /**
      * call per thread function
      */
@@ -289,21 +279,13 @@ monitor_thread(void *arg)
     pthread_cond_signal(&(monitor.end_cond));
 
     pthread_mutex_unlock(&(monitor.end_lock));
-
   }
-  
+
   /*NOTREACHED*/
-  return((void *) NULL);
+  return ((void *)NULL);
 }
 
-
-
-
-void 
-thread_monitor(void *(*function)(void *), 
-	       void   *arg,
-	       int     number_threads)
-{
+void thread_monitor(void *(*function)(void *), void *arg, int number_threads) {
 
   static struct thread_id_t thread_id;
 
@@ -311,19 +293,19 @@ thread_monitor(void *(*function)(void *),
    * init
    */
 
-  if( monitor.init == 0 ){
+  if (monitor.init == 0) {
 
-    pthread_t      *thread_ids;
-    pthread_attr_t  attr;
+    pthread_t *thread_ids;
+    pthread_attr_t attr;
 
-    int             i_thread;
-    int             max_number_threads=get_max_number_threads();
+    int i_thread;
+    int max_number_threads = get_max_number_threads();
 
-    /**
-     * check availability of numa
-     */
+/**
+ * check availability of numa
+ */
 #if defined(HAVE_NUMA_H)
-    if(numa_available() == -1)
+    if (numa_available() == -1)
       printf("NUMA functions not available");
 #endif /* numa */
 
@@ -332,12 +314,12 @@ thread_monitor(void *(*function)(void *),
      */
 
     monitor.function = function;
-    monitor.arg      = arg;
-    monitor.work     = 0;
-    monitor.queue    = 0;
-    monitor.runners  = 0;
-    monitor.init     = 0;
-    
+    monitor.arg = arg;
+    monitor.work = 0;
+    monitor.queue = 0;
+    monitor.runners = 0;
+    monitor.init = 0;
+
     /**
      * allocate thread specific data
      */
@@ -352,7 +334,7 @@ thread_monitor(void *(*function)(void *),
      */
 
     thread_id.tid = 0;
-    pthread_setspecific(monitor.id_key, (void *) &thread_id);
+    pthread_setspecific(monitor.id_key, (void *)&thread_id);
 
     /**
      * initialize locks and cond vars
@@ -368,7 +350,8 @@ thread_monitor(void *(*function)(void *),
      * initialize space for data_taken
      */
 
-    if ((monitor.data_taken = malloc(max_number_threads*sizeof(int))) == NULL){
+    if ((monitor.data_taken = malloc(max_number_threads * sizeof(int))) ==
+        NULL) {
       ERROR("malloc()");
       exit(EXIT_FAILURE);
     }
@@ -377,8 +360,8 @@ thread_monitor(void *(*function)(void *),
      * allocate space for thread ids
      */
 
-    thread_ids=(pthread_t *) malloc(max_number_threads*sizeof(pthread_t));
-    if( thread_ids == (pthread_t *) NULL ){
+    thread_ids = (pthread_t *)malloc(max_number_threads * sizeof(pthread_t));
+    if (thread_ids == (pthread_t *)NULL) {
       ERROR("malloc()");
       exit(EXIT_FAILURE);
     }
@@ -387,16 +370,16 @@ thread_monitor(void *(*function)(void *),
      * initialize thread attributes to detached, system
      */
 
-    pthread_attr_init( &attr );
-    pthread_attr_setdetachstate( &attr, PTHREAD_CREATE_DETACHED);
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
 #ifdef HAVE_PTHREAD_SCOPE_SYSTEM
-    pthread_attr_setscope( &attr, PTHREAD_SCOPE_SYSTEM );
+    pthread_attr_setscope(&attr, PTHREAD_SCOPE_SYSTEM);
 #endif /* HAVE_PTHREAD_SCOPE_SYSTEM */
 
-    /**
-     * in case thread stack is too small use these to alter it
-     */
+/**
+ * in case thread stack is too small use these to alter it
+ */
 #if 0
     {
       size_t size;
@@ -420,42 +403,42 @@ thread_monitor(void *(*function)(void *),
      * spawn threads
      */
 
-    for(i_thread=0; i_thread < max_number_threads; i_thread++)
-      if( pthread_create(&(thread_ids[i_thread]), &attr, monitor_thread,
-    			 (void *) NULL) ){
-    	ERROR("pthread_create()");
-    	exit(EXIT_FAILURE);
+    for (i_thread = 0; i_thread < max_number_threads; i_thread++)
+      if (pthread_create(&(thread_ids[i_thread]), &attr, monitor_thread,
+                         (void *)NULL)) {
+        ERROR("pthread_create()");
+        exit(EXIT_FAILURE);
       }
 
-    /* 
+    /*
      * clean up
      */
 
     pthread_attr_destroy(&attr);
-    (void) free_e(thread_ids);
+    (void)free_e(thread_ids);
 
-    monitor.init=1;
+    monitor.init = 1;
   }
 
   /**
    * init data
    */
 
-  set_number_threads( number_threads );
-  
-  monitor.function=function;
-  monitor.arg=arg;
+  set_number_threads(number_threads);
 
-  pthread_mutex_lock( &(monitor.start_lock) );
-  
-  monitor.work=number_threads;
-  monitor.runners=number_threads;
-  monitor.queue=0;
-  memset(monitor.data_taken, '\0', number_threads*sizeof(int));
+  monitor.function = function;
+  monitor.arg = arg;
 
-  pthread_cond_broadcast( &(monitor.start_cond) );
+  pthread_mutex_lock(&(monitor.start_lock));
 
-  pthread_mutex_unlock( &(monitor.start_lock) );
+  monitor.work = number_threads;
+  monitor.runners = number_threads;
+  monitor.queue = 0;
+  memset(monitor.data_taken, '\0', number_threads * sizeof(int));
+
+  pthread_cond_broadcast(&(monitor.start_cond));
+
+  pthread_mutex_unlock(&(monitor.start_lock));
 
 #ifdef HAVE_SCHED_H
   sched_yield();
@@ -465,13 +448,12 @@ thread_monitor(void *(*function)(void *),
    * wait for threads to finish processing
    */
 
-  pthread_mutex_lock( &(monitor.end_lock) );
+  pthread_mutex_lock(&(monitor.end_lock));
 
-  while( monitor.runners != 0 )
+  while (monitor.runners != 0)
     pthread_cond_wait(&(monitor.end_cond), &(monitor.end_lock));
 
-  pthread_mutex_unlock( &(monitor.end_lock) );  
-
+  pthread_mutex_unlock(&(monitor.end_lock));
 
   return;
 }

@@ -256,3 +256,28 @@ QuasiBuild/*
 
 # Info/LibraryFiles
 Info/LibraryFiles
+
+*.d
+*.o
+*.slo
+*.lo
+*.obj
+
+*.gch
+*.pch
+
+*.so
+*.dylib
+*.dll
+
+*.mod
+*.smod
+
+*.lai
+*.la
+*.a
+*.lib
+
+*.exe
+*.out
+*.app

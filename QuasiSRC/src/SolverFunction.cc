@@ -16,30 +16,25 @@
 
 namespace quasicontinuum {
 
-    //
-    // Constructor.
-    //
-    SolverFunction::SolverFunction()
-    {
+//
+// Constructor.
+//
+SolverFunction::SolverFunction() {
 
-      //
-      //
-      //
-      return;
+  //
+  //
+  //
+  return;
+}
 
-    }
-  
-    //
-    // Destructor.
-    //
-    SolverFunction::~SolverFunction()
-    {
+//
+// Destructor.
+//
+SolverFunction::~SolverFunction() {
 
-      //
-      //
-      //
-      return;
-
-    }
-
+  //
+  //
+  //
+  return;
+}
 }

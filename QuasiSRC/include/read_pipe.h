@@ -29,18 +29,16 @@
 
 #if defined(__cplusplus)
 namespace quasicontinuum {
-  extern "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 extern FILE *open_read_pipe(const char *data_file_name);
 extern FILE *open_write_pipe(const char *data_file_name);
-extern FILE *open_data_file(const char *data_file_name,
-				const char *type);
+extern FILE *open_data_file(const char *data_file_name, const char *type);
 
 #if defined(__cplusplus)
-  }
+}
 }
 #endif /* __cplusplus */
 
 #endif /* _READ_PIPE_H_ */
-

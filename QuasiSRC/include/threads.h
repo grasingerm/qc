@@ -29,24 +29,20 @@
 
 #if defined(__cplusplus)
 namespace quasicontinuum {
-  extern "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 extern void qc_thread_init(int n_threads);
-extern int  get_max_number_threads(void);
-extern int  get_number_threads(void);
+extern int get_max_number_threads(void);
+extern int get_number_threads(void);
 extern void set_number_threads(const int n_number_threads);
-extern void get_share(const int my_id,
-		      const int number_threads,
-		      const int number_data,
-		      int      *number_data_thread,
-		      int      *number_data_start,
-		      int      *number_data_end);
+extern void get_share(const int my_id, const int number_threads,
+                      const int number_data, int *number_data_thread,
+                      int *number_data_start, int *number_data_end);
 
 #if defined(__cplusplus)
-  }
+}
 }
 #endif /* __cplusplus */
 
 #endif /* _THREADS_H_ */
-

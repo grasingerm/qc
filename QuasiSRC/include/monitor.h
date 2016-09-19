@@ -32,19 +32,16 @@
 
 #if defined(__cplusplus)
 namespace quasicontinuum {
-  extern "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 extern int get_my_tid(void);
-extern void thread_monitor(void *(*function)(void *), 
-			   void   *arg,
-			   int     number_threads);
+extern void thread_monitor(void *(*function)(void *), void *arg,
+                           int number_threads);
 
 #if defined(__cplusplus)
-  }
+}
 }
 #endif /* __cplusplus */
 
 #endif /* _MONITOR_H_ */
-
-

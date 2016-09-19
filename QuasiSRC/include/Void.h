@@ -25,150 +25,141 @@
 //
 //
 
-namespace quasicontinuum{
+namespace quasicontinuum {
+
+/**
+ * @brief Singleton container for Quasicontinua instance
+ */
+class Void {
+
+  //
+  // public methods
+  //
+
+public:
+  /**
+   * @brief getInstance.
+   */
+  static Void *getInstance();
 
   /**
-   * @brief Singleton container for Quasicontinua instance
+   * @brief destroyInstance.
    */
-  class Void {
+  static void destroyInstance();
 
-    //
-    // public methods
-    //
+  //
+  //  createVoid()
+  //
+  void createVoid(struct node_list_t *P_node_list,
+                  const struct lattice_t *P_lattice, const int iQuasi);
 
-  public:
- 
-    /**
-     * @brief getInstance.
-     */
-    static Void * getInstance();
+  //
+  //  removeVoidElements()
+  //
+  void removeVoidElements(struct element_list_t *P_element_list);
 
-    /**
-     * @brief destroyInstance.
-     */
-    static void destroyInstance();
+  //
+  //  removeVoidNodes()
+  //
+  void removeVoidNodes(struct node_list_t *P_node_list);
 
-    //
-    //  createVoid()
-    //
-    void createVoid(struct node_list_t       *P_node_list,
-            const struct lattice_t   *P_lattice,
-            const int                 iQuasi);
+  //
+  //  insertVoidNodes()
+  //
+  void insertVoidNodes(struct node_list_t *P_node_list);
 
-    //
-    //  removeVoidElements()
-    //
-    void removeVoidElements(struct element_list_t   *P_element_list);
+  //
+  //  setVoid()
+  //
+  void setVoid(const int enable_void_flag);
 
-    //
-    //  removeVoidNodes()
-    //
-    void removeVoidNodes(struct node_list_t  *P_node_list);
+  //
+  //  isVoidEnable()
+  //
+  int isVoidEnable();
 
-    //
-    //  insertVoidNodes()
-    //
-    void insertVoidNodes(struct node_list_t  *P_node_list);
+  //
+  //  setVoidParameters()
+  //
+  void setVoidParameters(const double center[3], const enum void_t voidType,
+                         const int number_parameters,
+                         std::vector<double> param_list);
 
-    //
-    //  setVoid()
-    //
-    void setVoid(const int enable_void_flag);
+  //
+  //  insertVoidSiteCache()
+  //
+  void insertVoidSiteCache(const std::vector<int> site, const int iQuasi);
 
-    //
-    //  isVoidEnable()
-    //
-    int isVoidEnable();
+  //
+  //  clearVoidCache()
+  //
+  void clearVoidSiteCache();
 
-    //
-    //  setVoidParameters()
-    //
-    void setVoidParameters(const double      center[3],
-                  const enum void_t         voidType,
-                  const int                 number_parameters,
-                  std::vector<double>      param_list); 
+  //
+  //  findSiteInVoidCache()
+  //  0 : site not a void
+  //  1 : site is void
+  //
+  int findSiteInVoidCache(const std::vector<int> site, const int iQuasi);
 
-    //
-    //  insertVoidSiteCache()
-    //
-    void insertVoidSiteCache(const std::vector<int> site,
-                const int       iQuasi);
+  //
+  //  printVoidCache()
+  //
+  void printVoidCache();
 
-    //
-    //  clearVoidCache()
-    //
-    void clearVoidSiteCache();
+  //
+  //  voidAtomsMissed()
+  //
+  std::vector<std::pair<int, std::vector<int>>> voidAtomsMissed();
 
-    //
-    //  findSiteInVoidCache()
-    //  0 : site not a void
-    //  1 : site is void
-    //
-    int findSiteInVoidCache(const std::vector<int> site,
-            const int       iQuasi);
+  //
+  //  fixVoidBoundary()
+  //
+  void fixVoidBoundary(struct node_list_t *P_node_list,
+                       struct element_list_t *P_element_list);
 
-    //
-    //  printVoidCache()
-    //  
-    void printVoidCache();
+  //
+  // private methods
+  //
 
-    //
-    //  voidAtomsMissed()
-    //
-    std::vector<std::pair<int,std::vector<int> > > voidAtomsMissed();
+private:
+  /**
+   * @brief Constructor.
+   */
+  Void();
 
-    //
-    //  fixVoidBoundary()
-    //
-    void fixVoidBoundary(struct node_list_t  *P_node_list, 
-        struct element_list_t    *P_element_list);
+  /**
+   * @brief Copy constructor.
+   */
+  Void(Void const &);
 
+  /**
+   * @brief Assignment operator.
+   */
+  const Void &operator=(const Void &);
 
-    //
-    // private methods
-    //
+  /**
+   * @brief Destructor.
+   */
+  ~Void();
 
-  private:
+  //
+  //  constructor that will be called by getInstance()
+  //
+  Void(const int enable_void_default);
 
-    /**
-     * @brief Constructor.
-     */
-    Void();
-
-    /**
-     * @brief Copy constructor.
-     */
-    Void(Void const&);
-
-    /**
-     * @brief Assignment operator.
-     */
-    const Void & operator=(const Void &);
-
-    /**
-     * @brief Destructor.
-     */
-    ~Void();
-
-    //
-    //  constructor that will be called by getInstance()
-    //
-    Void(const int                      enable_void_default);
-
-    //
-    // private data types
-    //
-  private:
-
-    static Void*                                    _instance;
-    int                                             d_enableVoid;
-    std::vector<std::vector<std::vector <int> > >   d_voidSiteCache;
-    std::vector<double>                             d_voidCenter;
-    double                                          d_voidRadius;
-    std::vector<double>                             d_voidParameters;
-    enum void_t                                     d_voidType;
-  };
-
+  //
+  // private data types
+  //
+private:
+  static Void *_instance;
+  int d_enableVoid;
+  std::vector<std::vector<std::vector<int>>> d_voidSiteCache;
+  std::vector<double> d_voidCenter;
+  double d_voidRadius;
+  std::vector<double> d_voidParameters;
+  enum void_t d_voidType;
+};
 }
 
 #endif // VOID_H

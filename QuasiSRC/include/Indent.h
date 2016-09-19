@@ -21,113 +21,106 @@
 //
 //
 
-namespace quasicontinuum{
+namespace quasicontinuum {
+
+/**
+ * @brief Singleton container for Quasicontinua instance
+ */
+class Indent {
+
+  //
+  // public methods
+  //
+
+public:
+  /**
+   * @brief getInstance.
+   */
+  static Indent *getInstance();
 
   /**
-   * @brief Singleton container for Quasicontinua instance
+   * @brief destroyInstance.
    */
-  class Indent {
+  static void destroyInstance();
 
-    //
-    // public methods
-    //
+  //
+  //  setNanoIndentation()
+  //
+  void setNanoIndentation(const int enable_nano_indentation_flag);
 
-  public:
- 
-    /**
-     * @brief getInstance.
-     */
-    static Indent * getInstance();
+  //
+  //  isIndentEnable()
+  //
+  int isIndentEnable();
 
-    /**
-     * @brief destroyInstance.
-     */
-    static void destroyInstance();
+  //
+  //  moveIndentor()
+  //
+  void moveIndentor(struct indentor_t *P_indentor);
 
-    //
-    //  setNanoIndentation()
-    //
-    void setNanoIndentation(const int  enable_nano_indentation_flag);
+  //
+  //  indentorNodesInteraction()
+  //
+  void indentorNodesInteraction(int iQuasi);
 
-    //
-    //  isIndentEnable()
-    //
-    int isIndentEnable();
+  //
+  //  findIndentorContactRadius()
+  //
+  void findIndentorContactRadius(double *P_R, double *P_r,
+                                 const struct node_list_t *P_node_list,
+                                 const struct indentor_t *P_indentor,
+                                 const int iQuasi,
+                                 enum mt_version_t mt_version);
 
-    //
-    //  moveIndentor()
-    //
-    void moveIndentor( struct indentor_t*       P_indentor);
+  //
+  //  fixIndentBoundary()
+  //
+  void fixIndentBoundary(struct node_list_t *P_node_list,
+                         struct lattice_t *P_lattice);
+  //
+  // private methods
+  //
 
-    //
-    //  indentorNodesInteraction()
-    //
-    void indentorNodesInteraction(int iQuasi);
+private:
+  /**
+   * @brief Constructor.
+   */
+  Indent();
 
-    //
-    //  findIndentorContactRadius()
-    //
-    void findIndentorContactRadius(double   *P_R,
-                    double                   *P_r,
-                    const struct node_list_t *P_node_list,
-                    const struct indentor_t  *P_indentor,
-                    const int                iQuasi,
-                    enum mt_version_t         mt_version);
+  //
+  //  Indent()
+  //
+  Indent(const int indent_flag);
 
-    //
-    //  fixIndentBoundary()
-    //
-    void fixIndentBoundary(struct node_list_t     *P_node_list,
-        struct lattice_t      *P_lattice);
-    //
-    // private methods
-    //
+  /**
+   * @brief Copy constructor.
+   */
+  Indent(Indent const &);
 
-  private:
+  /**
+   * @brief Assignment operator.
+   */
+  const Indent &operator=(const Indent &);
 
-    /**
-     * @brief Constructor.
-     */
-    Indent();
+  /**
+   * @brief Destructor.
+   */
+  ~Indent();
 
-    //
-    //  Indent()
-    //
-    Indent(const int indent_flag);
+  //
+  //  IndentorNodePotential()
+  //
+  void IndentorNodePotential(double *force, double *energy, const double r,
+                             const struct indentor_t *P_indentor);
 
-    /**
-     * @brief Copy constructor.
-     */
-    Indent(Indent const&);
-
-    /**
-     * @brief Assignment operator.
-     */
-    const Indent & operator=(const Indent &);
-
-    /**
-     * @brief Destructor.
-     */
-    ~Indent();
-
-    //
-    //  IndentorNodePotential()
-    //
-    void IndentorNodePotential(double                  *force,
-            double                  *energy,
-            const double             r,
-            const struct indentor_t *P_indentor);
-
-    //
-    // private data types
-    //
-  private:
-
-    static Indent*                        _instance;
-    //global fixed parameters
-    int                                   d_enableNanoIndentation;
-  };
-
+  //
+  // private data types
+  //
+private:
+  static Indent *_instance;
+  // global fixed parameters
+  int d_enableNanoIndentation;
+};
 }
 
 #endif // INDENT_H

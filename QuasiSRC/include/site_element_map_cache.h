@@ -23,30 +23,24 @@
 
 #if defined(__cplusplus)
 namespace quasicontinuum {
-  extern "C" {
+extern "C" {
 #endif /* __cplusplus */
 
 extern void check_hash_table_allocation(const int iQuasi);
 
-extern void
-hash_table_add_site(double                 *shape,
-		    const int               l[3],
-		    struct element_t       *P_element,
-		    struct lattice_t *P_lattice,
-		    const int 						  iQuasi);
+extern void hash_table_add_site(double *shape, const int l[3],
+                                struct element_t *P_element,
+                                struct lattice_t *P_lattice, const int iQuasi);
 
 extern struct element_t *
-hash_table_search_element(double   *shape,
-			  const int l[3],
-			  const int  iQuasi);
+hash_table_search_element(double *shape, const int l[3], const int iQuasi);
 
 extern void hash_table_clean(const int iQuasi);
 /* extern void check_hash_table(struct node_list_t *P_node_list); */
 
 #if defined(__cplusplus)
-  }
+}
 }
 #endif /* __cplusplus */
 
 #endif /* _QC_SITE_ELEMENT_MAP_CACHE_H_ */
-

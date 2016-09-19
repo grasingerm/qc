@@ -6,8 +6,8 @@
 #endif /* HAVE_CONFIG_H */
 
 #if defined(__cplusplus)
-//namespace quasicontinuum {
-  extern "C" {
+// namespace quasicontinuum {
+extern "C" {
 #endif /* __cplusplus */
 
 /**
@@ -15,11 +15,12 @@
  */
 
 #define SPLINE_F77 F77_FUNC(spline, SPLINE)
-extern void SPLINE_F77(const int *, const  double *, const  double *, const  double *, const  double *,
-		       const double *, const double *, double *, double *);
+extern void SPLINE_F77(const int *, const double *, const double *,
+                       const double *, const double *, const double *,
+                       const double *, double *, double *);
 
 #if defined(__cplusplus)
-  }
+}
 //}
 #endif /* __cplusplus */
 

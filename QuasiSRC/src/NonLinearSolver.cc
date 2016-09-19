@@ -16,52 +16,41 @@
 
 namespace quasicontinuum {
 
-    //
-    // Constructor.
-    //
-    NonLinearSolver::NonLinearSolver(double tolerance,
-				     int    maxNumberIterations,
-				     int    debugLevel) :
-      d_debugLevel(debugLevel),
-      d_maxNumberIterations(maxNumberIterations),
-      d_tolerance(tolerance)
-    {
-    
-      //
-      //
-      //
-      return;
+//
+// Constructor.
+//
+NonLinearSolver::NonLinearSolver(double tolerance, int maxNumberIterations,
+                                 int debugLevel)
+    : d_debugLevel(debugLevel), d_maxNumberIterations(maxNumberIterations),
+      d_tolerance(tolerance) {
 
-    }
+  //
+  //
+  //
+  return;
+}
 
-    //
-    // Destructor.
-    //
-    NonLinearSolver::~NonLinearSolver()
-    {
+//
+// Destructor.
+//
+NonLinearSolver::~NonLinearSolver() {
 
-      //
-      //
-      //
-      return;
+  //
+  //
+  //
+  return;
+}
 
-    }
+//
+// Solve non-linear algebraic equation.
+//
+NonLinearSolver::ReturnValueType
+NonLinearSolver::solve(SolverFunction &function) {
 
-    //
-    // Solve non-linear algebraic equation.
-    //
-    NonLinearSolver::ReturnValueType
-    NonLinearSolver::solve(SolverFunction & function)
-    {
-    
-      //
-      //
-      //
-      return this->solve(function,
-			 d_tolerance,
-			 d_maxNumberIterations,
-			 d_debugLevel);
-    
-    }
-
+  //
+  //
+  //
+  return this->solve(function, d_tolerance, d_maxNumberIterations,
+                     d_debugLevel);
+}
 }

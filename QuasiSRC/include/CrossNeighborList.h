@@ -22,159 +22,157 @@
 #include "DataTypes.h"
 
 // data definition
-typedef std::vector<int>  vec_int_t;
-typedef std::vector<double>  vec_dbl_t;
+typedef std::vector<int> vec_int_t;
+typedef std::vector<double> vec_dbl_t;
 
 typedef std::pair<vec_int_t, vec_dbl_t> pair_state_t;
 typedef std::vector<pair_state_t> vec_state_t;
 
-typedef std::pair<pair_state_t, vec_int_t > cluster_site_data_t;
+typedef std::pair<pair_state_t, vec_int_t> cluster_site_data_t;
 
-typedef std::pair<pair_state_t, std::vector< std::vector< vec_int_t > > > neigh_site_data_t;
+typedef std::pair<pair_state_t, std::vector<std::vector<vec_int_t>>>
+    neigh_site_data_t;
 
 // global variables specific to CrossNeighborList
 
 //
 //
 //
-namespace quasicontinuum{
+namespace quasicontinuum {
+
+/**
+ * @brief Singleton container for Quasicontinua instance
+ */
+class CrossNeighborList {
+
+  //
+  // public methods
+  //
+
+public:
+  /**
+   * @brief getInstance.
+   */
+  static CrossNeighborList *getInstance();
 
   /**
-   * @brief Singleton container for Quasicontinua instance
+   * @brief destroyInstance.
    */
-  class CrossNeighborList {
+  static void destroyInstance();
 
-    //
-    // public methods
-    //
+  //
+  //  computeCrossNeighborList()
+  //
+  //  rebuild_neighbor_flag = 0 : don't rebuild neighbors, just update state
+  //                        = 1 : rebuild new neighbors
+  //  rebuild_cluster_flag  = 0 : use old cluster data, update state
+  //                        = 1 : built new cluster data from node data
+  //
+  void computeCrossNeighborList(const int rebuild_neighbor_flag,
+                                const int rebuild_cluster_flag);
 
-  public:
- 
-    /**
-     * @brief getInstance.
-     */
-    static CrossNeighborList * getInstance();
+  //
+  //  printCrossNeighborList()
+  //
+  void printCrossNeighborList(const int thread_flag);
 
-    /**
-     * @brief destroyInstance.
-     */
-    static void destroyInstance();
+  //
+  //  getQuasiNeighborData()
+  //
+  std::vector<std::vector<neigh_site_data_t>> &
+  getQuasiNeighborData(const int iQuasi);
 
-    //
-    //  computeCrossNeighborList()
-    //
-    //  rebuild_neighbor_flag = 0 : don't rebuild neighbors, just update state
-    //                        = 1 : rebuild new neighbors
-    //  rebuild_cluster_flag  = 0 : use old cluster data, update state
-    //                        = 1 : built new cluster data from node data
-    //
-    void computeCrossNeighborList(const int rebuild_neighbor_flag,
-              const int           rebuild_cluster_flag);
+  //
+  //  getClusterData()
+  //
+  std::vector<std::vector<std::vector<cluster_site_data_t>>> &
+  getClusterData(void);
 
-    //
-    //  printCrossNeighborList()
-    //
-    void printCrossNeighborList(const int thread_flag);
+  //
+  //  getQuasiClusterData()
+  //
+  std::vector<std::vector<cluster_site_data_t>> &
+  getQuasiClusterData(const int iQuasi);
 
-    //
-    //  getQuasiNeighborData()
-    //
-    std::vector< std::vector< neigh_site_data_t > > & 
-    getQuasiNeighborData(const int iQuasi);
+  //
+  //  getNodeInfoOfClusterSite()
+  //
+  std::vector<int> getNodeInfoOfClusterSite(int iQuasi,
+                                            std::vector<int> clusterSite);
 
-    //
-    //  getClusterData()
-    //
-    std::vector< std::vector< std::vector< cluster_site_data_t > > > &
-    getClusterData(void);
+  //
+  //  getNumberBuckets()
+  //
+  int getNumberBuckets();
 
-    //
-    //  getQuasiClusterData()  
-    //
-    std::vector< std::vector< cluster_site_data_t > >  &
-    getQuasiClusterData(const int iQuasi);    
+  //
+  //  getSizeOfClusterData()
+  //
+  int getSizeOfClusterData();
 
-    //
-    //  getNodeInfoOfClusterSite()
-    //
-    std::vector<int> getNodeInfoOfClusterSite(int iQuasi, std::vector<int> clusterSite);
+  //
+  // private methods
+  //
 
-    //
-    //  getNumberBuckets()
-    //
-    int getNumberBuckets();
+private:
+  /**
+   * @brief Constructor.
+   */
+  CrossNeighborList();
 
-    //
-    //  getSizeOfClusterData()
-    //
-    int getSizeOfClusterData();
+  /**
+   * @brief Copy constructor.
+   */
+  CrossNeighborList(CrossNeighborList const &);
 
-    //
-    // private methods
-    //
+  /**
+   * @brief Assignment operator.
+   */
+  const CrossNeighborList &operator=(const CrossNeighborList &);
 
-  private:
+  /**
+   * @brief Destructor.
+   */
+  ~CrossNeighborList();
 
-    /**
-     * @brief Constructor.
-     */
-    CrossNeighborList();
+  //
+  //  UpdateLocation()
+  //
+  void UpdateLocation(enum mt_version_t mt_version);
 
-    /**
-     * @brief Copy constructor.
-     */
-    CrossNeighborList(CrossNeighborList const&);
+  //
+  //  ComputeNeighborList()
+  //
+  void ComputeNeighborList(enum mt_version_t mt_version,
+                           const int rebuild_cluster_flag,
+                           const int rebuild_neighbor_flag);
 
-    /**
-     * @brief Assignment operator.
-     */
-    const CrossNeighborList & operator=(const CrossNeighborList &);
+  //
+  //  BuildClusterAndComputeNeighborList()
+  //
+  void BuildClusterAndComputeNeighborList(enum mt_version_t mt_version,
+                                          int iQuasi);
 
-    /**
-     * @brief Destructor.
-     */
-    ~CrossNeighborList();
+  //
+  //  ComputeNeighborListUsingCurrentClusterData()
+  //
+  void ComputeNeighborListUsingCurrentClusterData(enum mt_version_t mt_version,
+                                                  int iQuasi);
 
-    //
-    //  UpdateLocation()
-    //
-    void UpdateLocation(enum mt_version_t mt_version);
+  //
+  // private data types
+  //
+private:
+  static CrossNeighborList *_instance;
+  //  vector to hold all neighborlist
+  //
+  //  d_neighborList[iQuasi[iBucket][iN].pair(pair_state_t,
+  //                                          quasi_cluster_data_t)
+  //
+  std::vector<std::vector<std::vector<neigh_site_data_t>>> d_neighborList;
 
-    //
-    //  ComputeNeighborList()
-    //
-    void ComputeNeighborList(enum mt_version_t  mt_version,
-            const int         rebuild_cluster_flag,
-            const int         rebuild_neighbor_flag);
-
-    //
-    //  BuildClusterAndComputeNeighborList()
-    //
-    void BuildClusterAndComputeNeighborList(enum mt_version_t mt_version,
-            int         iQuasi);
-
-    //
-    //  ComputeNeighborListUsingCurrentClusterData()
-    //
-    void ComputeNeighborListUsingCurrentClusterData(enum mt_version_t mt_version,
-            int         iQuasi);
-
-    //
-    // private data types
-    //
-  private:
-
-    static CrossNeighborList*                        _instance;
-    //  vector to hold all neighborlist 
-    //
-    //  d_neighborList[iQuasi[iBucket][iN].pair(pair_state_t, 
-    //                                          quasi_cluster_data_t)
-    //
-    std::vector< std::vector< std::vector< neigh_site_data_t > > > d_neighborList;  
-
-    std::vector< std::vector< std::vector< cluster_site_data_t > > >  d_clusterData;
-  };
-
+  std::vector<std::vector<std::vector<cluster_site_data_t>>> d_clusterData;
+};
 }
 
 #endif // CROSSNEIGHBORLIST_H
