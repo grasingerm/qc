@@ -63,12 +63,12 @@
 # libraryDire : used only when libraryFlag is 1
 /home/prashant/Softwares/local
 # testName : no default. Must put here
-NiMn-NoElectrostatics
+Ar-NoElectrostatics
 # debugMode : 0 (default)
 0
 # quasiBuildFlag : 0 (default)
 0
 # quasiBuildHere : specify folder. It is used only when above flag is 1
-/home/prashant/Work
+/home/clementine/Shared/Dev/quasi/QuasiBuild
 # quasiRunOutFlag : 0 (default)
 0

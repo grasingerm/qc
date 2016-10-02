@@ -654,6 +654,7 @@ void Input::mainInput(
   long path_max = pathconf("/", _PC_PATH_MAX);
 
   if (path_max == -1L) {
+    fprintf(stderr, "%s %d: Path max failure.\n", __FILE__, __LINE__);
     exit(EXIT_FAILURE);
   }
 
@@ -689,13 +690,15 @@ void Input::mainInput(
     strcpy(d_initFile, init_file);
   } else {
     if ((init_file = (char *)malloc(path_max * sizeof(char))) == NULL) {
-      ERROR("malloc()");
+      fprintf(stderr, "%s %d: Malloc error.\n", __FILE__, __LINE__);
       exit(EXIT_FAILURE);
     }
 
     // CreateDefaultInitFilename( init_file, path_max, av[0],
     // DEFAULT_INIT_FILE_EXT );
 
+    // Why did someone decide this was a good idea?
+    // If you're reading this, it's too late -- Drake
     strcpy(init_file, "quasi.ini");
 
     // copy the default init filename
@@ -730,15 +733,21 @@ void Input::mainInput(
   //
   // printf("d_initFile = %s\n", d_initFile);
   if ((init = fopen(d_initFile, "r")) == NULL) {
+    fprintf(stderr, "%s %d: Unable to open init file: %s\n", __FILE__,
+            __LINE__, d_initFile);
     exit(EXIT_FAILURE);
   }
 
   // allocate space for line buffer
   if ((line_max = sysconf(_SC_LINE_MAX)) == -1L) {
+    fprintf(stderr, "%s %d: Line buffer space allocation failed.\n", 
+            __FILE__, __LINE__);
     exit(EXIT_FAILURE);
   }
 
   if ((line = (char *)malloc(line_max * sizeof(char))) == NULL) {
+    fprintf(stderr, "%s %d: Malloc failure.\n", 
+            __FILE__, __LINE__);
     exit(EXIT_FAILURE);
   }
 
@@ -1019,6 +1028,8 @@ void Input::mainInput(
         sscanf(line, "%*s %lf %lf", &d_voidParams[0], &d_voidParams[1]);
       } else {
         d_print("Error mainInput()\n");
+        fprintf(stderr, "%s %d: I have no idea what is suppose to happen here\n",
+                __FILE__, __LINE__);
         exit(EXIT_FAILURE);
       }
     }
@@ -1042,6 +1053,8 @@ void Input::mainInput(
           voidC->setVoidParameters(center, type, d_voidNumParams, d_voidParams);
         } else {
           d_print("Error in mainInput\n");
+          fprintf(stderr, "%s %d: I have no idea what is suppose to happen here\n",
+                  __FILE__, __LINE__);
           exit(EXIT_FAILURE);
         }
       }
@@ -1183,14 +1196,14 @@ void Input::mainInput(
              &d_electrostaticCutoffRadius, &d_electrostaticIntegration);
 
       if (flags_for_LoadPotential[0] != 1) {
-        d_print("Error : Need to read electrostatics flag before calling "
-                "LoadPotential()\n");
+        fprintf("%s %d: Need to read electrostaics flag before calling "
+                "LoadPotential()\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
       }
 
       if (flags_for_LoadPotential[1] != 6) {
-        d_print("Error : Need to read electro boundary conditions before "
-                "calling LoadPotential()\n");
+        fprintf("%s %d: Need to read electro boundary conditions before "
+                "calling LoadPotential()\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
       }
 
@@ -1426,6 +1439,7 @@ void Input::mainInput(
 
   // close init file
   if (fclose(init)) {
+    fprintf(stderr, "%s %d: File closure failed.\n", __FILE__, __LINE__);
     exit(EXIT_FAILURE);
   }
 
@@ -1476,15 +1490,9 @@ struct qc_options_t Input::quasiInput(const int iQuasi,
   long path_max = pathconf("/", _PC_PATH_MAX);
 
   if (path_max == -1L) {
-    ERROR("pathconf()");
+    fprintf("%s %d: pathconf error.\n", __FILE__, __LINE__);
     exit(EXIT_FAILURE);
   }
-
-  // // for debug
-  // printf("data file : %s\n", d_dataFile);
-  // printf("init file : %s\n", d_initFile);
-  // printf("materials file : %s\n", d_materialsFile);
-  // printf("restart file : %s\n", d_restartFile);
 
   /**
     * in order to ensure proper placement of data number of threads is
@@ -1532,7 +1540,8 @@ struct qc_options_t Input::quasiInput(const int iQuasi,
         data_file_count++;
 
         if (data_file_count == data_file_size) {
-          ERROR("Data file input for multiple instances");
+          fprintf("%s %d: something about data files and too many instances\n.",
+                  __FILE__, __LINE__);
           exit(EXIT_FAILURE);
         }
       }
@@ -1580,15 +1589,6 @@ struct qc_options_t Input::quasiInput(const int iQuasi,
         }
       }
 
-/**
-  * reallocate size of data_file array
-  */
-#if 0
-          if( (data_file = realloc(data_file, sizeof data_file +  quasi_id_digit * sizeof(char))) == NULL ){
-            ERROR("realloc()");
-            exit(EXIT_FAILURE);
-          }
-#endif
       /**
         * write new data file name
         */
