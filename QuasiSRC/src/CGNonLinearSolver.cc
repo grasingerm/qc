@@ -2030,7 +2030,7 @@ CGNonLinearSolver::CGMinimization(SolverFunction &function, double tolerance,
       d_print("Conjugate Gradient converged after %d iterations.\n", d_iter);
     } else {
       d_print(
-          "Conjugate Gradient failed to converge after d_iter iterations.\n",
+          "Conjugate Gradient failed to converge after %d iterations.\n",
           d_iter);
     }
 
