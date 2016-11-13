@@ -1196,13 +1196,13 @@ void Input::mainInput(
              &d_electrostaticCutoffRadius, &d_electrostaticIntegration);
 
       if (flags_for_LoadPotential[0] != 1) {
-        fprintf("%s %d: Need to read electrostaics flag before calling "
+        fprintf(stderr, "%s %d: Need to read electrostatics flag before calling "
                 "LoadPotential()\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
       }
 
       if (flags_for_LoadPotential[1] != 6) {
-        fprintf("%s %d: Need to read electro boundary conditions before "
+        fprintf(stderr, "%s %d: Need to read electro boundary conditions before "
                 "calling LoadPotential()\n", __FILE__, __LINE__);
         exit(EXIT_FAILURE);
       }
@@ -1239,6 +1239,11 @@ void Input::mainInput(
 
       if (strcmp(d_potentialName, "ArLJ") == 0) {
         int a = 6;
+        LoadPotential(a);
+      }
+
+      if (strcmp(d_potentialName, "Spring") == 0) {
+        int a = 7;
         LoadPotential(a);
       }
     }
@@ -1490,7 +1495,7 @@ struct qc_options_t Input::quasiInput(const int iQuasi,
   long path_max = pathconf("/", _PC_PATH_MAX);
 
   if (path_max == -1L) {
-    fprintf("%s %d: pathconf error.\n", __FILE__, __LINE__);
+    fprintf(stderr, "%s %d: pathconf error.\n", __FILE__, __LINE__);
     exit(EXIT_FAILURE);
   }
 
@@ -1540,7 +1545,7 @@ struct qc_options_t Input::quasiInput(const int iQuasi,
         data_file_count++;
 
         if (data_file_count == data_file_size) {
-          fprintf("%s %d: something about data files and too many instances\n.",
+          fprintf(stderr, "%s %d: something about data files and too many instances\n.",
                   __FILE__, __LINE__);
           exit(EXIT_FAILURE);
         }
@@ -1831,7 +1836,7 @@ void Input::LoadPotential(const int potentialType) {
   //  4 : Buckingham
   //  5 : Harmonic
   //  6 : Anharmonic
-  //  7 : Rydberg (not yet added)
+  //  7 : Spring
   //
   long double dielectricConstant =
       4.0 * M_PI * PairPotentials::getInstance()->getElectricConstant();
@@ -3136,6 +3141,54 @@ void Input::LoadPotential(const int potentialType) {
     parameterData.push_back(sigma_6);  // sigma^6 NiNi
     parameterData.push_back(sigma_12); // sigma^12 NiNi
     parameterData.push_back(epsilon);  // epsilon NiNi
+
+    //
+    // insert 1st potential information into singleton
+    //
+    pairPotentials->insertNonEAMPotential(interactionData, potentialType,
+                                          parameterData, EAMFlag);
+
+    return;
+
+    /* NOTREACHED */
+    break;
+  }
+
+  //
+  //  Spring potential
+  //
+  case 7: {
+    //
+    //  modify the atomic mass data if the flag is 0
+    //
+    if (d_latticeInfo.first == 0) {
+      d_latticeInfo.second[0].second.second = 1.0;
+    }
+
+    //
+    // get pair potentials singleton
+    //
+    PairPotentials *pairPotentials = PairPotentials::getInstance();
+
+    //
+    // create potential variables
+    //
+    std::pair<int, int> interactionData;
+    int potentialType;
+    std::vector<double> parameterData;
+    bool EAMFlag = false;
+
+    //
+    // populate first potential between Quasicontinuum 0 and itself
+    //
+    interactionData.first = 0;
+    interactionData.second = 0;
+
+    potentialType = 5;
+    parameterData.clear();
+    parameterData.push_back(1.25);  // cutoff radius
+    parameterData.push_back(1.0e-6);  // spring constant
+    parameterData.push_back(1.0);  // relaxed distance
 
     //
     // insert 1st potential information into singleton

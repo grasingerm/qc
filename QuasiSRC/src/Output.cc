@@ -1048,7 +1048,7 @@ void Output::PerformNodeOutput(const int iQuasi, const char *dirname,
       for (i_node = 0; i_node < P_node_list->number_nodes; i_node++)
         fprintf(file,
                 "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % "
-                "6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e"
+                "6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
                 "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % "
                 "6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
                 "%d %4s %d\n",
@@ -1123,7 +1123,7 @@ void Output::PerformNodeOutput(const int iQuasi, const char *dirname,
       // d_print("********** analytical freq for quasi harmonic **********\n");
       for (i_node = 0; i_node < P_node_list->number_nodes; i_node++) {
         fprintf(file, "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
-                      "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e"
+                      "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
                       "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
                       "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
                       "%d %4s %d\n",
@@ -1190,7 +1190,7 @@ void Output::PerformNodeOutput(const int iQuasi, const char *dirname,
        */
 
       for (i_node = 0; i_node < P_node_list->number_nodes; i_node++)
-        fprintf(file, "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e"
+        fprintf(file, "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
                       "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
                       "% 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e % 6.4e "
                       "%d %4s %d\n",

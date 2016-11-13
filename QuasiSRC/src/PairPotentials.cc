@@ -410,6 +410,7 @@ PairPotentials::getPairForceAndEnergy(int potentialNumber, double separation) {
 
   //
   // not reached
+  // Just... why?
   //
   std::pair<double, double> returndummy;
   return returndummy;

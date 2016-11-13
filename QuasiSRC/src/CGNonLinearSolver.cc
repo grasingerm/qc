@@ -2008,10 +2008,8 @@ CGNonLinearSolver::CGMinimization(SolverFunction &function, double tolerance,
   //
   // set error condition
   //
-  ReturnValueType returnValue = SUCCESS;
-
-  if (d_iter == maxNumberIterations)
-    returnValue = MAX_ITER_REACHED;
+  ReturnValueType returnValue = (d_iter == maxNumberIterations) ? 
+                                 MAX_ITER_REACHED : SUCCESS;
 
   //
   // compute function value
@@ -2040,7 +2038,7 @@ CGNonLinearSolver::CGMinimization(SolverFunction &function, double tolerance,
   //
   //
   //
-  return SUCCESS;
+  return returnValue;
 }
 
 //
