@@ -6,20 +6,10 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
-
 #include <iostream>
 #include <vector>
 
@@ -28,82 +18,36 @@
 #include "RunData.h"
 #include "threads.h"
 
-//
-//
-//
-
 namespace quasicontinuum {
-//
-//
-//
 
 RunData *RunData::_instance = NULL;
 
-//
-// constructor
-//
-
 RunData::RunData() {
-
-  //
-  //
-  //
   d_timeOut = false;
 
   return;
 }
 
-//
-// destructor
-//
-
 RunData::~RunData() {
-
-  //
-  //
-  //
   return;
 }
 
-//
-// getInstance method
-//
-
 RunData *RunData::getInstance() {
 
-  //
   // if not created, create
-  //
   if (_instance == NULL) {
     _instance = new RunData();
   }
 
-  //
-  // return instance
-  //
   return _instance;
 }
 
-//
-// destroy instance method
-//
-
 void RunData::destroyInstance() {
-
-  //
-  // delete instance
-  //
   delete _instance;
-
-  //
-  //
-  //
   return;
 }
 
-//
 //  initializeData()
-//
 void RunData::initializeData() {
   // get Quasicontinua class instance
   Quasicontinua *quasicontinua = Quasicontinua::getInstance();

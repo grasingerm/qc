@@ -5,44 +5,14 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_LIMITS
 #include <limits>
-#else
-#ifdef HAVE_LIMITS_H
-#include <limits.h>
-#else
-#error No limits or limits.h available
-#endif
-#endif
-
-#ifdef STDC_HEADERS
 #include <float.h>
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-#else
-#error No standard C library headers found
-#endif // STDC_HEADERS
-
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-// no  _REENTRANT
-#else
-#error No pthread.h available.
-#endif // HAVE_PTHREAD_H
-
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
 #include <cassert>
 #include <cmath>
 

@@ -6,52 +6,15 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#if !defined(_REENTRANT)
-#define _REENTRANT
-#endif
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef STDC_HEADERS
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
-#else
-#error No standard libraries available.
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_SCHED_H
 #include <sched.h>
-#else
-#error sched.h not available.
-#endif /* HAVE_SCHED_H */
-
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h header not available
-#endif /* HAVE_SYS_TYPES_H */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error No math.h found.
-#endif /* HAVE_MATH_H */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not available.
-#endif /* HAVE_UNISTD_H */
-
-#ifdef HAVE_SEARCH_H
 #include <search.h>
-#else
-#error search.h not found
-#endif
 
 #include "DataTypes.h"
 #include "Element.h"

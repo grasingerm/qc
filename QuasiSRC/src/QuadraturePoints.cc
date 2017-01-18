@@ -9,17 +9,7 @@
 #include "C_Interface.h"
 #include "QuadraturePoints.h"
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
 #include <cassert>
 #include <cmath>
 #include <iostream>
@@ -29,100 +19,43 @@
 
 #include "PairPotentials.h"
 
-//
-//
-//
-
 namespace quasicontinuum {
-//
-//
-//
 
 QuadraturePoints *QuadraturePoints::_instance = NULL;
 
-//
-// constructor
-//
-
 QuadraturePoints::QuadraturePoints() {
-
-  //
-  //
-  //
   return;
 }
-
-//
-// destructor
-//
 
 QuadraturePoints::~QuadraturePoints() {
-
-  //
-  //
-  //
   return;
 }
 
-//
-// getInstance method
-//
-
 QuadraturePoints *QuadraturePoints::getInstance() {
-
-  //
-  // if not created, create
-  //
   if (_instance == NULL) {
     _instance = new QuadraturePoints();
   }
 
-  //
-  // return instance
-  //
   return _instance;
 }
 
-//
-// destroy instance method
-//
-
 void QuadraturePoints::destroyInstance() {
-
-  //
-  // delete instance
-  //
   delete _instance;
-
-  //
-  //
-  //
   return;
 }
 
-//
-// get the quadrature point
-//
 void QuadraturePoints::getQuadraturePoints(
     std::vector<std::vector<std::vector<double>>> &quadVectors,
     std::vector<double> &quadWeights, int n) {
 
-  //
   // Loop over method
-  //
   int quadMethod = PairPotentials::getInstance()->d_quadMethod;
 
   switch (quadMethod) {
 
-  //
-  // 3 point quadrature method
-  //
   case 3: {
 
-    //
     // parameters for 3 point method
-    //
-
     int dimension;
     long double V, r;
 
@@ -131,9 +64,7 @@ void QuadraturePoints::getQuadraturePoints(
     V = std::pow(3.14159265358979323846, (double)dimension / 2);
     r = std::sqrt((double)n / 2);
 
-    //
     // resize quadVectors and quadWeights
-    //
 
     quadVectors.resize(3 * n * 2);
     quadWeights.resize(3 * n * 2);

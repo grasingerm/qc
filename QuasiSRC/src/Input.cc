@@ -6,71 +6,21 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-/* no _REENTRANT */
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef STDC_HEADERS
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_CTYPE_H
 #include <ctype.h>
-#else
-#error ctype.h not found.
-#endif /* HAVE_CTYPE_H */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not found.
-#endif /* HAVE_UNISTD_H */
-
-#ifdef HAVE_LIBGEN_H
 #include <libgen.h>
-#else
-#error libgen.h not found.
-#endif /* HAVE_LIBGEN_H */
-
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#else
-#error limits.h not found.
-#endif /* HAVE_LIMITS_H */
-
-#ifdef HAVE_RPC_RPC_H
 #include <rpc/rpc.h>
-#else
-#error rpc/rpc.h not found.
-#endif /* HAVE_RPC_RPC_H */
-
-#ifdef HAVE_RPC_XDR_H
 #include <rpc/xdr.h>
-#else
-#error rpc/xdr.h not found.
-#endif /* HAVE_RPC_XDR_H */
-
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
 
 #if defined(__QC_SGI)
 #include <invent.h>
-//#include <limits.h>  Already included above
 #include <sys/types.h>
 #endif /* sgi */
 

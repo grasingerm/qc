@@ -6,37 +6,13 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdlib.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
-
-#ifdef HAVE_ASSERT_H
 #include <assert.h>
-#else
-#error assert.h not found
-#endif /* HAVE_ASSERT_H */
-
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
 #include <iostream>
 #include <utility>
 
@@ -48,44 +24,18 @@
 #include "Quasicontinua.h"
 #include "Void.h"
 
-//
-//
-//
-
 namespace quasicontinuum {
-//
-//
-//
 
 Void *Void::_instance = NULL;
 
-//
-// constructor
-//
-
 Void::Void() {
-
-  //
-  //
-  //
   return;
 }
-
-//
-// destructor
-//
 
 Void::~Void() {
-
-  //
-  //
-  //
   return;
 }
 
-//
-// new constructor
-//
 Void::Void(const int enable_void_default) {
   d_enableVoid = enable_void_default;
 
@@ -104,45 +54,22 @@ Void::Void(const int enable_void_default) {
   return;
 }
 
-//
-// getInstance method
-//
-
 Void *Void::getInstance() {
 
-  //
   // if not created, create
-  //
   if (_instance == NULL) {
     _instance = new Void(0);
   }
 
-  //
-  // return instance
-  //
   return _instance;
 }
 
-//
-// destroy instance method
-//
-
 void Void::destroyInstance() {
-
-  //
-  // delete instance
-  //
   delete _instance;
 
-  //
-  //
-  //
   return;
 }
 
-//
-//  createVoid()
-//
 void Void::createVoid(struct node_list_t *P_node_list,
                       const struct lattice_t *P_lattice, const int iQuasi) {
   double dr[3];

@@ -8,28 +8,10 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
-#ifdef STDC_HEADERS
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
 #include "DataTypes.h"
 
-//
-//
-//
 namespace quasicontinuum {
 
 /**
@@ -37,13 +19,7 @@ namespace quasicontinuum {
  */
 class Input {
 
-  //
-  // public data types
-  //
 public:
-  //
-  // public methods
-  //
 
   //  material info
   char d_initFile[256];

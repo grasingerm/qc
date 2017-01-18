@@ -1,0 +1,81 @@
+Summary: NiAl 2 lattices eam MishinNiAl finite temperature electrostatics charge neutral bc with external charge subjected to no external deformation no void defect subject to no indentation 
+
+1. Material Info 
+ Material                        NiAl
+ Potential                       MishinNiAl
+ Potential Type                  eam
+
+2. Restart Info 
+ Status                          OFF
+
+3. Minimization Info 
+ Minimization method              Minimization wrt u and w simultaneously
+
+4. Geometrical Info 
+ Number of Lattices                  2
+ Lattice Type                        BCC
+ Lattice Constant 
+   2.858700     0.000000     0.000000
+   0.000000     2.858700     0.000000
+   0.000000     0.000000     2.858700
+ Lattice Size 
+   l_min =  0    0    0
+   l_max = 24    24    12
+ Initial Configuration Size
+   x_min = 0.000000        0.000000        0.000000
+   x_max = 68.608800        68.608800        34.304400
+ Lattice Shift
+     Lattice Number      shift_x       shift_y       shift_z       core       atomic mass
+     1                  0.000000        0.000000       0.000000        -1        58.693400
+     2                  -1.429350        -1.429350       -1.429350        -1        26.981540
+
+5. Configuration Info 
+ Initial Configuration                 Crystal lattice configuration 
+
+6. Universal Constants 
+ Boltzman Constant               0.831446
+ MaxPlanck Constant              39.903127
+ Electric Constant               0.005526
+
+7. Temperature Info 
+ Status                          finite temperature
+ temperature                     300.000000
+ tau                             0.010000
+ Initial Frequency               12099.635346   8203.723507   
+ Quadrature Method               3
+
+8. Electrostatics Info 
+ Status                                    yes
+ External Charges                          yes
+     Charge Number       increment         x           y            z
+     1                    1.000000    45.000000   45.000000      100.000000
+ Boundary Condition
+     xBegin Surface              0      0.000000
+     xEnd Surface                0      0.000000
+     yBegin Surface              0      0.000000
+     yEnd Surface                0      0.000000
+     zBegin Surface              0      0.000000
+     zEnd Surface                0      0.000000
+
+9. Loading Info 
+ Status                            no
+
+10. Void Info 
+ Status                      no
+
+11. Indent Info 
+ Status                      no
+
+12. Residual Force Remove Info 
+ All     xBegin     xEnd     yBegin     yEnd     zBegin     zEnd
+ no       no         no        no        no        no         no
+
+13. CG Info 
+ Tolerance                             0.000001
+ Max Iterations                        2500
+ Line Search Tolerance                 0.000000
+ Line Search Max Iterations            20
+ Remesh Tolerance                      0.500000
+
+14. Thread Info 
+ Number of Threads                     8

@@ -1,7 +1,3 @@
-//
-// QuadraturePoints.h
-//
-
 #if !defined(QUADRATUREPOINTS_H)
 #define QUADRATUREPOINTS_H
 
@@ -9,20 +5,7 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
-//
-//
-//
 
 namespace quasicontinuum {
 
@@ -30,10 +13,6 @@ namespace quasicontinuum {
  * @brief Singleton container for Quasicontinua instance
  */
 class QuadraturePoints {
-
-  //
-  // public methods
-  //
 
 public:
   /**
@@ -64,10 +43,6 @@ public:
   std::vector<std::pair<std::vector<std::vector<double>>, double>>
   getQuadratureVectors(int number, int dimension);
 
-  //
-  // private methods
-  //
-
 private:
   /**
    * @brief Constructor.
@@ -89,9 +64,6 @@ private:
    */
   ~QuadraturePoints();
 
-  //
-  // private data types
-  //
 private:
   static QuadraturePoints *_instance;
 };

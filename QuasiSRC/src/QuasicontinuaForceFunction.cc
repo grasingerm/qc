@@ -7,13 +7,7 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-/* No _REENTRANT */
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
@@ -35,26 +29,14 @@
 #include "monitor.h"
 #include "threads.h"
 
-//
-//
-//
 namespace quasicontinuum {
 
-//
-// Constructor.
-//
 QuasicontinuaForceFunction::QuasicontinuaForceFunction()
     : d_lock(PTHREAD_MUTEX_INITIALIZER),
       d_version(quasicontinuum::SINGLE_THREADED) // Note: Multithreaded not
                                                  // implemented
 {
-#if 0
-  		//
-  		// determine whether multithreaded
-  		//
-  		if(quasicontinuum::get_max_number_threads() == 1)
-  	  		d_version = quasicontinuum::SINGLE_THREADED;
-#endif
+
   //
   // switch between thread versions
   //

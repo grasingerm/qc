@@ -6,75 +6,20 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
-#ifdef STDC_HEADERS
 #include <iostream>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not found
-#endif /* HAVE UNISTD_H */
-
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#else
-#error errno.h not found.
-#endif /* HAVE_ERRNO_H */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
-
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#else
-#error limits.h not found
-#endif /* HAVE_LIMITS_H */
-
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h not found
-#endif /* HAVE_SYS_TYPES_H */
-
-#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#else
-#error sys/stat.h not found.
-#endif /* HAVE_SYS_STAT_H */
-
-#ifdef HAVE_RPC_RPC_H
 #include <rpc/rpc.h>
-#else
-#error rpc/rpc.h not found.
-#endif /* HAVE_RPC_RPC_H */
-
-#ifdef HAVE_RPC_XDR_H
 #include <rpc/xdr.h>
-#else
-#error rpc/xdr.h not found.
-#endif /* HAVE_RPC_XDR_H */
-
 #include <time.h>
 
 // c++ files

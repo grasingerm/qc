@@ -6,31 +6,12 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
-#ifdef STDC_HEADERS
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_ASSERT_H
 #include <assert.h>
-#else
-#error assert.h not found.
-#endif /* HAVE_ASSERT_H */
-
 #include <cmath>
 #include <utility>
 
@@ -52,21 +33,9 @@ long double const c_maxPlanckPi = 6.350779924;
 long double const c_dielectricConstantVacuum = 0.0055263488697;
 long double const c_dielectricConstantVacuumWithPi = 0.069446148;
 
-//
-//
-//
-
 namespace quasicontinuum {
 
-//
-//
-//
-
 PairPotentials *PairPotentials::_instance = NULL;
-
-//
-// constructor
-//
 
 PairPotentials::PairPotentials() {
   //
@@ -81,96 +50,43 @@ PairPotentials::PairPotentials() {
   c_universalConst.push_back(0.0055263488697); // dielectri const
   c_universalConst.push_back(0.069446148);     // dielectric * 4pi
 
-  //
-  //
-  //
   return;
 }
-
-//
-// destructor
-//
 
 PairPotentials::~PairPotentials() {
-
-  //
-  //
-  //
   return;
 }
-
-//
-// getInstance method
-//
 
 PairPotentials *PairPotentials::getInstance() {
 
-  //
   // if not created, create
-  //
   if (_instance == NULL) {
     _instance = new PairPotentials();
   }
 
-  //
-  // return instance
-  //
   return _instance;
 }
 
-//
-// destroy instance method
-//
-
 void PairPotentials::destroyInstance() {
-
-  //
-  // delete instance
-  //
   delete _instance;
-
-  //
-  //
-  //
   return;
 }
 
-//
 // insert Potential interaction
-//
 void PairPotentials::insertNonEAMPotential(
     std::pair<int, int> quasicontinuumPair, int potentialType,
     std::vector<double> potentialParameters, const bool EAMFlag) {
 
-  //
-  // insert Potential interaction
-  //
   d_PotentialInteractions.push_back(quasicontinuumPair);
 
-  //
-  // insert Potential type
-  //
   d_PotentialType.push_back(potentialType);
 
-  //
-  // insert vector of Potential parameters
-  //
   d_PotentialParameters.push_back(potentialParameters);
 
-  //
-  // set EAMFlag
-  //
   d_EAMFlag = EAMFlag;
 
-  //
-  //
-  //
   return;
 }
-
-//
-// insert Potential interaction
-//
 
 void PairPotentials::insertEAMPotential(std::pair<int, int> quasicontinuumPair,
                                         int potentialType,
@@ -179,34 +95,21 @@ void PairPotentials::insertEAMPotential(std::pair<int, int> quasicontinuumPair,
                                         const int NGridPoints,
                                         const bool EAMFlag) {
 
-  //
-  // insert Potential interaction
-  //
   d_PotentialInteractions.push_back(quasicontinuumPair);
 
-  //
   // insert Potential type
-  //
   d_PotentialType.push_back(potentialType);
 
-  //
   // insert vector of Potential parameters (first parameter must be R_c)
-  //
   d_PotentialParameters.push_back(potentialParameters);
 
-  //
   // set EAMFlag
-  //
   d_EAMFlag = EAMFlag;
 
-  //
   // get current potential number
-  //
   const unsigned int potNumber = d_PotentialType.size();
 
-  //
   // resize data
-  //
   d_RhoX.resize(potNumber);
   d_RhoY.resize(potNumber);
   d_RhoB.resize(potNumber);
@@ -240,16 +143,12 @@ void PairPotentials::insertEAMPotential(std::pair<int, int> quasicontinuumPair,
   d_PairC[potNumber - 1].resize(NGridPoints);
   d_PairD[potNumber - 1].resize(NGridPoints);
 
-  //
   // read in data file
-  //
   FILE *fp;
   fp = fopen(dataFile1, "r");
   assert(fp != NULL);
 
-  //
   // read in rho
-  //
   for (int iPoint = 0; iPoint < NGridPoints; ++iPoint)
     fscanf(fp, "%le %le %le %le %le", &(d_RhoX[potNumber - 1][iPoint]),
            &(d_RhoY[potNumber - 1][iPoint]), &(d_RhoB[potNumber - 1][iPoint]),

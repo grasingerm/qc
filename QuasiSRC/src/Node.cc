@@ -6,52 +6,15 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#if !defined(_REENTRANT)
-#define _REENTRANT
-#endif
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef HAVE_ALLOCA_H
 #include <alloca.h>
-#else
-#error alloca.h not found.
-#endif /* HAVE_ALLOCA_H */
-
-#ifdef HAVE_SEARCH_H
 #include <search.h>
-#else
-#error search.h not found.
-#endif /* HAVE_SEARCH_H */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not found.
-#endif /* HAVE_UNISTD_H */
-
-#ifdef HAVE_ASSERT_H
 #include <assert.h>
-#else
-#error assert.h not found.
-#endif /* HAVE_ASSERT_H */
 
 #include <errno.h>
 

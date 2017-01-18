@@ -6,34 +6,11 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifndef _REENTRANT
-#define _REENTRANT
-#endif /* _REENTRANT */
-
-#ifdef STDC_HEADERS
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not found.
-#endif /* HAVE_UNISTD_H */
-
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
 
 #include <cassert>
 #include <math.h>

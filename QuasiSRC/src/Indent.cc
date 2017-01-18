@@ -6,70 +6,18 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#if !defined(_REENTRANT)
-#define _REENTRANT
-#endif
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* Added for strstr */
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
-
-#ifdef HAVE_CTYPE_H
 #include <ctype.h>
-#else
-#error ctype.h not found
-#endif /* HAVE_CTYPE_H */
-
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#else
-#error limits.h not found
-#endif /* HAVE_LIMITS_H */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not found
-#endif /* HAVE UNISTD_H */
-
-#ifdef HAVE_FCNTL_H
 #include <fcntl.h>
-#else
-#error fcntl.h not found
-#endif /* HAVE_FCNTL_H */
-
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h not found
-#endif /* HAVE_SYS_TYPES_H */
-
-#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#else
-#error sys/stat.h not found.
-#endif /* HAVE_SYS_STAT_H */
-
-#ifdef HAVE_SYS_MMAN_H
 #include <sys/mman.h>
-#else
-#error sys/mman.h not found
-#endif /* HAVE_SYS_MMAN_H */
 
 #include "DataTypes.h"
 #include "Error.h"
