@@ -6,13 +6,9 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
 
 #include "C_Interface.h"
 #include "DataTypes.h"

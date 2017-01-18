@@ -24,11 +24,7 @@
 #ifndef _MONITOR_H_
 #define _MONITOR_H_
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
 
 #if defined(__cplusplus)
 namespace quasicontinuum {

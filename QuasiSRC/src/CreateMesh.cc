@@ -1,47 +1,14 @@
-//
-// CreateMesh.cc
-//
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-/* Want _REENTRANT here too?! */
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
-#ifdef STDC_HEADERS
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
-#else
-#error No standard library headers found.
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error No math.h found.
-#endif /* HAVE_MATH_H */
-
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h header not available
-#endif /* HAVE_SYS_TYPES_H */
 
 #include <algorithm> // for std::sort()
 #include <assert.h>
@@ -76,47 +43,28 @@
 #define CYLINDER_HEIGHT 10.0
 #define VICINITY_RADIUS 1.5
 
-//
-//
-//
-
 namespace quasicontinuum {
-//
-//
-//
 
 CreateMesh *CreateMesh::_instance = NULL;
 
-//
-//  namespace for CheckEnergyWorker()
-//
 namespace {
-//
-//  CompareEdgesLocal()
-//
+
 bool CompareEdgesLocal(const CreateMesh::edge_t &lhs,
                        const CreateMesh::edge_t &rhs) {
   return lhs.length > rhs.length;
 }
 
-//
-//  CompareScoreListLocal()
-//
 bool CompareScoreListLocal(const CreateMesh::score_list_t &lhs,
                            const CreateMesh::score_list_t &rhs) {
   return lhs.energy_drop < rhs.energy_drop;
 }
-//
-// CheckEnergyStrainLocal()
-//
+
 double CheckEnergyStrainLocal(struct element_t *P_element, const int i_load) {
   double center[3];
   double err_norm;
   double radius;
 
   err_norm = Element::getInstance()->computeElementStrain(P_element, i_load);
-
-  /* if (err_norm < 0.0) return(0.0); */
 
   radius = MiscFunctions::getInstance()->findTetraCenter(
       &(P_element->node[0]->initial_position[0]),
@@ -128,7 +76,6 @@ double CheckEnergyStrainLocal(struct element_t *P_element, const int i_load) {
     abort();
 
   err_norm = sqrt(fabs(err_norm));
-  /* err_norm = sqrt(err_norm*radius); */
 
   return (err_norm);
 } // end of CheckEnergyStrainLocal()
@@ -184,16 +131,10 @@ void *CheckEnergyWorker(void *arg) {
 
     CreateMesh::score_list_t score_list;
 
-    /* if (is_element_remeshable(P_element, P_indentor, r_contact_zone)) */
-
     score_list.energy_drop = CheckEnergyStrainLocal(P_element, i_load);
-
-    /* else
-    P_score_list[i_elem].energy_drop = 0.0; */
 
     score_list.P_element = P_element;
 
-    // push_back score_list to P_score_list
     pthread_mutex_lock(&score_list_lock);
     P_score_list->push_back(score_list);
     pthread_mutex_unlock(&score_list_lock);
@@ -204,72 +145,31 @@ void *CheckEnergyWorker(void *arg) {
 
 } // end of namespace for CheckEnergyWorker()
 
-//
-// constructor
-//
-
 CreateMesh::CreateMesh() {
-
-  //
-  //
-  //
   return;
 }
 
-//
-//  Constructor()
-//
 CreateMesh::CreateMesh(const double remesh_tolerance) {
   d_remeshTolerance = remesh_tolerance;
 
   return;
 }
 
-//
-// destructor
-//
-
 CreateMesh::~CreateMesh() {
-
-  //
-  //
-  //
   return;
 }
 
-//
-// getInstance method
-//
-
 CreateMesh *CreateMesh::getInstance() {
-
-  //
-  // if not created, create
-  //
   if (_instance == NULL) {
     _instance = new CreateMesh(0.0);
   }
 
-  //
-  // return instance
-  //
   return _instance;
 }
 
-//
-// destroy instance method
-//
-
 void CreateMesh::destroyInstance() {
-
-  //
-  // delete instance
-  //
   delete _instance;
 
-  //
-  //
-  //
   return;
 }
 
@@ -342,17 +242,10 @@ void CreateMesh::createElementsCentral(int computeForce) {
 
   if (computeForce == 0) {
     // compute forces
-
-    //
-    // remove residual forces
-    //
     d_print("Residual Forces...");
     ForceEnergyCalculation::getInstance()->removeResidualForces();
     d_print("complete\n");
 
-    //
-    //  compute intial energy and force
-    //
     bool compute_in_reference = false;
     rebuild_neighbor_flag = 1;
     d_print("Forces...");
@@ -379,9 +272,7 @@ void CreateMesh::createElements(int iQuasi,
                                 struct node_list_t *P_node_list,
                                 struct lattice_t *P_lattice,
                                 double r_cluster_cutoff, int restartFlag) {
-  //
-  //  proceed aacoring to restartFlag
-  //
+  
   Node *nodeC = Node::getInstance();
   Element *elementC = Element::getInstance();
 
@@ -464,20 +355,12 @@ void CreateMesh::fixBoundary(struct node_list_t *P_node_list,
   return;
 }
 
-//
-//  setRemeshTolerance()
-//
 void CreateMesh::setRemeshTolerance(double tolerance) {
   d_remeshTolerance = tolerance;
 
   return;
 }
 
-//
-//  remeshCentral()
-//
-//  return total number of new nodes created
-//
 int CreateMesh::remeshCentral(int i_load) {
   // get quasicontinua class instance
   Quasicontinua *quasicontinua = Quasicontinua::getInstance();
@@ -542,16 +425,10 @@ int CreateMesh::remeshCentral(int i_load) {
     d_print("complete\n");
   }
 
-  //
-  //  remove residual forces
-  //
   d_print("Residual Forces...");
   ForceEnergyCalculation::getInstance()->removeResidualForces();
   d_print("complete\n");
 
-  //
-  //  compute intial energy and force
-  //
   bool compute_in_reference = false;
   rebuild_neighbor_flag = 1;
   d_print("Force...");
@@ -562,10 +439,6 @@ int CreateMesh::remeshCentral(int i_load) {
   return (total_new_nodes);
 }
 
-//
-//  remesh()
-//  return number of new nodes added
-//
 int CreateMesh::remesh(int iQuasi, struct element_list_t *P_element_list,
                        struct all_node_list_t *P_node_list,
                        struct lattice_t *P_lattice,
@@ -638,11 +511,6 @@ int CreateMesh::remesh(int iQuasi, struct element_list_t *P_element_list,
   return (n_new_nodes);
 }
 
-// private functions
-
-//
-//  RemeshElementBisection()
-//
 void CreateMesh::RemeshElementBisection(struct element_t *P_element,
                                         struct all_node_list_t *P_node_list,
                                         struct lattice_t *P_lattice,
@@ -656,9 +524,6 @@ void CreateMesh::RemeshElementBisection(struct element_t *P_element,
   return;
 }
 
-//
-//  FindBisectionSite()
-//
 int CreateMesh::FindBisectionSite(int l[3], struct lattice_t *P_lattice,
                                   const struct element_t *P_element,
                                   const int iQuasi) {

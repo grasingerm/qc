@@ -1,29 +1,14 @@
-//
-// CrossNeighborList.cc
-//
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
-
 #include <iostream>
 #include <vector>
 
-// to get amount of time required in computing neighbor list
 #include <sys/time.h>
 #include <time.h>
 
@@ -50,10 +35,8 @@
 //
 
 namespace quasicontinuum {
-//
-//  namespace for neighbor list computing
-//
-namespace {
+
+  namespace {
 // cluster site count
 // static int cluster_sites_count = 0;
 // static pthread_mutex_t cluster_count_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -61,9 +44,6 @@ static std::vector<pthread_mutex_t> bucket_lock;
 static int numBuckets = 65535;
 static pthread_mutex_t lock_pint = PTHREAD_MUTEX_INITIALIZER;
 
-//
-//
-//
 void bucketLockInitLocal(void) {
   if (bucket_lock.size() == 0 || bucket_lock.size() < numBuckets) {
     bucket_lock.resize(numBuckets);
@@ -74,14 +54,8 @@ void bucketLockInitLocal(void) {
   return;
 }
 
-//
-//  CantorPairLocal()
-//
 int CantorPairLocal(int a, int b) { return ((a + b) * (a + b + 1) / 2 + b); }
 
-//
-//
-//
 int GetBucketNumberLocal(vec_int_t siteLattice) {
   int a = siteLattice[0];
   int b = siteLattice[1];
@@ -109,9 +83,6 @@ int GetBucketNumberLocal(vec_int_t siteLattice) {
   return key;
 }
 
-//
-//  SortNodeInfoLocal()
-//
 void SortNodeInfoLocal(vec_int_t &nodeInfo, const int iNode) {
   // counter
   int i;
@@ -156,9 +127,6 @@ struct ComputeNeighborFromCurrentClusterData_t {
   std::vector<std::vector<std::vector<cluster_site_data_t>>> *P_clusterData;
 };
 
-//
-//
-//
 int FindSiteInNeighBucketLocal(std::vector<neigh_site_data_t> neighBucket,
                                vec_int_t siteLattice) {
   int index = -1;
@@ -177,9 +145,6 @@ int FindSiteInNeighBucketLocal(std::vector<neigh_site_data_t> neighBucket,
   return index;
 } // end of FindSiteInNeighBucketLocal()
 
-//
-//
-//
 int FindSiteInClusterBucketLocal(std::vector<cluster_site_data_t> clusterBucket,
                                  vec_int_t siteLattice) {
   int index = -1;
@@ -284,9 +249,6 @@ void ProcessClusterSiteLocal(
   return;
 } // end of  ProcessClusterSiteLocal()
 
-//
-//
-//
 void *ProcessAllClusterOfNodeWorker(void *arg) {
   const int iQuasi = ((struct ProcessAllClusterOfNodeData_t *)arg)->iQuasi;
   const int numQuasi = ((struct ProcessAllClusterOfNodeData_t *)arg)->numQuasi;
@@ -384,9 +346,6 @@ void *ProcessAllClusterOfNodeWorker(void *arg) {
 
 } // end of ProcessAllClusterOfNodeWorker()
 
-//
-//
-//
 void *ComputeNeighborFromCurrentClusterWorker(void *arg) {
   const int iQuasi =
       ((struct ComputeNeighborFromCurrentClusterData_t *)arg)->iQuasi;
@@ -470,9 +429,6 @@ void *ComputeNeighborFromCurrentClusterWorker(void *arg) {
 } // end of ComputeNeighborFromCurrentClusterWorker()
 } // end of namespace for neighbor list computing
 
-//
-//  namespace for updating locations
-//
 namespace {
 struct UpdateClusterLocationsData_t {
   int iQuasi;
@@ -570,9 +526,6 @@ void UpdateNeighborLocationsLocal(
   return;
 } // end of UpdateNeighborLocationsLocal()
 
-//
-//
-//
 void *UpdateClusterLocationsWorker(void *arg) {
   const int iQuasi = ((struct UpdateClusterLocationsData_t *)arg)->iQuasi;
   vec_dbl_t iShift = ((struct UpdateClusterLocationsData_t *)arg)->iShift;
@@ -595,9 +548,6 @@ void *UpdateClusterLocationsWorker(void *arg) {
   return ((void *)NULL);
 } // end of UpdateClusterLocationsWorker()
 
-//
-//
-//
 void *UpdateNeighborLocationsWorker(void *arg) {
   const int iQuasi = ((struct UpdateNeighborLocationsData_t *)arg)->iQuasi;
   vec_dbl_t iShift = ((struct UpdateNeighborLocationsData_t *)arg)->iShift;
@@ -622,75 +572,30 @@ void *UpdateNeighborLocationsWorker(void *arg) {
 
 } // end of namespace for updating locations
 
-//
-//
-//
-
 CrossNeighborList *CrossNeighborList::_instance = NULL;
 
-//
-// constructor
-//
-
 CrossNeighborList::CrossNeighborList() {
-
-  //
-  //
-  //
   return;
 }
-
-//
-// destructor
-//
 
 CrossNeighborList::~CrossNeighborList() {
-
-  //
-  //
-  //
   return;
 }
 
-//
-// getInstance method
-//
-
 CrossNeighborList *CrossNeighborList::getInstance() {
-
-  //
-  // if not created, create
-  //
   if (_instance == NULL) {
     _instance = new CrossNeighborList();
   }
-
-  //
-  // return instance
-  //
+  
   return _instance;
 }
 
-//
-// destroy instance method
-//
-
 void CrossNeighborList::destroyInstance() {
-
-  //
-  // delete instance
-  //
   delete _instance;
 
-  //
-  //
-  //
   return;
 }
 
-//
-//  computeCrossNeighborList()
-//
 void CrossNeighborList::computeCrossNeighborList(
     const int rebuild_neighbor_flag, const int rebuild_cluster_flag) {
   // check if it is multi threading or single threading
@@ -707,10 +612,6 @@ void CrossNeighborList::computeCrossNeighborList(
   // thread
   // if(mt_version == MULTI_THREADED)
   bucketLockInitLocal();
-
-  // ComputeNeighborList(mt_version, 1, rebuild_neighbor_flag);
-
-  // return;
 
   if (rebuild_cluster_flag == 1) {
     // prepare new cluster data ---> then prepare new neighbor data
@@ -743,9 +644,6 @@ void CrossNeighborList::computeCrossNeighborList(
   exit(EXIT_FAILURE);
 } // end of computeCrossNeighborList()
 
-//
-//  printCrossNeighborList()
-//
 void CrossNeighborList::printCrossNeighborList(const int thread_flag) {
   FILE *file_1;
   FILE *file_2;
@@ -770,13 +668,6 @@ void CrossNeighborList::printCrossNeighborList(const int thread_flag) {
                 d_clusterData[0][iBucket][i].first.second[0],
                 d_clusterData[0][iBucket][i].first.second[1],
                 d_clusterData[0][iBucket][i].first.second[2]);
-        // printf("%i    %i    %i    %f    %f    %f\n",
-        //   d_clusterData[0][iBucket][i].first.first[0],
-        //   d_clusterData[0][iBucket][i].first.first[1],
-        //   d_clusterData[0][iBucket][i].first.first[2],
-        //   d_clusterData[0][iBucket][i].first.second[0],
-        //   d_clusterData[0][iBucket][i].first.second[1],
-        //   d_clusterData[0][iBucket][i].first.second[2]);
       }
     }
 
@@ -800,9 +691,6 @@ void CrossNeighborList::printCrossNeighborList(const int thread_flag) {
   return;
 }
 
-//
-//  ComputeNeighborList()
-//
 void CrossNeighborList::ComputeNeighborList(enum mt_version_t mt_version,
                                             const int rebuild_cluster_flag,
                                             const int rebuild_neighbor_flag) {
@@ -812,9 +700,6 @@ void CrossNeighborList::ComputeNeighborList(enum mt_version_t mt_version,
   int numQuasi = quasicontinua->size();
   int iQuasi;
 
-  //
-  // time related data
-  //
   int t_size = 2 * numQuasi;
 
   timeval buildTime_t[t_size];
@@ -822,9 +707,6 @@ void CrossNeighborList::ComputeNeighborList(enum mt_version_t mt_version,
 
   double elapsedTime;
 
-  //
-  //  get pairPotentials instance
-  //
   PairPotentials *pairC = PairPotentials::getInstance();
 
   // building cluster list and neighbor list every time, instead of subjecting
@@ -912,9 +794,6 @@ void CrossNeighborList::ComputeNeighborList(enum mt_version_t mt_version,
   return;
 } // end of ComputeNeighborList()
 
-//
-//  BuildClusterAndComputeNeighborList()
-//
 void CrossNeighborList::BuildClusterAndComputeNeighborList(
     enum mt_version_t mt_version, int iQuasi) {
   // get Quasicontinua instance
@@ -934,8 +813,6 @@ void CrossNeighborList::BuildClusterAndComputeNeighborList(
 
   switch (mt_version) {
   case SINGLE_THREADED: {
-    // std::cout<<"CrossNeighborlist : Single Threaded"<<std::endl;
-
     int iNode;
     int i_cluster;
 
@@ -950,10 +827,7 @@ void CrossNeighborList::BuildClusterAndComputeNeighborList(
       struct node_t *P_node = all_node_list.node_list.nodes[iNode];
       struct site_list_t iCSites = P_node->site_cluster;
 
-      // loop over cluster sites
       for (i_cluster = 0; i_cluster < iCSites.number_sites; i_cluster++) {
-        // std::cout<<"cluster site = "<<i_cluster<<std::endl;
-        // create cluster site data to insert it into d_clusterData
         cluster_site_data_t iC_data;
 
         for (int dof = 0; dof < 3; dof++)
@@ -1017,7 +891,6 @@ void CrossNeighborList::BuildClusterAndComputeNeighborList(
   break;
 
   case MULTI_THREADED: {
-    // std::cout<<"CrossNeighborlist : Multi Threaded"<<std::endl;
     int iNode;
     int i_cluster;
 
@@ -1121,17 +994,11 @@ void CrossNeighborList::BuildClusterAndComputeNeighborList(
   break;
   } // switch
 
-  // std::cout<<"CrossNeighborList : Done"<<std::endl;
-
   return;
 } // end of BuildClusterAndComputeNeighborList()
 
-//
-//  ComputeNeighborListUsingCurrentClusterData()
-//
 void CrossNeighborList::ComputeNeighborListUsingCurrentClusterData(
     enum mt_version_t mt_version, int iQuasi) {
-  // d_print("Neighbor List ...");
 
   // get Quasicontinua instance
   Quasicontinua *quasicontinua = Quasicontinua::getInstance();
@@ -1142,7 +1009,6 @@ void CrossNeighborList::ComputeNeighborListUsingCurrentClusterData(
 
   switch (mt_version) {
   case SINGLE_THREADED: {
-    // std::cout<<"CrossNeighborList : Single Threaded"<<std::endl;
     int iBucket;
     int iCluster;
     int thread_flag = 0; // single thread
@@ -1194,7 +1060,6 @@ void CrossNeighborList::ComputeNeighborListUsingCurrentClusterData(
   break;
 
   case MULTI_THREADED: {
-    // std::cout<<"CrossNeighborList : Multi Threaded"<<std::endl;
     struct ComputeNeighborFromCurrentClusterData_t data;
     int coreShellType = quasicontinua->getCoreShell(iQuasi);
 
@@ -1211,17 +1076,10 @@ void CrossNeighborList::ComputeNeighborListUsingCurrentClusterData(
   break;
   } // switch
 
-  // std::cout<<"CrossNeighborList : Done"<<std::endl;
-
   return;
 } // end of ComputeNeighborListUsingCurrentClusterData()
 
-//
-//  UpdateLocation()
-//
 void CrossNeighborList::UpdateLocation(enum mt_version_t mt_version) {
-  // d_print("Update Neighbor List ...");
-
   int numQuasi = Quasicontinua::getInstance()->size();
 
   PairPotentials *pairC = PairPotentials::getInstance();
@@ -1232,8 +1090,6 @@ void CrossNeighborList::UpdateLocation(enum mt_version_t mt_version) {
 
   switch (mt_version) {
   case SINGLE_THREADED: {
-    // std::cout<<"CrossNeighborList : Sinlge Threaded"<<std::endl;
-
     int iQuasi;
     // first update location of cluster list
     for (int iQuasi = 0; iQuasi < numQuasi; iQuasi++) {
@@ -1272,7 +1128,6 @@ void CrossNeighborList::UpdateLocation(enum mt_version_t mt_version) {
   break;
 
   case MULTI_THREADED: {
-    // std::cout<<"CrossNeighborList : Multi Threaded"<<std::endl;
     int iQuasi;
 
     // loop over quasis
@@ -1316,14 +1171,11 @@ void CrossNeighborList::UpdateLocation(enum mt_version_t mt_version) {
 
   break;
 
-  } // switch
+  }
 
   return;
 } // end of UpdateLocation()
 
-//
-//  getQuasiNeighborData()
-//
 std::vector<std::vector<neigh_site_data_t>> &
 CrossNeighborList::getQuasiNeighborData(const int iQuasi) {
   if (iQuasi == -1 || iQuasi > d_neighborList.size()) {
@@ -1334,9 +1186,6 @@ CrossNeighborList::getQuasiNeighborData(const int iQuasi) {
   return d_neighborList[iQuasi];
 }
 
-//
-//  getQuasiClusterData
-//
 std::vector<std::vector<cluster_site_data_t>> &
 CrossNeighborList::getQuasiClusterData(const int iQuasi) {
   if (iQuasi == -1 || iQuasi > d_clusterData.size()) {
@@ -1347,17 +1196,11 @@ CrossNeighborList::getQuasiClusterData(const int iQuasi) {
   return d_clusterData[iQuasi];
 }
 
-//
-//  getClusterData
-//
 std::vector<std::vector<std::vector<cluster_site_data_t>>> &
 CrossNeighborList::getClusterData(void) {
   return d_clusterData;
 }
 
-//
-//  getNodeInfoOfClusterSite()
-//
 std::vector<int>
 CrossNeighborList::getNodeInfoOfClusterSite(int iQuasi,
                                             std::vector<int> clusterSite) {
@@ -1368,13 +1211,10 @@ CrossNeighborList::getNodeInfoOfClusterSite(int iQuasi,
     exit(EXIT_FAILURE);
   }
 
-  //
   std::vector<int> returnVec;
 
-  // get bucket number
   int bucket = GetBucketNumberLocal(clusterSite);
 
-  // find site in bucket
   int index = -1;
 
   for (int i = 0; i < d_clusterData[iQuasi][bucket].size(); i++) {
@@ -1396,14 +1236,8 @@ CrossNeighborList::getNodeInfoOfClusterSite(int iQuasi,
   return returnVec;
 }
 
-//
-//  getNumberBuckets()
-//
 int CrossNeighborList::getNumberBuckets() { return numBuckets; }
 
-//
-//  getSizeOfClusterData
-//
 int CrossNeighborList::getSizeOfClusterData(void) {
   return d_clusterData.size();
 }

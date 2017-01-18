@@ -17,18 +17,9 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
 
 #include "C_Interface.h"
 #include "DataTypes.h"

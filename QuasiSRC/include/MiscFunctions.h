@@ -1,7 +1,3 @@
-//
-// MiscFunctions.h
-//
-
 #if !defined(MISCFUNCTIONS_H)
 #define MISCFUNCTIONS_H
 
@@ -9,17 +5,7 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
 #include "DataTypes.h"
 
 #if !defined(MAX) && !defined(MIN)
@@ -27,20 +13,12 @@
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #endif /* !MAX && !MIN */
 
-//
-//
-//
-
 namespace quasicontinuum {
 
 /**
  * @brief Singleton container for Quasicontinua instance
  */
 class MiscFunctions {
-
-  //
-  // public methods
-  //
 
 public:
   /**
@@ -53,72 +31,36 @@ public:
    */
   static void destroyInstance();
 
-  //
-  //  freeE()
-  //
   void *freeE(void *p);
 
-  //
-  //  tetraVolume()
-  //
   double tetraVolume(const double a[3], const double b[3], const double c[3],
                      const double d[3]);
 
-  //
-  //  getUnitVector()
-  //
   int getUnitVector(const double v[3], double u[3]);
 
-  //
-  //  getDistanceBetPoints()
-  //
   double getDistanceBetPoints(const double a[3], const double b[3]);
 
-  //
-  //  getDistanceSqrBetweenPoints()
-  //
   double getDistanceSqrBetweenPoints(const double a[3], const double b[3]);
 
-  //
-  //  computeDifferenceOfVectorAndAbsValue()
-  //
-  //  writes the difference of vector to third argument
-  //  returns sqrt of abs difference
-  //
   double computeDifferenceAndAbsValue(const double a[3], const double b[3],
                                       double ab[3]);
 
-  //
-  //  checkPointInTetra()
-  //
   enum loc_t checkPointInTetra(const double v1[3], const double v2[3],
                                const double v3[3], const double v4[3],
                                const double p[3]);
 
-  //
-  //  checkSiteInTetra()
-  //
   enum loc_t checkSiteInTetra(const double v1[3], const double v2[3],
                               const double v3[3], const double v4[3],
                               const int l[3], struct lattice_t *P_lattice,
                               const int iQuasi);
 
-  //
-  //  findTetraCenter()
-  //
   double findTetraCenter(const double vertice1[3], const double vertice2[3],
                          const double vertice3[3], const double vertice4[3],
                          double center[3]);
 
-  //
-  //  computeDeterminant()
-  //
   double computeDeterminant(const double a[3], const double b[3],
                             const double c[3]);
 
-  //
-  //  solveLinearThreeD()
-  //
   int solveLinearThreeD(const double a[3], const double b[3], const double c[3],
                         const double d[3], double x[3]);
 
@@ -294,34 +236,13 @@ public:
                        const std::vector<double> sphere_center,
                        const double sphere_radius_squared);
 
-  //
-  // private methods
-  //
 
 private:
-  /**
-   * @brief Constructor.
-   */
   MiscFunctions();
-
-  /**
-   * @brief Copy constructor.
-   */
   MiscFunctions(MiscFunctions const &);
-
-  /**
-   * @brief Assignment operator.
-   */
   const MiscFunctions &operator=(const MiscFunctions &);
-
-  /**
-   * @brief Destructor.
-   */
   ~MiscFunctions();
 
-  //
-  // private data types
-  //
 private:
   static MiscFunctions *_instance;
 };

@@ -9,16 +9,7 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
 #include "DataTypes.h"
 
 // definitions
@@ -46,10 +37,6 @@
 // tecplot parameters
 #define OUTPUT_RET_OK 0
 #define OUTPUT_RET_NOK -1
-
-//
-//
-//
 
 namespace quasicontinuum {
 

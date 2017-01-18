@@ -1,7 +1,3 @@
-//
-// Quasicontinua.h
-//
-
 #if !defined(QUASICONTINUA_H)
 #define QUASICONTINUA_H
 
@@ -10,21 +6,7 @@
 #endif // HAVE_CONFIG_H
 
 #include "Quasicontinuum.h"
-
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
-//
-//
-//
 
 namespace quasicontinuum {
 
@@ -33,16 +15,9 @@ namespace quasicontinuum {
  */
 class Quasicontinua {
 
-  //
-  // public data types
-  //
 public:
   typedef unsigned int id_type;
   typedef unsigned int size_type;
-
-  //
-  // public methods
-  //
 
 public:
   /**
@@ -187,9 +162,6 @@ private:
    */
   ~Quasicontinua();
 
-  //
-  // private data types
-  //
 private:
   static Quasicontinua *_instance;
   std::vector<quasicontinuum::Quasicontinuum> d_quasicontinua;

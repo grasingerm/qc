@@ -6,27 +6,12 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
 
 #include <algorithm>
 #include <cassert>
 #include <cmath>
-//#include <ctime>
 #include <cstdio>
 #include <fstream>
 #include <initializer_list>
@@ -51,7 +36,6 @@
 #include <CGAL/convex_hull_2.h>
 #include <CGAL/convex_hull_traits_2.h>
 
-//
 #include "C_Interface.h"
 #include "CrossNeighborList.h"
 #include "DataTypes.h"
@@ -71,16 +55,10 @@
 #include "monitor.h"
 #include "threads.h"
 
-//
-//
-//
-
 namespace quasicontinuum {
 
-//
-//  namespace for data used in threading
-//
 namespace {
+
 typedef std::vector<double> My_point;
 typedef std::vector<My_point> My_triangle;
 
@@ -110,9 +88,6 @@ const static int nodeBucket = 5;
 
 volatile static int whileWorker = 1;
 
-//
-//  thread data structures
-//
 struct computeFaces_argument_t {
   std::vector<std::vector<std::vector<int>>> *faces;
   std::vector<std::vector<std::pair<int, int>>> *faceElementList;
@@ -268,9 +243,6 @@ struct computeClusterChargeSurface_argument_t {
 
 } // end of namespace for data used in threading
 
-//
-//  namespace for local functions used in thread functions
-//
 namespace {
 bool sortFunction(const std::vector<int> i, const std::vector<int> j) {
   if (i[0] < j[0])
@@ -299,24 +271,12 @@ void bucket_init(void) {
   return;
 }
 
-//
-//  CantorPair()
-//
 int CantorPair(int a, int b) {
-  //
-  // key
-  //
   int key = (a + b) * (a + b + 1) / 2 + b;
-
-  //
-  //
-  //
+  
   return key;
 }
 
-//
-//  getTripletIntegersKey()
-//
 unsigned int getTripletIntegersKey(int a, int b, int c) {
   // check for negative values
   if (a < 0)
@@ -340,142 +300,70 @@ unsigned int getTripletIntegersKey(int a, int b, int c) {
   return key;
 }
 
-//
-//  tetrahedronVolume()
-//
 double tetrahedronVolume(double a[3], double b[3], double c[3], double d[3]) {
-  //
-  // call MiscFunctions to compute volume
-  //
   double volume = MiscFunctions::getInstance()->tetraVolume(a, b, c, d);
 
-  //
-  // make sure volume is positive
-  //
   if (volume < 0.0)
     volume = volume * -1.0;
 
-  //
-  //
-  //
   return volume;
 }
 
-//
-// find normal
-//
 std::vector<double>
 CalculateNormal(std::vector<std::vector<double>> nodeLocations) {
-  //
-  // get difference vectors
-  //
   std::vector<double> vec1(3, 0.0);
   std::vector<double> vec2(3, 0.0);
 
-  //
-  // get vecs
-  //
   for (int iDof = 0; iDof < 3; ++iDof) {
     vec1[iDof] = nodeLocations[1][iDof] - nodeLocations[0][iDof];
     vec2[iDof] = nodeLocations[2][iDof] - nodeLocations[0][iDof];
   }
 
-  //
-  // get cross product
-  //
   std::vector<double> normal =
       MiscFunctions::getInstance()->crossProduct3x3(vec1, vec2);
-  //
-  // get length of normal
-  //
+  
   double norm = MiscFunctions::getInstance()->L2Norm(normal);
 
-  //
-  // make normal unit length
-  //
   for (int iDof = 0; iDof < 3; ++iDof)
     normal[iDof] = normal[iDof] / norm;
 
-  //
-  //
-  //
   return normal;
 }
 
-//
-//  insertChargeIntoBucket()
-//
 void insertChargeIntoBucket(std::vector<int> site,
                             std::vector<std::vector<int>> &bucket) {
-  //
-  // bucket iterator
-  //
+  
   std::vector<std::vector<int>>::iterator bucketIterator;
 
-  //
-  // search bucket
-  //
   for (unsigned int it = 0; it != bucket.size() + 1; ++it) {
-    //
-    // check if iterator is at end
-    //
     if (it == bucket.size()) {
-      //
-      // insert charge into bucket
-      //
       bucketIterator = bucket.end();
       bucket.insert(bucketIterator, site);
 
-      //
-      // break out of for loop
-      //
       break;
     }
 
-    //
-    // check if charge matches
-    //
     if (bucket[it][0] == site[0] && bucket[it][1] == site[1] &&
         bucket[it][2] == site[2]) {
-      //
-      // break out of for loop
-      //
       break;
     }
 
-    //
-    // check if have passed point of where charge would be
-    //
     if (bucket[it][0] > site[0]) {
-      //
-      // insert charge into bucket
-      //
       bucketIterator = bucket.begin() + it;
       bucket.insert(bucketIterator, site);
 
-      //
-      // break out of for loop
-      //
       break;
     }
   }
 
-  //
-  //
-  //
   return;
 }
 
-//
-// check if site is in element
-//
 bool isInElement(const int site[3],
                  std::vector<std::vector<double>> nodeLocations,
                  struct lattice_t &lattice, const int &quasi) {
 
-  //
   // get nodes in arrays
-  //
   const double node1[3] = {nodeLocations[0][0], nodeLocations[0][1],
                            nodeLocations[0][2]};
   const double node2[3] = {nodeLocations[1][0], nodeLocations[1][1],
@@ -485,27 +373,18 @@ bool isInElement(const int site[3],
   const double node4[3] = {nodeLocations[3][0], nodeLocations[3][1],
                            nodeLocations[3][2]};
 
-  //
   // location variable
-  //
   double location[3];
 
-  //
   // get site location
-  //
   Lattice::getInstance()->getSiteInitialPosition(location, site, &lattice,
                                                  quasi);
 
-  //
   // check tetrahedron
-  //
   if (MiscFunctions::getInstance()->checkPointInTetra(
           node1, node2, node3, node4, location) == INSIDE)
     return (true);
 
-  //
-  //
-  //
   return false;
 }
 
@@ -521,93 +400,59 @@ sitesInElement(const std::vector<int> elementSite, const int iElem,
                    &atomisticElementLocations,
                std::vector<int> &atomisticElements, struct lattice_t &lattice,
                int &quasi) {
-  //
   // variable to hold sites
-  //
   std::vector<std::vector<int>> sitesInElement;
 
-  //
   // array for site
-  //
   const int site[3] = {elementSite[0], elementSite[1], elementSite[2]};
 
-  //
   // add site
-  //
   sitesInElement.push_back(elementSite);
 
-  //
   // counter for number of sites added
-  //
   int sitesAdded = 1;
 
-  //
   // shell variable
-  //
   struct shell_t *P_shell;
 
-  //
   // lattice coordinates of site
-  //
   int siteLattice[3];
 
-  //
   // shell counter
-  //
   int shell_number = 1;
 
-  //
   // continue looping over shells until no sites are added
-  //
   while (sitesAdded != 0) {
-    //
     // reset sitesAdded to 0
-    //
     sitesAdded = 0;
 
-    //
     // get new shell
-    //
     P_shell = Lattice::getInstance()->getShell(shell_number, &lattice);
 
-    //
     // check to see if shell exists
-    //
     if (P_shell == NULL) {
       d_print("Shell not found compute electrostatics: siteInElement()\n");
       exit(EXIT_FAILURE);
     }
 
-    //
     // loop over all sites in shell
-    //
     for (int siteCounter = 0; siteCounter < P_shell->number_sites;
          ++siteCounter) {
-      //
       // set site lattice coordinates
-      //
       siteLattice[0] = site[0] + P_shell->site[siteCounter][0];
       siteLattice[1] = site[1] + P_shell->site[siteCounter][1];
       siteLattice[2] = site[2] + P_shell->site[siteCounter][2];
 
-      //
       // check if lattice site is inside the lattice
-      //
       if (Lattice::getInstance()->isSiteInsideLattice(
               &lattice, siteLattice, quasi) == RETURN_SUCCESS) {
-        //
         // see if site is in element
-        //
         if (isInElement(siteLattice, atomisticElementLocations[iElem], lattice,
                         quasi) == true) {
-          //
           // increment sites added
-          //
           sitesAdded++;
 
-          //
           // add site
-          //
           std::vector<int> tempSite;
           for (int iSite = 0; iSite < 3; ++iSite)
             tempSite.push_back(siteLattice[iSite]);
@@ -617,21 +462,13 @@ sitesInElement(const std::vector<int> elementSite, const int iElem,
       }
     }
 
-    //
     // increment shell number
-    //
     shell_number++;
   }
 
-  //
-  //
-  //
   return sitesInElement;
 }
 
-//
-// insert sites into list
-//
 void InsertSitesIntoList(std::vector<std::vector<int>> &site_list,
                          const std::vector<std::vector<int>> &sites_to_insert) {
   // loop over all sites to insert
@@ -675,9 +512,6 @@ void InsertSitesIntoList(std::vector<std::vector<int>> &site_list,
   return;
 } // end InsertSitesIntoList
 
-//
-// insert node site and number into hash list
-//
 void InsertNodeIntoHashList(
     const std::vector<int> &site, const int node_number,
     std::vector<std::pair<std::vector<int>, int>> &bucket) {
@@ -724,66 +558,41 @@ void InsertNodeIntoHashList(
   return;
 } // end of InsertNodeIntoHashList
 
-//
-// find outward normal of plane given fourth interior point
-//
 std::vector<double>
 outwardNormal(std::vector<std::vector<double>> nodeLocations,
               std::vector<double> fourthNode) {
-  //
-  // get difference vectors
-  //
   std::vector<double> vec1(3, 0.0);
   std::vector<double> vec2(3, 0.0);
 
-  //
-  // get vecs
-  //
   for (int iDof = 0; iDof < 3; ++iDof) {
     vec1[iDof] = nodeLocations[1][iDof] - nodeLocations[0][iDof];
     vec2[iDof] = nodeLocations[2][iDof] - nodeLocations[0][iDof];
   }
 
-  //
   // get cross product
-  //
   std::vector<double> normal =
       MiscFunctions::getInstance()->crossProduct3x3(vec1, vec2);
 
-  //
   // get length of normal
-  //
   double norm = MiscFunctions::getInstance()->L2Norm(normal);
 
-  //
   // make normal unit length
-  //
   for (int iDof = 0; iDof < 3; ++iDof)
     normal[iDof] = normal[iDof] / norm;
 
-  //
   // check normal against 4th point
-  //
   double check = 0.0;
   for (int iDof = 0; iDof < 3; ++iDof)
     check += (fourthNode[iDof] - nodeLocations[0][iDof]) * normal[iDof];
 
-  //
   // check if greater than 0
-  //
   if (check > 0)
     for (int iDof = 0; iDof < 3; ++iDof)
       normal[iDof] *= -1.0;
 
-  //
-  //
-  //
   return normal;
 }
 
-//
-// add contribution from atom to electric field
-//
 void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
                                   const int &iQuasi,
                                   const std::vector<double> &jSourceState,
@@ -792,9 +601,7 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
                                   const double &source_charge,
                                   std::vector<double> &field, double &potential,
                                   std::pair<int, int> coreData) {
-  //
   //  compute field at iFieldState due to charge at jSourceState
-  //
 
   //
   //  Four cases :
@@ -836,16 +643,10 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
   case 0: {
     // shell - shell
 
-    //
-    //  get Quadrature points for pairwise interaction between two charges
-    //
     std::vector<std::pair<std::vector<std::vector<double>>, double>>
         quadVectors =
             QuadraturePoints::getInstance()->getQuadratureVectors(2, 3);
 
-    //
-    //  get Sigmavectors
-    //
     std::vector<double> sigmaVector =
         Quasicontinua::getInstance()->getSigmaVector();
 
@@ -859,16 +660,10 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
 
     int quad;
     for (quad = 0; quad < quadVectors.size(); quad++) {
-      //
-      //  get two vectors and weight
-      //
       std::vector<double> quadV_1 = quadVectors[quad].first[0];
       std::vector<double> quadV_2 = quadVectors[quad].first[1];
       double quadWeight = quadVectors[quad].second;
 
-      //
-      //  compute r_hat_ij
-      //
       std::vector<double> r_hat_ij;
 
       for (int dof = 0; dof < 3; dof++)
@@ -879,9 +674,7 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
           sqrt(r_hat_ij[0] * r_hat_ij[0] + r_hat_ij[1] * r_hat_ij[1] +
                r_hat_ij[2] * r_hat_ij[2]);
 
-      //
       //  write it to electric field and potential
-      //
       double r_hat_3 = r_hat_mag * r_hat_mag * r_hat_mag;
 
       // process only if two atoms are not identical
@@ -917,16 +710,11 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
   case 1: {
     // shell - core
 
-    //
     //  get Quadrature points for pairwise interaction between two charges
-    //
     std::vector<std::pair<std::vector<std::vector<double>>, double>>
         quadVectors =
             QuadraturePoints::getInstance()->getQuadratureVectors(1, 3);
 
-    //
-    //  get Sigmavectors
-    //
     std::vector<double> sigmaVector =
         Quasicontinua::getInstance()->getSigmaVector();
 
@@ -939,15 +727,9 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
 
     int quad;
     for (quad = 0; quad < quadVectors.size(); quad++) {
-      //
-      //  get two vectors and weight
-      //
       std::vector<double> quadV_1 = quadVectors[quad].first[0];
       double quadWeight = quadVectors[quad].second;
 
-      //
-      //  compute r_hat_ij
-      //
       std::vector<double> r_hat_ij;
 
       for (int dof = 0; dof < 3; dof++)
@@ -958,9 +740,7 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
           sqrt(r_hat_ij[0] * r_hat_ij[0] + r_hat_ij[1] * r_hat_ij[1] +
                r_hat_ij[2] * r_hat_ij[2]);
 
-      //
       //  write it to electric field and potential
-      //
       double r_hat_3 = r_hat_mag * r_hat_mag * r_hat_mag;
 
       // process only if two atoms are not identical
@@ -1002,9 +782,6 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
         quadVectors =
             QuadraturePoints::getInstance()->getQuadratureVectors(1, 3);
 
-    //
-    //  get Sigmavectors
-    //
     std::vector<double> sigmaVector =
         Quasicontinua::getInstance()->getSigmaVector();
 
@@ -1017,15 +794,9 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
 
     int quad;
     for (quad = 0; quad < quadVectors.size(); quad++) {
-      //
-      //  get two vectors and weight
-      //
       std::vector<double> quadV_1 = quadVectors[quad].first[0];
       double quadWeight = quadVectors[quad].second;
 
-      //
-      //  compute r_hat_ij
-      //
       std::vector<double> r_hat_ij;
 
       for (int dof = 0; dof < 3; dof++)
@@ -1036,9 +807,7 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
           sqrt(r_hat_ij[0] * r_hat_ij[0] + r_hat_ij[1] * r_hat_ij[1] +
                r_hat_ij[2] * r_hat_ij[2]);
 
-      //
       //  write it to electric field and potential
-      //
       double r_hat_3 = r_hat_mag * r_hat_mag * r_hat_mag;
 
       // process only if two atoms are not identical
@@ -1070,14 +839,10 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
   case 3: {
     // core - core
 
-    //
     // for core - core interaction it's only nteraction between mean
     // position of each core
-    //
 
-    //
     //  compute r_hat_ij
-    //
     std::vector<double> r_hat_ij;
 
     for (int dof = 0; dof < 3; dof++)
@@ -1088,9 +853,7 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
         sqrt(r_hat_ij[0] * r_hat_ij[0] + r_hat_ij[1] * r_hat_ij[1] +
              r_hat_ij[2] * r_hat_ij[2]);
 
-    //
     //  write it to electric field and potential
-    //
     double r_hat_3 = r_hat_mag * r_hat_mag * r_hat_mag;
 
     // process only if two atoms are not identical
@@ -1112,9 +875,6 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
   }
 
   default: {
-    //
-    // error
-    //
     d_print("Exit: AddAtomicToFieldAndPotential() failure\n");
     exit(EXIT_FAILURE);
   }
@@ -1125,9 +885,6 @@ void AddAtomicToFieldAndPotential(const std::vector<double> &iFieldState,
   return;
 } // end of AddAtomicToFieldAndPotential
 
-//
-// add contribution from atom to electric field
-//
 void AddAtomicToFieldAndPotentialExternal(
     const std::vector<double> &iFieldState, const int &iQuasi,
     const std::vector<double> &jExternalCharge, const double &electric_constant,
@@ -1141,9 +898,7 @@ void AddAtomicToFieldAndPotentialExternal(
   if (iCoreFlag == -1) {
     // iQuasi is of shell type
 
-    //
     //   get Quadrature points for 3 dimensional integration
-    //
     std::vector<std::pair<std::vector<std::vector<double>>, double>>
         quadVectors =
             QuadraturePoints::getInstance()->getQuadratureVectors(1, 3);
@@ -1156,15 +911,9 @@ void AddAtomicToFieldAndPotentialExternal(
     double factor_iSite = sigmaVector[iQuasi] / (iFieldState[3]);
 
     for (quad = 0; quad < quadVectors.size(); quad++) {
-      //
-      //  get two vectors and weight
-      //
       std::vector<double> quadVector = quadVectors[quad].first[0];
       double quadWeight = quadVectors[quad].second;
 
-      //
-      //  compute r_hat_ij
-      //
       std::vector<double> r_hat_ij;
 
       for (int dof = 0; dof < 3; dof++)
@@ -1196,9 +945,6 @@ void AddAtomicToFieldAndPotentialExternal(
       }
     }
   } else {
-    //
-    //  compute r_hat_ij
-    //
     std::vector<double> r_hat_ij;
 
     for (int dof = 0; dof < 3; dof++)
@@ -1209,9 +955,6 @@ void AddAtomicToFieldAndPotentialExternal(
         sqrt(r_hat_ij[0] * r_hat_ij[0] + r_hat_ij[1] * r_hat_ij[1] +
              r_hat_ij[2] * r_hat_ij[2]);
 
-    //
-    //  write it to electric field and potential
-    //
     double r_hat_3 = r_hat_mag * r_hat_mag * r_hat_mag;
 
     // process only if two atoms are not identical
@@ -1231,63 +974,32 @@ void AddAtomicToFieldAndPotentialExternal(
   return;
 } // end of AddAtomicToFieldAndPotentialExternal
 
-//
-// check if site is in atomistic list
-//
 bool isSiteAtomistic(
     const std::vector<int> site,
     const std::vector<std::vector<std::vector<int>>> &atomisticCharges) {
-  //
-  // get bucket
-  //
   unsigned int bucket = getTripletIntegersKey(site[0], site[1], site[2]);
 
-  //
-  // search bucket
-  //
   for (unsigned int it = 0; it != atomisticCharges[bucket].size() + 1; ++it) {
-    //
-    // check if iterator is at end
-    //
     if (it == atomisticCharges[bucket].size()) {
-      //
-      // return false
-      //
       return false;
     }
 
-    //
     // check if charge matches
-    //
     if (atomisticCharges[bucket][it][0] == site[0] &&
         atomisticCharges[bucket][it][1] == site[1] &&
         atomisticCharges[bucket][it][2] == site[2]) {
-      //
-      // return true
-      //
       return true;
     }
 
-    //
     // check if have passed point of where charge would be
-    //
     if (atomisticCharges[bucket][it][0] > site[0]) {
-      //
-      // return false
-      //
       return false;
     }
   }
 
-  //
-  // not reached
-  //
   return false;
 }
 
-//
-// check if site is in node list
-//
 const bool
 IsSiteANode(const std::vector<int> &site,
             const std::vector<std::pair<std::vector<int>, int>> &bucket,
@@ -1314,44 +1026,23 @@ IsSiteANode(const std::vector<int> &site,
   return false;
 } // end of IsSiteANode
 
-//
-// midpoint of line
-//
 std::vector<double> midPointLine(const std::vector<double> &location1,
                                  const std::vector<double> &location2) {
-  //
   // midpoint
-  //
   std::vector<double> midPoint(3, 0.0);
   for (int iDof = 0; iDof < 3; ++iDof)
     midPoint[iDof] = (location1[iDof] + location2[iDof]) / 2.0;
 
-  //
-  // return
-  //
   return midPoint;
 }
 
-//
-// divide triangle into 4 triangles on plane
-//
 std::vector<std::vector<std::vector<double>>>
 divideTrianglePlane(const std::vector<double> location1,
                     const std::vector<double> location2,
                     const std::vector<double> location3) {
-  //
-  // m12
-  //
+  
   std::vector<double> midLocation12 = midPointLine(location1, location2);
-
-  //
-  // m23
-  //
   std::vector<double> midLocation23 = midPointLine(location2, location3);
-
-  //
-  // m13
-  //
   std::vector<double> midLocation13 = midPointLine(location1, location3);
 
   std::vector<std::vector<std::vector<double>>> triangles;
@@ -1383,24 +1074,11 @@ divideTrianglePlane(const std::vector<double> location1,
   return triangles;
 }
 
-//
-// calculate field from plane charge
-//
 std::pair<std::vector<double>, double> fieldFromTriangularFace(
     double chargeDensity, std::vector<std::vector<double>> planeLocations,
     std::vector<double> fieldLocation, double electricConstant, int method) {
-#if 0
-            std::vector<double> fieldDummy;
-            double potentialDummy;
-            std::ofstream outfile;
-            outfile.open("quadratureConvergence.txt",std::ios_base::app);
-            //outfile<<"Next Charge: "<<std::endl;
-            for(method =0; method<6; ++method){
-#endif
 
-  //
   // field and potential
-  //
   std::vector<double> field(3, 0.0);
   double potential = 0.0;
   std::vector<std::vector<double>> localQuadPoints;
@@ -1409,90 +1087,57 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
   // get MiscFunctions instance
   MiscFunctions *miscC = MiscFunctions::getInstance();
 
-  //
   // switch between different calculation methods
-  //
   switch (method) {
-  //
   // method 0, aggregate charge and treat as point charge
-  //
   case 0: {
-    //
     // get area of triangle
-    //
     double area = miscC->TriangleArea(planeLocations[0], planeLocations[1],
                                       planeLocations[2]);
 
-    //
     // get center of triangle
-    //
     std::vector<double> center = miscC->TriangleCenter(
         planeLocations[0], planeLocations[1], planeLocations[2]);
 
-    //
     // get r
-    //
     std::vector<double> r;
     for (int iDof = 0; iDof < 3; ++iDof)
       r.push_back(fieldLocation[iDof] - center[iDof]);
 
-    //
     // get r2
-    //
     double r2 = r[0] * r[0] + r[1] * r[1] + r[2] * r[2];
 
-    //
     // get r3
-    //
     double r1 = std::sqrt(r2);
     double r3 = r2 * r1;
 
-    //
     // add contribution to field
-    //
     for (int iDof = 0; iDof < 3; ++iDof)
       field[iDof] = electricConstant * chargeDensity * area * r[iDof] / r3;
 
-    //
     // add to potential
-    //
     potential += electricConstant * chargeDensity * area / r1;
-#if 0
-            if(potential > 0.0001 || potential < -0.0001){
-              outfile<<potential;
-            }
-#endif
     return std::make_pair(field, potential);
   }
 
-  //
   // method 1, single quadrature point
-  //
   case 1: {
-    //
     // insert single quad point
-    //
     std::vector<double> localLocation;
     localLocation.push_back(0.333333333333333);
     localLocation.push_back(0.333333333333333);
     localLocation.push_back(0.333333333333333);
     localQuadPoints.push_back(localLocation);
 
-    //
     // insert local quad point weight
-    //
     localWeights.push_back(1.0);
 
     break;
   }
 
-  //
   // method 2, three quadrature points
-  //
   case 2: {
-    //
     // insert quad points
-    //
     std::vector<double> localLocation;
     localLocation.push_back(0.666666666666667);
     localLocation.push_back(0.166666666666667);
@@ -1509,9 +1154,7 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
     localLocation[2] = 0.666666666666667;
     localQuadPoints.push_back(localLocation);
 
-    //
     // insert local quad point weight
-    //
     localWeights.push_back(0.333333333333333);
     localWeights.push_back(0.333333333333333);
     localWeights.push_back(0.333333333333333);
@@ -1519,13 +1162,9 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
     break;
   }
 
-  //
   // method 3, six quadrature points
-  //
   case 3: {
-    //
     // insert quad points
-    //
     std::vector<double> localLocation;
     localLocation.push_back(0.816847572980459);
     localLocation.push_back(0.091576213509771);
@@ -1557,9 +1196,7 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
     localLocation[2] = 0.108103018168070;
     localQuadPoints.push_back(localLocation);
 
-    //
     // insert local quad point weight
-    //
     localWeights.push_back(0.109951743655322);
     localWeights.push_back(0.109951743655322);
     localWeights.push_back(0.109951743655322);
@@ -1570,13 +1207,9 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
     break;
   }
 
-  //
   // method 4, seven quadrature points
-  //
   case 4: {
-    //
     // insert quad points
-    //
     std::vector<double> localLocation;
     localLocation.push_back(0.333333333333333);
     localLocation.push_back(0.333333333333333);
@@ -1613,9 +1246,7 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
     localLocation[2] = 0.470142064105115;
     localQuadPoints.push_back(localLocation);
 
-    //
     // insert local quad point weight
-    //
     localWeights.push_back(0.225000000000000);
     localWeights.push_back(0.125939180544827);
     localWeights.push_back(0.125939180544827);
@@ -1627,13 +1258,9 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
     break;
   }
 
-  //
   // method 5, twelve quadrature points
-  //
   case 5: {
-    //
     // insert quad points
-    //
     std::vector<double> localLocation;
     localLocation.push_back(0.873821971016996);
     localLocation.push_back(0.063089014491502);
@@ -1695,9 +1322,7 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
     localLocation[2] = 0.053145049844816;
     localQuadPoints.push_back(localLocation);
 
-    //
     // insert local quad point weight
-    //
     localWeights.push_back(0.050844906370207);
     localWeights.push_back(0.050844906370207);
     localWeights.push_back(0.050844906370207);
@@ -1717,57 +1342,39 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
   default: { assert(method == -1); }
   }
 
-  //
   // get area of triangle
-  //
   double J = miscC->TriangleArea(planeLocations[0], planeLocations[1],
                                  planeLocations[2]);
 
-  //
   // loop over all quad points
-  //
   for (unsigned int iQuad = 0; iQuad < localQuadPoints.size(); ++iQuad) {
-    //
     // global coordinates
-    //
     std::vector<double> globalLocation(3, 0.0);
 
-    //
     // get quad global coordinates
-    //
     for (int iDof = 0; iDof < 3; ++iDof)
       for (int iShape = 0; iShape < 3; ++iShape)
         globalLocation[iDof] +=
             planeLocations[iShape][iDof] * localQuadPoints[iQuad][iShape];
 
-    //
     // get r
-    //
     std::vector<double> r;
     for (int iDof = 0; iDof < 3; ++iDof)
       r.push_back(fieldLocation[iDof] - globalLocation[iDof]);
 
-    //
     // get r2
-    //
     double r2 = r[0] * r[0] + r[1] * r[1] + r[2] * r[2];
 
-    //
     // get r3
-    //
     double r1 = std::sqrt(r2);
     double r3 = r2 * r1;
 
-    //
     // add contribution to field
-    //
     for (int iDof = 0; iDof < 3; ++iDof)
       field[iDof] += electricConstant * chargeDensity * J *
                      localWeights[iQuad] * r[iDof] / r3;
 
-    //
     // add to potential
-    //
     potential +=
         electricConstant * chargeDensity * J * localWeights[iQuad] / r1;
   }
@@ -1775,41 +1382,25 @@ std::pair<std::vector<double>, double> fieldFromTriangularFace(
   return std::make_pair(field, potential);
 } // end of fieldFromTriangularFace()
 
-//
-//  static int shell_count = 1;
-//  static int integration_level = 1;
-//
-//  calculate field from density face adaptively
-//
 std::pair<std::vector<double>, double> fieldFromDensityFaceAdaptive(
     const double &density,
     const std::vector<std::vector<double>> &planeLocations,
     const std::vector<double> &fieldLocation, const double &electricConstant,
     const int &faceMethod, const double &integrationError) {
-  //
   // calculate field from nodes
-  //
   std::vector<double> fieldOld(3, std::numeric_limits<double>::max());
 
-  //
   // all levels of triangles
-  //
   std::vector<std::vector<std::vector<std::vector<double>>>> trianglesAllLevels;
 
-  //
   // triangles to loop over
-  //
   std::vector<std::vector<std::vector<double>>> triangles;
   triangles.push_back(planeLocations);
 
-  //
   // initial triangles
-  //
   trianglesAllLevels.push_back(triangles);
 
-  //
   // loop over subdivision levels
-  //
   int nLevel = 0;
   std::vector<double> fieldFromPlanes(3, 0.0);
   double potentialFromPlanes = 0.0;
@@ -1821,29 +1412,19 @@ std::pair<std::vector<double>, double> fieldFromDensityFaceAdaptive(
     if (nLevel == 5)
       break;
 
-    // while(nLevel < integration_level){
-
     trianglesAllLevels.resize(nLevel + 1);
 
-    //
     // subdivide if level greater than zero
-    //
     if (nLevel > 0) {
-      //
       // set old field values
-      //
       for (int iDof = 0; iDof < 3; ++iDof)
         fieldOld[iDof] = fieldFromPlanes[iDof];
 
-      //
       // subdivide triangles
-      //
       for (int iTriangle = 0;
            iTriangle < int(trianglesAllLevels[nLevel - 1].size());
            ++iTriangle) {
-        //
         // get new triangles
-        //
         std::vector<std::vector<std::vector<double>>> tempTriangles =
             divideTrianglePlane(trianglesAllLevels[nLevel - 1][iTriangle][0],
                                 trianglesAllLevels[nLevel - 1][iTriangle][1],
@@ -1854,22 +1435,16 @@ std::pair<std::vector<double>, double> fieldFromDensityFaceAdaptive(
       }
     }
 
-    //
     // initialize variables to zero
-    //
     fieldFromPlanes[0] = 0.0;
     fieldFromPlanes[1] = 0.0;
     fieldFromPlanes[2] = 0.0;
     potentialFromPlanes = 0.0;
 
-    //
     // calculate values from subdivided triangles
-    //
     for (int iTriangle = 0; iTriangle < int(trianglesAllLevels[nLevel].size());
          ++iTriangle) {
-      //
       // field from triangular face
-      //
       const std::pair<std::vector<double>, double> tempVar =
           fieldFromTriangularFace(density,
                                   trianglesAllLevels[nLevel][iTriangle],
@@ -1881,21 +1456,12 @@ std::pair<std::vector<double>, double> fieldFromDensityFaceAdaptive(
       potentialFromPlanes += tempVar.second;
     }
 
-    //
-    // increment level
-    //
     nLevel++;
   }
 
-  //
-  // return field
-  //
   return std::make_pair(fieldFromPlanes, potentialFromPlanes);
 }
 
-//
-//  AddTriangleCluster()
-//
 void AddTriangleCluster(
     const int quasi, const std::vector<double> &node_location,
     const std::vector<int> site_1, const std::vector<int> site_2,
@@ -2026,9 +1592,6 @@ void AddTriangleCluster(
   return;
 } // end of AddTriangleCluster
 
-//
-// compute contribution from single face of cluster
-//
 void ContributionFromSingleClusterSurface(
     const int &quasi, const std::vector<double> &node_location,
     const int &face_method, const double &integration_error,
@@ -2118,9 +1681,7 @@ void ContributionFromSingleClusterSurface(
   return;
 } // end of ContributionFromSingleClusterSurface
 
-//
 // get shell of triangles
-//
 void AddShellTriangles(
     const std::vector<std::vector<int>> &coords, struct lattice_t &zero_lattice,
     const std::vector<double> &zero_shift, const int &const_index,

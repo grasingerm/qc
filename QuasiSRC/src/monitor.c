@@ -61,35 +61,14 @@
  *
  */
 
-#ifdef HAVE_CONFIG_H
-#include "config.h"
-#endif /* HAVE_CONFIG_H */
-
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#if !defined(_REENTRANT)
-#define _REENTRANT
-#endif
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_SCHED_H
 #include <sched.h>
-#endif /* HAVE_SCHED_H */
 
-#if defined(__QC_SGI) || defined(_HAVE_NUMA_H)
 #include "numa.h"
 #include <numa.h>
-#endif /* sgi || linux */
 
 #include "C_Interface.h" // for free_e()
 #include "DataTypes.h"

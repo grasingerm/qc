@@ -8,24 +8,10 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
 #include <string>
-
 #include "DataTypes.h"
 
-//
-//
-//
 namespace quasicontinuum {
 
 /**
@@ -249,19 +235,10 @@ public:
       const std::pair< std::vector<int>, std::vector<double> > siteState,
       const double cutoffRadius);
 
-  //
-  //  initializeExternalForces()
-  //
   void initializeExternalForces();
 
-  //
-  //  initializeNodeEnergy()
-  //
   void initializeNodeEnergy(void);
 
-  //
-  //  initializeNodeForces(void)
-  //
   void initializeNodeForces(void);
 
   /**
@@ -308,20 +285,11 @@ public:
   //
   void setFrequencyFixity(const int fixity_flag);
 
-  //
-  //  getTraceOfKData()
-  //
   const std::vector<double> &getTraceOfKData() const;
   std::vector<double> &getTraceOfKData();
 
-  //
-  //  initializeTraceOfKNode()
-  //
   void initializeTraceOfKData();
 
-  //
-  // private data
-  //
 private:
   int d_id;
   element_list_t d_element_list;
@@ -340,9 +308,6 @@ private:
   std::vector<unsigned int> d_frequencyFixityOriginal;
   std::vector<double> d_traceOfKNode;
 
-  //
-  // private methods
-  //
 private:
   /**
    * @brief Get site that is near a site

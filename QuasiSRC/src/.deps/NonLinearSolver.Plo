@@ -1,0 +1,11 @@
+NonLinearSolver.lo: NonLinearSolver.cc /usr/include/stdc-predef.h \
+ config.h /home/grasinge/Dev/qc/QuasiSRC/src/../include/NonLinearSolver.h \
+ config.h
+
+/usr/include/stdc-predef.h:
+
+config.h:
+
+/home/grasinge/Dev/qc/QuasiSRC/src/../include/NonLinearSolver.h:
+
+config.h:

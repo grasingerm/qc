@@ -1,18 +1,9 @@
-dnl
-dnl Configuration for main Quasi sources
-dnl
-
-
-dnl
-dnl Initialize
-dnl
-AC_INIT
+AC_INIT([LIBQC3D], [0.1.0])
 AC_CONFIG_SRCDIR([monitor.c])
 AC_CONFIG_AUX_DIR(../bin)
-AM_INIT_AUTOMAKE(QC3D, [" "])
+AM_INIT_AUTOMAKE
 AM_MAINTAINER_MODE
 AC_CANONICAL_HOST
-AC_SRC_DIR_EXPAND
 AM_CONFIG_HEADER(config.h)
 AC_PROG_MAKE_SET
 AM_DISABLE_SHARED
@@ -29,10 +20,6 @@ builtin(include, ../system/C/compiler.m4)dnl
 builtin(include, ../system/C++/compiler.m4)dnl
 builtin(include, ../system/F77/compiler.m4)dnl
 				   
-
-dnl
-dnl Checks for programs.
-dnl
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CC_C_O
@@ -65,7 +52,7 @@ AC_CHECK_HEADERS(pthread.h sched.h sys/mpctl.h errno.h unistd.h \
 math.h assert.h search.h signal.h sys/wait.h ctype.h limits.h \
 fcntl.h sys/mman.h libgen.h rpc/rpc.h rpc/xdr.h alloca.h sys/time.h \
 sys/resource.h float.h synch.h values.h)
-AC_CHECK_HEADER(cassert, ,CXXFLAGS="$CXXFLAGS -I${srcdir}/../system/C++")
+AC_CHECK_HEADER(cassert, ,CXXFLAGS="$CXXFLAGS -std=c++14 -O3 -I${srcdir}/../system/C++")
 AC_CHECK_HEADERS(algorithm algo.h fstream fstream.h vector vector.h limits)
 
 dnl
@@ -137,7 +124,6 @@ AC_CHECK_FUNCS([rwlock_init pthread_rwlock_init],,)
 AC_CHECK_FUNCS([rw_wrlock pthread_rwlock_wrlock],,)
 AC_CHECK_FUNCS([rw_unlock pthread_rwlock_unlock],,)
 AC_CHECK_FUNCS([rw_rdlock pthread_rwlock_rdlock],,)
-
 
 dnl
 dnl Finish up

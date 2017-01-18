@@ -8,17 +8,10 @@
 
 ## Need all includes
 AUTOMAKE_OPTIONS = 1.7
+AM_CXXFLAGS = -std=c++14
 ACLOCAL_AMFLAGS  = -I ../system
 
-INCLUDES = -I${srcdir}/../include -I${srcdir}/../triangulation_server/include -I$/usr/local/include
-
-
-## main program: compile qc3d.c and link with all libraries
-
-#bin_PROGRAMS = quasi
-#quasi_SOURCES = qc3d.c stamp.cc
-#quasi_LDADD = libquasi.la ../triangulation_server/src/libtriang.la  @DMALLOC_C_LIBS@
-
+AM_CPPFLAGS = -I${srcdir}/../include -I${srcdir}/../triangulation_server/include -I$/usr/local/include
 
 ## Build library of main QC3D code
 
@@ -30,9 +23,3 @@ QuasicontinuaForceFunction.cc C_Interface.cc CGNonLinearSolver.cc \ CrossNeighbo
 CreateMesh.cc ForceEnergyCalculation.cc Indent.cc Input.cc Lattice.cc \
 MiscFunctions.cc Node.cc Output.cc PairPotentials.cc QuadraturePoints.cc \
 Shape.cc Void.cc RunData.cc
-
-
-
-
-
-

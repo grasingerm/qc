@@ -8,18 +8,7 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#if 0 // defined(HAVE_MPI)
-#include <Accumulator.h>
-#include <LengthError.h>
-#undefine HAVE_MPI
-#endif // HAVE_MPI
-
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
 #include <cmath>
 #include <iostream>
 
@@ -35,24 +24,15 @@
 #include "threads.h"
 
 // max cg iterations
-
 static int alternateIter = 0;
 static int minimizationMethod = 0;
 static int freq_or_position_min = 0;
 
-//
-//
-//
 namespace quasicontinuum {
 
-//
-//
-//
 namespace {
 
-//
 // local types, data and functions
-//
 struct initializeDirection_argument_t {
   double d_deltaNew;
   std::vector<double> *d_sOld;

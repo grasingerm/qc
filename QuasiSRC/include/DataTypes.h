@@ -2,24 +2,9 @@
 #define _TYPES_H_
 
 #include <stdbool.h>
-
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#else
-#error Standard C library headers not found.
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#else
-#error limits.h not found.
-#endif /* HAVE_LIMITS_H */
 
 #if defined(__cplusplus)
 namespace quasicontinuum {

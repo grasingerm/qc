@@ -27,64 +27,17 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#if !defined(_REENTRANT)
-#define _REENTRANT
-#endif
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not found.
-#endif /* HAVE_UNISTD_H */
-
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#else
-#error signal.h not found.
-#endif /* HAVE_SIGNAL_H */
-
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h not found.
-#endif /* HAVE_SYS_TYPES_H */
-
-#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
-#else
-#error sys/stat.h not found.
-#endif /* HAVE_SYS_STAT_H */
-
-#if HAVE_FCNTL_H
 #include <fcntl.h>
-#else
-#error fcntl.h not found
-#endif /* HAVE_FCNTL_H */
-
-#if HAVE_ERRNO_H
 #include <errno.h>
-#else
-#error errno.h not found.
-#endif /* HAVE_ERRNO_H */
-
-#if HAVE_SYS_WAIT_H
 #include <sys/wait.h>
-#else
-#error sys/wait.h not found.
-#endif /* HAVE_SYS_WAIT_H */
 
 #ifndef WEXITSTATUS
 #define WEXITSTATUS(stat_val) ((unsigned)(stat_val) >> 8)

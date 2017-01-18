@@ -1,7 +1,3 @@
-//
-// PairPotentials.h
-//
-
 #if !defined(PAIRPOTENTIALS_H)
 #define PAIRPOTENTIALS_H
 
@@ -9,26 +5,8 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
-#ifdef STDC_HEADERS
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-//
-//
-//
 
 namespace quasicontinuum {
 
@@ -37,28 +15,14 @@ namespace quasicontinuum {
  */
 class PairPotentials {
 
-  //
-  // public data types
-  //
 public:
   bool d_EAMFlag;
   int d_minMethod;
   int d_quadMethod;
   int d_statistics;
 
-  //
-  // public methods
-  //
-
 public:
-  /**
-   * @brief getInstance.
-   */
   static PairPotentials *getInstance();
-
-  /**
-   * @brief destroyInstance.
-   */
   static void destroyInstance();
 
   /**
@@ -129,14 +93,8 @@ public:
    */
   double getCutoffRadius(int potentialNumber);
 
-  //
-  //  getCutoffRadiusNeighborList()
-  //
   double getCutoffRadiusNeighborList(const int potentialNumber);
 
-  //
-  //  getCutoffRadiusClusterList()
-  //
   double getCutoffRadiusClusterList(const int potentialNumber);
 
   /**
@@ -161,54 +119,20 @@ public:
   std::pair<double, double>
   getEmbeddingFunctionAndDerivative(int potentialNumber, double density);
 
-  //
-  //  setUniversalConstants()
-  //  constants : (max planck, boltzman, dielectric)
   void setUniversalConstants(std::vector<double> constants);
 
-  //
-  //  getUniversalConstants()
-  //
   std::vector<double> getUniversalConstants();
 
-  //
-  //  getBoltzmanConstant()
-  //
   double getBoltzmanConstant();
 
-  //
-  //  getBoltzmanConstant()
-  //
   double getElectricConstant();
 
-  //
-  //  getPotentialType()
-  //
   int getPotentialType(int potentialNumber);
 
-  //
-  // private methods
-  //
-
 private:
-  /**
-   * @brief Constructor.
-   */
   PairPotentials();
-
-  /**
-   * @brief Copy constructor.
-   */
   PairPotentials(PairPotentials const &);
-
-  /**
-   * @brief Assignment operator.
-   */
   const PairPotentials &operator=(const PairPotentials &);
-
-  /**
-   * @brief Destructor.
-   */
   ~PairPotentials();
 
   /**
@@ -339,9 +263,6 @@ private:
   void Anharmonic_Harmonic(double &phi, double &dphi, double &d_dphi,
                            int potentialNumber, double separation);
 
-  //
-  // private data types
-  //
 private:
   static PairPotentials *_instance;
   std::vector< std::pair<int, int> > d_PotentialInteractions;

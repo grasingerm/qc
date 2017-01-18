@@ -20,24 +20,9 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-/* No _REENTRANT */
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef STDC_HEADERS
 #include <stdlib.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h not found.
-#endif /* HAVE_SYS_TYPES_H */
 
 #if defined(__QC_SGI)
 #include "numa.h"

@@ -34,26 +34,11 @@
 #define _XOPEN_SOURCE 500
 #endif /* __linux__ */
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-/* No _REENTRANT */
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_STRING_H
 #include <search.h>
-#else
-#error search.h not found
-#endif /* HAVE STRING_H */
 
 #if defined(__QC_SUN)
 #ifdef HAVE_SYNCH_H
@@ -82,9 +67,7 @@ static const char rcsid[] =
 
 #define MODULO_BITS 21
 #define MODULO_MASK ~(~0 << MODULO_BITS)
-/* #define NUMBER_BUCKETS ((unsigned) 1 << MODULO_BITS) */
 #define NUMBER_BUCKETS 64997
-/* #define NUMBER_BUCKETS ((unsigned) 1 << (WIDTH_0+WIDTH_1+WIDTH_2)) */
 
 /**
  * local data defs
@@ -119,11 +102,6 @@ struct hash_table_t {
  */
 
 static struct hash_table_t *hash_table;
-/*
-static unsigned int mask_0 = ~( ~0 << WIDTH_0);
-static unsigned int mask_1 = ~( ~0 << WIDTH_1);
-static unsigned int mask_2 = ~( ~0 << WIDTH_2);
-*/
 static pthread_rwlock_t rwlock =
     PTHREAD_RWLOCK_INITIALIZER; // FIXME: May not work on Sun
 static pthread_mutex_t hash_table_alloc_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -135,38 +113,6 @@ static int hash_table_allocated = 0;
 
 static struct element_t *hash_table_search_element_unlocked(const int l[3],
                                                             const int iQuasi);
-
-/**
- * hash function; take WIDTH_* bits from each site coordinate and
- * create (WIDTH_0+WIDTH_1+WIDTH_2) index
- */
-
-/**
-#define hash_function(l) ((l)[2] & mask_2) + (((l)[1] & mask_1) << WIDTH_2) + \
-                         (((l)[0] & mask_0) << (WIDTH_1+WIDTH_2))
-**/
-/**
-#define hash_function(l) ((((l)[0])+((l)[1] << 1)+((l)[2] << 3))%32768)
-**/
-/**
-#define hash_function(l) ((((l)[0] << 1)+((l)[1] << 4)+((l)[2] << 8
-))&MODULO_MASK)
-**/
-
-/*
-#define WIDTH_BIT_MASK (~((~(unsigned) 0) << WIDTH_0))
-
-#define BITS_L1_MASK (WIDTH_BIT_MASK << 1)
-#define BITS_L2_MASK (WIDTH_BIT_MASK << 4)
-#define BITS_L3_MASK (WIDTH_BIT_MASK << 7)
-
-#define hash_function(l) (((l)[0] & BITS_L1_MASK) | ((l[1]) & BITS_L2_MASK) |
-((l)[2] & BITS_L3_MASK))
-*/
-
-/**
- * hash function
- */
 
 static int hash_function(const int l[3]) {
 
@@ -251,21 +197,9 @@ static void hash_table_init(const int iQuasi) {
     for (j_bucket = 0; j_bucket < NUMBER_BUCKETS; j_bucket++) {
 /* if (pthread_mutex_init(&(hash_table.buckets[i_bucket].lock), NULL)) { */
 
-#if defined(__QC_SUN) /* Sun has pthread_rwlock_init, but doesn't work right   \
-                         */
-      if (rwlock_init(&(hash_table[j_Quasi].buckets[j_bucket].lock),
-                      USYNC_THREAD, NULL)) {
-        ERROR("rwlock_init()");
-#else
-#ifdef HAVE_PTHREAD_RWLOCK_INIT
       if (pthread_rwlock_init(&(hash_table[j_Quasi].buckets[j_bucket].lock),
                               NULL)) {
         ERROR("pthread_mutex_init()");
-#else
-#error No pthread_rwlock_init() found
-#endif /* HAVE_PTHREAD_RWLOCK_INIT */
-#endif /* SUN */
-
         exit(EXIT_FAILURE);
       }
     }
@@ -362,19 +296,9 @@ static void hash_table_clear_locks(const int iQuasi) {
     for (j_bucket = 0; j_bucket < NUMBER_BUCKETS; j_bucket++) {
 /* if (pthread_mutex_init(&(hash_table.buckets[i_bucket].lock), NULL)) { */
 
-#if defined(__QC_SUN) /* Sun has pthread_rwlock_init, but doesn't work right   \
-                         */
-      if (rwlock_destroy(&(hash_table[j_Quasi].buckets[j_bucket]).lock)) {
-        ERROR("rwlock_init()");
-#else
-#ifdef HAVE_PTHREAD_RWLOCK_INIT
       if (pthread_rwlock_destroy(
               &(hash_table[j_Quasi].buckets[j_bucket].lock))) {
         ERROR("pthread_mutex_init()");
-#else
-#error No pthread_rwlock_init() found
-#endif /* HAVE_PTHREAD_RWLOCK_INIT */
-#endif /* SUN */
 
         exit(EXIT_FAILURE);
       }
@@ -531,15 +455,7 @@ void hash_table_add_site(double *shape, const int l[3],
  * get write mutex associated with the bucket
  */
 
-#if defined(__QC_SUN) /* Sun has pthread_rwlock_wrlock, doesn't work */
-  rw_wrlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#ifdef HAVE_PTHREAD_RWLOCK_WRLOCK
   pthread_rwlock_wrlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#error pthread_rwlock_wrlock() not found
-#endif /* HAVE_PTHREAD_RWLOCK_WRLOCK */
-#endif /* SUN */
 
   /**
    * check if l is in the hash_table (we do MT, so other thread
@@ -548,16 +464,7 @@ void hash_table_add_site(double *shape, const int l[3],
 
   if (hash_table_search_element_unlocked(l, iQuasi) != NULL) {
 
-#if defined(__QC_SUN) /* Sun has pthread_rwlock_unlock, but doesn't work */
-    rw_unlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#ifdef HAVE_PTHREAD_RWLOCK_UNLOCK
     pthread_rwlock_unlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#error pthread_rwlock_unlock() not found
-#endif /* HAVE_PTHREAD_RWLOCK_UNLOCK */
-#endif /* SUN */
-
     return;
   }
 
@@ -571,15 +478,7 @@ void hash_table_add_site(double *shape, const int l[3],
  * unlock lock
  */
 
-#if defined(__QC_SUN) /* Sun has pthread version, but doesn't work? */
-  rw_unlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#ifdef HAVE_PTHREAD_RWLOCK_UNLOCK
   pthread_rwlock_unlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#error pthread_rwlock_unlock() not found
-#endif /* HAVE_PTHREAD_RWLOCK_UNLOCK */
-#endif /* SUN */
 
   return;
 }
@@ -743,15 +642,7 @@ struct element_t *hash_table_search_element(double *shape, const int l[3],
  * acquire lock
  */
 
-#if defined(__QC_SUN) /* Sun pthread version doesn't work? */
-  rw_rdlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#ifdef HAVE_PTHREAD_RWLOCK_RDLOCK
   pthread_rwlock_rdlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#error no pthread_rwlock_rdlock() found.
-#endif /* HAVE_PTHREAD_RWLOCK_RDLOCK */
-#endif /* SUN */
 
   /**
    * locate datum in the bucket
@@ -766,15 +657,7 @@ struct element_t *hash_table_search_element(double *shape, const int l[3],
  * release lock
  */
 
-#if defined(__QC_SUN) /* Sun's pthread doesn't work? */
-  rw_unlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#ifdef HAVE_PTHREAD_RWLOCK_UNLOCK
   pthread_rwlock_unlock(&(hash_table[iQuasi].buckets[hash_table_index].lock));
-#else
-#error pthread_rwlock_unlock() not found
-#endif /* HAVE_PTHREAD_RWLOCK_UNLOCK */
-#endif /* SUN */
 
   if (P_datum == NULL)
     return (NULL);
@@ -803,119 +686,3 @@ void hash_table_clean(const int iQuasi) {
 
   return;
 }
-
-/* /\** */
-/*  * dump contents of the hash table */
-/*  *\/ */
-
-/* void */
-/* hash_table_dump(void) */
-/* { */
-
-/*   int i_bucket; */
-
-/*   for (i_bucket = 0; i_bucket < NUMBER_BUCKETS; i_bucket++) */
-/*     printf("%d %d\n", i_bucket, hash_table.buckets[i_bucket].n_data); */
-
-/*   return; */
-
-/* } */
-
-/* /\** */
-/*  * compute hash function for all cluster sites in a lattice */
-/*  *\/ */
-
-/* void */
-/* check_hash_table(struct node_list_t *P_node_list) */
-/* { */
-
-/*   int i_node; */
-/*   int i_site; */
-
-/*   /\** */
-/*    * initialize table */
-/*    *\/ */
-
-/*    hash_table_init(); */
-
-/*    /\** */
-/*     * put all sites into the hash table */
-/*     *\/ */
-
-/*    for (i_node = 0; i_node < P_node_list->number_nodes; i_node++) { */
-
-/*      struct node_t *P_node = P_node_list->nodes[i_node]; */
-
-/*      for (i_site = 0; i_site < P_node->site_cluster.number_sites; i_site++) {
- */
-
-/*        struct datum_t datum; */
-/*        int hash_table_index; */
-
-/*        hash_table_index = hash_function(P_node->site_cluster.sites[i_site]);
- */
-
-/*        datum.l[0] = P_node->site_cluster.sites[i_site][0]; */
-/*        datum.l[1] = P_node->site_cluster.sites[i_site][1]; */
-/*        datum.l[2] = P_node->site_cluster.sites[i_site][2]; */
-/*        datum.P_element = NULL; */
-
-/*        add_data_to_bucket(&(hash_table.buckets[hash_table_index]), &datum);
- */
-
-/*      } */
-
-/*    } */
-
-/*    /\** */
-/*     * dump contents of the hash table */
-/*     *\/ */
-
-/*    hash_table_dump(); */
-
-/*   return; */
-
-/* } */
-
-/* /\** */
-/*  * print the distribution of sites in the hash table for all  */
-/*  * cluster atoms */
-/*  *\/ */
-
-/* void */
-/* print_hash_distribution(const struct node_list_t *P_node_list) */
-/* { */
-
-/*   int distrib[NUMBER_BUCKETS]; */
-/*   int i_node; */
-
-/*   /\** */
-/*    * initialize distrib table */
-/*    *\/ */
-
-/*   memset(distrib, '\0', sizeof(distrib)); */
-
-/*   /\** */
-/*    * fill distrib table */
-/*    *\/ */
-
-/*   for (i_node = 0; i_node < P_node_list->number_nodes; i_node++) { */
-
-/*     struct node_t *P_node = P_node_list->nodes[i_node]; */
-/*     int i_site; */
-
-/*     for (i_site = 0; i_site < P_node->site_cluster.number_sites; i_site++) */
-/*       (distrib[hash_function(P_node->site_cluster.sites[i_site])])++; */
-
-/*   } */
-
-/*   /\** */
-/*    * print distrib table */
-/*    *\/ */
-
-/*   for (i_node = 0; i_node < NUMBER_BUCKETS; i_node++) */
-/*     printf("%d %d\n", i_node, distrib[i_node]); */
-
-/*   return; */
-
-/* } */

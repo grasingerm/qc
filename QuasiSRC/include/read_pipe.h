@@ -21,11 +21,7 @@
 #ifndef _READ_PIPE_H_
 #define _READ_PIPE_H_
 
-#ifdef STDC_HEADERS
 #include <stdio.h>
-#else
-#error Standard C library headers not found.
-#endif /* STDC_HEADERS */
 
 #if defined(__cplusplus)
 namespace quasicontinuum {

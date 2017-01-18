@@ -9,23 +9,9 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-// vector
-#ifdef HAVE_VECTOR
 #include <vector>
-#else
-#ifdef HAVE_VECTOR_H
-#include <vector.h>
-#else
-#error No vector or vector.h available
-#endif // HAVE_VECTOR_H
-#endif // HAVE_VECTOR
-
 #include "CrossNeighborList.h"
 #include "DataTypes.h"
-
-//
-//
-//
 
 namespace quasicontinuum {
 
@@ -34,45 +20,15 @@ namespace quasicontinuum {
  */
 class Electrostatics {
 
-  //
-  // public methods
-  //
-
 public:
-  /**
-   * @brief getInstance.
-   */
   static Electrostatics *getInstance();
-
-  /**
-   * @brief destroyInstance.
-   */
   static void destroyInstance();
 
-  //
-  // isElectrostaticEnable()
-  //
   int isElectrostaticEnable(void);
-
-  //
-  //  computeGeaometries()
-  //
   void computeGeometries(void);
-
-  //
-  //  computeElectricField()
-  //
   void computeElectricField(bool compute_in_reference);
-
-  //
-  //  computeForceOnNodeDueToSite()
-  //
   void computeForceOnNodeDueToSite(int iQuasi, cluster_site_data_t iCSite_data,
                                    bool compute_in_reference);
-
-  //
-  //  computeForceOnSite()
-  //
   void computeForceOnSite(int iQuasi, cluster_site_data_t iCSite_data,
                           std::vector<double> &force, double &energy,
                           bool compute_in_reference);
@@ -129,10 +85,6 @@ public:
    */
   void insertExternalPointCharges(
       std::vector<std::pair<double, std::vector<double>>> externalCharge);
-
-  //
-  // private methods
-  //
 
 private:
   /**

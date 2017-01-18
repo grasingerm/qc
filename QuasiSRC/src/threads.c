@@ -63,38 +63,13 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#if !defined(_REENTRANT)
-#define _REENTRANT
-#endif
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not found.
-#endif /* HAVE_UNISTD_H */
-
-#ifdef HAVE_ASSERT_H
 #include <assert.h>
-#else
-#error assert.h not found.
-#endif /* HAVE_ASSERT_H */
-
-#ifdef HAVE_SYS_MPCTL_H
-#include <sys/mpctl.h>
-#endif /*  HAVE_SYS_MPCTL_H */
+//#include <sys/mpctl.h>
 
 #if defined(__QC_SGI)
 #include "numa.h"

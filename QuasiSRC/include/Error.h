@@ -3,30 +3,11 @@
 #ifndef ERROR_H
 #define ERROR_H
 
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h not found.
-#endif /* HAVE_SYS_TYPES_H */
-
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#else
-#error signal.h not found.
-#endif /* HAVE_SIGNAL_H */
-
-#ifdef STDC_HEADERS
 #include <stdio.h>
 #include <string.h>
-#else
-#error Standard C library headers not found.
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_SCHED_H
 #include <sched.h>
-#else
-#error sched.h not found.
-#endif /* HAVE_SCHED_H */
 
 #include "C_Interface.h"
 

@@ -11,26 +11,12 @@
 #include "config.h"
 #endif // HAVE_CONFIG_H
 
-#if defined(HAVE_VECTOR)
 #include <vector>
-#else
-#error vector header file not available
-#endif // HAVE_VECTOR
-
-#ifdef HAVE_PTHREAD_H
 #include <pthread.h>
-#else
-#error No pthread.h available.
-#endif /* HAVE_PTHREAD_H */
-
 #include <utility>
 
 #include "DataTypes.h"
 #include "NonLinearSolver.h"
-
-//
-//
-//
 
 namespace quasicontinuum {
 
