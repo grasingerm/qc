@@ -1,1 +1,0 @@
-* in src/QuadraturePoints.cc, do not calculate quadrature points dynamically

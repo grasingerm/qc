@@ -16,7 +16,13 @@
 static const char rcsid[] = "$Id: htfun.c,v 1.2 2002/03/07 23:38:52 knap Exp $";
 #endif /* !lint */
 
-#define HTFUN_F77 F77_FUNC(htfun,HTFUN)
+#ifdef __cplusplus
+  extern "C" int HTFUN_F77(const int *, const int *, const int *,
+                           const int *, const int *);
+#else
+  int HTFUN_F77(const int *, const int *, const int *,
+                const int *, const int *);
+#endif
 
 int
 HTFUN_F77(const int *A, 

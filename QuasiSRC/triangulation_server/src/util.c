@@ -21,22 +21,8 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#ifndef _REENTRANT
-#define _REENTRANT
-#endif /* _REENTRANT */
-
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#else
-#error unistd.h not found.
-#endif /* HAVE_UNISTD_H */
-
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#else
-#error errno.h not found.
-#endif /* HAVE_ERRNO_H */
-
 #include "util.h"
 
 #if !defined(lint)

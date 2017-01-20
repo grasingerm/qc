@@ -76,81 +76,21 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#if defined(__QC_SGI)
 #include <pthread.h>
-#include <invent.h>
 #include <limits.h>
-#endif /* sgi */
-
-#if defined(__QC_HPUX)
-#include <pthread.h>
 #include <string.h>
-#endif /* hpux */
-
-#if defined(__QC_SUN) || defined(__QC_SGI) || defined(__QC_HPUX) || defined(__QC_LINUX) || defined(__QC_AIX)
 #include <errno.h>
-#endif /* sun || sgi || hpux || __linux__ || AIX */
-
-#ifdef STDC_HEADERS
 #include <stdlib.h>
 #include <stdio.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#else
-#error signal.h not found.
-#endif /* HAVE_SIGNAL_H */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
-
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#else
-#error limits.h not found
-#endif /* HAVE_LIMITS_H */
-
-#ifdef HAVE_UNISTD_H 
 #include <unistd.h>
-#else
-#error unistd.h not found
-#endif /* HAVE UNISTD_H */
-
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h not found
-#endif /* HAVE_SYS_TYPES_H */
-
-#ifdef HAVE_SYS_UTSNAME_H
 #include <sys/utsname.h>
-#else
-#error sys/utsname.h not found.
-#endif /* HAVE_SYS_UTSNAME_H */
-
-#ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
-#else
-#error sys/socket.h not found.
-#endif /* HAVE_SYS_SOCKET_H */
-
-#ifdef HAVE_SYS_UN_H
 #include <sys/un.h>
-#else
-#error sys/un.h not found.
-#endif /* HAVE_SYS_UN_H */
-
-#ifdef HAVE_ASSERT_H
 #include <assert.h>
-#else
-#error assert.h not found.
-#endif /* HAVE_ASSERT_H */
 
 #include "Error.h"
 #include "DataTypes.h"

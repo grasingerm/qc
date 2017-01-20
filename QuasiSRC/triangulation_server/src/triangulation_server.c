@@ -59,60 +59,16 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H */
 
-#ifdef STDC_HEADERS
 #include <stdlib.h>
 #include <stdio.h>
-#else
-#error No standard C library headers found
-#endif /* STDC_HEADERS */
-
-#ifdef HAVE_SIGNAL_H
 #include <signal.h>
-#else
-#error signal.h not found.
-#endif /* HAVE_SIGNAL_H */
-
-#ifdef HAVE_UNISTD_H 
 #include <unistd.h>
-#else
-#error unistd.h not found
-#endif /* HAVE UNISTD_H */
-
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#else
-#error limits.h not found
-#endif /* HAVE_LIMITS_H */
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#else
-#error math.h not found.
-#endif /* HAVE_MATH_H */
-
-#ifdef HAVE_ERRNO_H
 #include <errno.h>
-#else
-#error errno.h not found.
-#endif /* HAVE_ERRNO_H */
-
-#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
-#else
-#error sys/types.h not found
-#endif /* HAVE_SYS_TYPES_H */
-
-#ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
-#else
-#error sys/socket.h not found.
-#endif /* HAVE_SYS_SOCKET_H */
-
-#ifdef HAVE_SYS_UN_H
 #include <sys/un.h>
-#else
-#error sys/un.h not found.
-#endif /* HAVE_SYS_UN_H */
 
 #include "triangulation_server.h"
 #include "util.h"
@@ -122,22 +78,37 @@
 static const char rcsid[]="$Id: triangulation_server.c,v 1.16 2003/07/07 19:32:24 knap Exp $";
 #endif /* !lint */
 
-/* Define fortran functions using autotools for name mangling */
-/* imptrf_ was not declared in origional version? */
-#define GETERR_F77 F77_FUNC(geterr,GETERR)
-#define SANGMN_F77 F77_FUNC(sangmn,SANGMN)
-#define RADRTH_F77 F77_FUNC(radrth,RADRTH)
-#define EMNRTH_F77 F77_FUNC(emnrth,EMNRTH)
-#define PRIME_F77  F77_FUNC(prime,PRIME)
-#define INITCB_F77 F77_FUNC(initcb,INITCB)
-#define DTRIW3_F77 F77_FUNC(dtriw3,DTRIW3)
-#define TETLST_F77 F77_FUNC(tetlst,TETLST)
-#define IMPTR3_F77 F77_FUNC(imptr3,IMPTR3)
-#define IMPTRF_F77 F77_FUNC(imptrf,IMPTRF)
+#ifdef __cplusplus
+  extern "C" {
+#endif
 
-/**
- *
- */
+void GETERR_F77( int *auxerr );
+double SANGMN_F77( double A[3], double B[3], double C[3], double D[3],
+			    double SANG[4] );
+double RADRTH_F77( double A[3], double B[3], double C[3], 
+        double D[3] );
+double EMNRTH_F77( double A[3], double B[3], double C[3], 
+        double D[3] );
+int PRIME_F77( int *K );
+void INITCB_F77( double *tol );
+void DTRIW3_F77( int *NPT, int *SIZHT, int *MAXBF, int *MAXFC,
+			  double (*VCL)[3], int *VM, int *NBF, int *NFC,
+			  int *NFACE, int *NTETRA, int (*BF)[3], 
+			  int (*FC)[7], int *HT );
+void TETLST_F77( int *nfc, int *vm, int (*fc)[7], int *number_tetra,
+			  int (*tetra)[4] ); 
+void IMPTR3_F77( long *BNDCON, long *POSTLT, int *CRIT, int *NPT, 
+			  int *SIZHT, int *MAXFC, double (*VCL)[3], int *VM,
+			  int *NFC, int *NTETRA, int (*BF)[3], int (*FC)[7],
+			  int *HT, int *NFACE );
+void IMPTRF_F77(long *BNDCON, int *CRIT, int *NPT, int *SIZHT,
+			 int *MAXFC, double (*VCL)[3], int *VM, int *NFC,
+			 int *NTETRA, int *HDAVFC, int (*BF)[3], int (*FC)[7],
+			 int *HT);
+
+#ifdef __cplusplus
+  }
+#endif
 
 #if !defined(MAX) && !defined(MIN)
 #  define MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -682,7 +653,8 @@ main( int    ac,
 
   }
 
-  
+
+  // this is weird...
   exit(EXIT_SUCCESS);
   return(EXIT_SUCCESS);
 
